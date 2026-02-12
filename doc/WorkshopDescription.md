@@ -41,6 +41,7 @@
 [list]
 [*]When using [b]ACE[/b], fading out music is disabled as the ACE battle deafness system would override it.
 [*]If music is played from another source than the Zeus Jukebox, it does not get detected as currently playing.
+[*][b]Music without duration:[/b] If a music track has no duration declared in its config, it will show [b]0:00[/b] in the music list and be defaulted to 3 minutes (180 seconds) when played. This can lead to music continuing to play silently after the actual track ends, or tracks being cut off early if they are longer than 3 minutes.
 [/list]
 
 Other than that, there are currently no known issues.
