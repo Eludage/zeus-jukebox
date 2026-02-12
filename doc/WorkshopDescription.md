@@ -27,7 +27,7 @@
 [olist]
 [*]Subscribe to the mod on Steam Workshop
 [*]Enable the mod in the Arma 3 Launcher
-[*]Launch Arma 3 and open Zeus
+[*]Launch Arma 3 and open the Zeus menu in a mission
 [*]Access Zeus Jukebox through the Zeus modules menu Audio/Zeus Jukebox
 [/olist]
 
@@ -43,13 +43,13 @@
 [*]If music is played from another source than the Zeus Jukebox, it does not get detected as currently playing.
 [/list]
 
-Other than that, there are currently no know issues.
+Other than that, there are currently no known issues.
 
 [h2]License[/h2]
 
 [list]
-[*]You're [b]allowed[/b] to freely use this mod and/or change parts of it although it's preferred if you do create a Merge-Request in the [url=https://github.com/yourusername/ZeusJukebox/]GitHub-Project[/url].
-[*]You're [b]not allowed[/b] to reupload this mod without any meaningful modifications. If reuploading a modified version of this mod, you need to give credits to this mod.
+[*]You're [b]allowed[/b] to freely use this mod and/or change parts of it although it's preferred if you do create a Merge-Request in the [url=https://github.com/Eludage/zeus-jukebox]GitHub-Project[/url].
+[*]You're [b]not allowed[/b] to reupload this mod without any meaningful modifications. If you're reuploading a modified version of this mod, you need to give credits to this mod.
 [/list]
 
 [h2]Documentation[/h2]
@@ -63,7 +63,7 @@ All [b]Zeus Jukebox[/b] documentation is available in the mod's GitHub repositor
 
 [h2]Issue Tracker/Bug Reports[/h2]
 
-Please report bugs and issues on our dedicated [url=https://github.com/yourusername/ZeusJukebox/issues]GitHub issue tracker[/url].
+Please report bugs and issues on our dedicated [url=https://github.com/Eludage/zeus-jukebox/issues]GitHub issue tracker[/url].
 
 [h2]Credits[/h2]
 

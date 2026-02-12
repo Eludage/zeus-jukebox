@@ -1,6 +1,8 @@
 # Zeus Jukebox
 
-A comprehensive Zeus music management mod for Arma 3. Control and play music for all players on the server directly from the Zeus interface.
+// TODO Fix link when releasing version 1.0.0
+
+[Zeus Jukebox](https://steamcommunity.com/sharedfiles/filedetails/?id=3661185052) is a client-side music management system for Arma 3, allowing Zeuses to control and play music during multiplayer missions with an intuitive interface.
 
 ## Features
 
@@ -44,9 +46,10 @@ A comprehensive Zeus music management mod for Arma 3. Control and play music for
 
 ## Installation
 
-1. Pack the mod using Arma 3 Tools (Addon Builder) or MakePbo
-2. Place the resulting `ZeusJukebox.pbo` file in `@ZeusJukebox\addons\`
-3. Launch Arma 3 with the mod loaded
+1. Subscribe to the mod on Steam Workshop
+2. Enable the mod in the Arma 3 Launcher
+3. Launch Arma 3 and open the Zeus menu in a mission
+4. Access Zeus Jukebox through the Zeus modules menu Audio/Zeus Jukebox
 
 ## Adding Custom Mission Music
 
@@ -75,8 +78,8 @@ class CfgMusic
 
 ### Supported Audio Formats
 - `.ogg` (recommended)
-- `.wss`
 - `.wav`
+- `.wss`
 
 ### File Structure Example for Mission Music
 ```
@@ -89,15 +92,6 @@ myMission.Stratis/
 ```
 
 Custom mission music will appear under the "Mission Music" category in the Jukebox.
-
-## Usage
-
-**ZEN (Zeus Enhanced) is required for this mod.**
-
-1. Ensure ZEN mod is loaded
-2. Open Zeus interface (Y key)
-3. Find "Zeus Jukebox" → "Jukebox" in the modules
-4. Place the module to open the Jukebox dialog
 
 ## Multiplayer Behavior
 
@@ -118,7 +112,6 @@ Custom mission music will appear under the "Mission Music" category in the Jukeb
 
 ## Dependencies
 
-- **Required**: Arma 3 (v1.0+)
 - **Required**: ZEN (Zeus Enhanced) - The module registers through ZEN's custom modules system
 
 ## Documentation
@@ -145,6 +138,16 @@ If ACE3 with the Hearing module is loaded, the **"Fade (5s)"** button will be au
 
 See: https://github.com/acemod/ACE3/issues/4029
 
+## Special Thanks
+
+- The Arma 3 modding community
+- ZEN team for the excellent Zeus Enhanced framework
+- [Sigma Security Group](https://disboard.org/de/server/288446755219963914) (we're always looking for new members)
+
 ## Credits
 
 - **Author**: Eludage
+
+## Note on Title Image in Steam
+
+The title image for this workshop item is AI-generated. If you enjoy this mod and have artistic skills, feel free to create and contribute a replacement image! Contact the author or submit via the GitHub repository.
