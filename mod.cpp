@@ -1,0 +1,13 @@
+name = "Zeus Jukebox";
+picture = "zeusjukebox_logo.paa";
+actionName = "Website";
+action = "";
+description = "Zeus Jukebox - Music Management for Zeus";
+logo = "zeusjukebox_logo.paa";
+logoOver = "zeusjukebox_logo.paa";
+logoSmall = "zeusjukebox_logo.paa";
+tooltip = "Zeus Jukebox";
+tooltipOwned = "Zeus Jukebox Owned";
+overview = "A client-side Zeus module for managing and playing music.";
+author = "Eludage";
+overviewPicture = "zeusjukebox_icon.paa";
