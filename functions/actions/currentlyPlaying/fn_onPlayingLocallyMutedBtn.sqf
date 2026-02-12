@@ -30,7 +30,7 @@ private _currentTrack = missionNamespace getVariable ["ZeusJukebox_currentlyPlay
 private _isActive = missionNamespace getVariable ["ZeusJukebox_currentlyPlayingActive", false];
 if (_isActive && _currentTrack != "") then {
     private _startTime = missionNamespace getVariable ["ZeusJukebox_currentlyPlayingStartTime", 0];
-    private _elapsed = time - _startTime;
+    private _elapsed = serverTime - _startTime;
     playMusic [_currentTrack, _elapsed];
 };
 
@@ -41,7 +41,7 @@ if (_isPreviewPlaying) then {
 
     // Store the current preview position when stopping
     private _previewStartTime = uiNamespace getVariable ["ZeusJukebox_previewStartTime", 0];
-    private _previewElapsed = time - _previewStartTime;
+    private _previewElapsed = serverTime - _previewStartTime;
     uiNamespace setVariable ["ZeusJukebox_previewPausedAt", _previewElapsed];
 
     // Update preview Play/Pause button

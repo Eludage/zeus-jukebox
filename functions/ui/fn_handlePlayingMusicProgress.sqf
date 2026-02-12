@@ -30,8 +30,8 @@
  if (_duration <= 0) exitWith { false };
 
 // Calculate elapsed time
-private _startTime = missionNamespace getVariable ["ZeusJukebox_currentlyPlayingStartTime", time];
-private _elapsed = time - _startTime;
+private _startTime = missionNamespace getVariable ["ZeusJukebox_currentlyPlayingStartTime", serverTime];
+private _elapsed = serverTime - _startTime;
 
 // Check if track finished
 if (_elapsed >= _duration) then {

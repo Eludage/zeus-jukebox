@@ -87,7 +87,7 @@ if (!isNull _titleCtrl) then {
 private _elapsed = 0;
 private _progress = 0;
 if (_isActive && _duration > 0) then {
-	_elapsed = time - _startTime;
+	_elapsed = serverTime - _startTime;
 	_progress = (_elapsed / _duration) min 1.0;
 } else {
 	// When paused, show the paused position

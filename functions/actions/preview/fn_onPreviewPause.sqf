@@ -27,7 +27,7 @@ playMusic "";
 
 // Store the current position when pausing
 private _startTime = uiNamespace getVariable ["ZeusJukebox_previewStartTime", 0];
-private _elapsed = time - _startTime;
+private _elapsed = serverTime - _startTime;
 uiNamespace setVariable ["ZeusJukebox_previewPausedAt", _elapsed];
 
 // Update state

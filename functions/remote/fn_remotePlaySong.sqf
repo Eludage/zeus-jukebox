@@ -34,7 +34,7 @@ _trackInfo params ["_config", "_displayName", "_duration", "_soundFile"];
 
 // Set missionNamespace variables
 missionNamespace setVariable ["ZeusJukebox_currentlyPlayingTrack", _trackClass, true];
-missionNamespace setVariable ["ZeusJukebox_currentlyPlayingStartTime", time - _startPosition, true];
+missionNamespace setVariable ["ZeusJukebox_currentlyPlayingStartTime", serverTime - _startPosition, true];
 missionNamespace setVariable ["ZeusJukebox_currentlyPlayingDuration", _duration, true];
 missionNamespace setVariable ["ZeusJukebox_currentlyPlayingActive", true, true];
 

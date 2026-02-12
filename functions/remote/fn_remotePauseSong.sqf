@@ -27,7 +27,7 @@ _remoteCode remoteExec ["call", 0, false];
 
 // Store paused position
 private _startTime = missionNamespace getVariable ["ZeusJukebox_currentlyPlayingStartTime", 0];
-private _pausedAt = time - _startTime;
+private _pausedAt = serverTime - _startTime;
 missionNamespace setVariable ["ZeusJukebox_currentlyPlayingPausedAt", _pausedAt, true];
 missionNamespace setVariable ["ZeusJukebox_currentlyPlayingActive", false, true];
 

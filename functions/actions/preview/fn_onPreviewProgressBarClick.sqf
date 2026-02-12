@@ -55,7 +55,7 @@ if (_isPlaying) then {
     playMusic [_previewTrack, _newTime];
 
     // Update start time to reflect new position
-    uiNamespace setVariable ["ZeusJukebox_previewStartTime", time - _newTime];
+    uiNamespace setVariable ["ZeusJukebox_previewStartTime", serverTime - _newTime];
 };
 
 // Update UI

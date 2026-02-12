@@ -26,8 +26,8 @@ private _duration = uiNamespace getVariable ["ZeusJukebox_previewDuration", 0];
 if (_duration <= 0) exitWith { false }; // No valid duration
 
 // Calculate elapsed time
-private _startTime = uiNamespace getVariable ["ZeusJukebox_previewStartTime", time];
-private _elapsed = time - _startTime;
+private _startTime = uiNamespace getVariable ["ZeusJukebox_previewStartTime", serverTime];
+private _elapsed = serverTime - _startTime;
 
 // Check if track finished
 if (_elapsed >= _duration) then {

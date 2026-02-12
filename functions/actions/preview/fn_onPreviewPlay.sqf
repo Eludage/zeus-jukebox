@@ -42,7 +42,7 @@ if (_isCurrentlyPlaying) then {
 };
 
 // Store start time (adjusted for paused position)
-uiNamespace setVariable ["ZeusJukebox_previewStartTime", time - _pausedAt];
+uiNamespace setVariable ["ZeusJukebox_previewStartTime", serverTime - _pausedAt];
 uiNamespace setVariable ["ZeusJukebox_previewPlaying", true];
 
 // Update UI
