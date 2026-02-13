@@ -1,6 +1,7 @@
 [h1]Zeus Jukebox: Music Management for Zeus[/h1]
 
 [b]Zeus Jukebox[/b] is a client-side music management system for Arma 3, allowing Zeuses to control and play music during multiplayer missions with an intuitive interface.
+The Beta Version is available [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3661185052]here[/url] where new features are tested.
 
 [h2]Features[/h2]
 
