@@ -43,9 +43,6 @@ missionNamespace setVariable ["ZeusJukebox_queue", _queue, true];
 // Clear preview section using the shared function
 [] call ZeusJukebox_fnc_clearPreviewArea;
 
-// Show feedback
-private _durationStr = [_duration] call ZeusJukebox_fnc_formatDuration;
-
 // Check autoplay (if enabled and Currently Playing is empty)
 [] call ZeusJukebox_fnc_checkAutoplay;
 
