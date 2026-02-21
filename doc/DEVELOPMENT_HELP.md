@@ -117,7 +117,7 @@ This section documents the runtime namespaces and variables used by Zeus Jukebox
 - `ZeusJukebox_isPopulating`: Boolean — Flag indicating music list is currently being populated. Used to prevent concurrent population operations.
 - `ZeusJukebox_groupedTracks`: HashMap — Cached map of grouped tracks by category (theme or addon).
 - `ZeusJukebox_expandedCategories`: HashMap — Map tracking which categories are expanded (true) or collapsed (false) in the music list.
-- `ZeusJukebox_groupingMode`: String — Current grouping mode: "theme" or "addon".
+- `ZeusJukebox_groupingMode`: String — Current grouping mode: "musicclass" (default), "theme", or "addon".
 - `ZeusJukebox_trackData`: HashMap — Alternative storage for track data during population.
 - `ZeusJukebox_filterFavoritesOnly`: Boolean — Whether to show only favorite tracks in the music list.
 

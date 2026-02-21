@@ -45,7 +45,15 @@ private _groupedTracks = uiNamespace getVariable ["ZeusJukebox_groupedTracks", c
 private _expandedCategories = uiNamespace getVariable ["ZeusJukebox_expandedCategories", createHashMap];
 
 // Get current grouping mode
-private _groupingMode = uiNamespace getVariable ["ZeusJukebox_groupingMode", "theme"];
+private _groupingMode = uiNamespace getVariable ["ZeusJukebox_groupingMode", "musicclass"];
+
+// Always update grouping button visibility to reflect current mode
+private _btnAddon      = _display displayCtrl 15505;
+private _btnTheme      = _display displayCtrl 15509;
+private _btnMusicClass = _display displayCtrl 15510;
+if (!isNull _btnAddon)      then { _btnAddon      ctrlShow (_groupingMode == "addon"); };
+if (!isNull _btnTheme)      then { _btnTheme      ctrlShow (_groupingMode == "theme"); };
+if (!isNull _btnMusicClass) then { _btnMusicClass ctrlShow (_groupingMode == "musicclass"); };
 
 // Build grouped tracks data if not already done or force rebuild
 if (count _groupedTracks == 0 || _forceRebuild) then {
@@ -83,7 +91,7 @@ if (count _groupedTracks == 0 || _forceRebuild) then {
             // Mission music always goes to "Mission Music" category
             _groupName = "Mission Music";
         } else {
-            // Group by mode (addon or theme)
+            // Group by mode (addon, theme, or musicclass)
             if (_groupingMode == "theme") then {
                 // Group by theme
                 private _theme = getText (_config >> "theme");
@@ -97,12 +105,27 @@ if (count _groupedTracks == 0 || _forceRebuild) then {
                     _groupName = toUpper _firstChar + _rest;
                 };
             } else {
-                // Group by addon (default)
-                private _sourceAddons = configSourceAddonList _config;
-                if (count _sourceAddons > 0) then {
-                    _groupName = _sourceAddons select 0;
+                if (_groupingMode == "musicclass") then {
+                    // Group by music class display name
+                    private _musicClassKey = getText (_config >> "musicClass");
+                    if (_musicClassKey == "") then {
+                        _groupName = "No Music Class";
+                    } else {
+                        private _musicClassDisplayName = getText (configFile >> "CfgMusicClasses" >> _musicClassKey >> "displayName");
+                        if (_musicClassDisplayName == "") then {
+                            _groupName = "No Music Class";
+                        } else {
+                            _groupName = _musicClassDisplayName;
+                        };
+                    };
                 } else {
-                    _groupName = "Unknown";
+                    // Group by addon (default)
+                    private _sourceAddons = configSourceAddonList _config;
+                    if (count _sourceAddons > 0) then {
+                        _groupName = _sourceAddons select 0;
+                    } else {
+                        _groupName = "Unknown";
+                    };
                 };
             };
         };

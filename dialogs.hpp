@@ -645,7 +645,7 @@ class ZeusJukebox_Dialog
             w = 0.04 * safezoneW;
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onAddonBtn;";
-            tooltip = "Switch to Theme grouping";
+            tooltip = "Switch to Music Class grouping";
             colorBackground[] = COLOR_GREY_30;
             colorFocused[] = COLOR_GREY_30;
             colorBackgroundActive[] = COLOR_GREY_50;
@@ -661,6 +661,21 @@ class ZeusJukebox_Dialog
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onThemeBtn;";
             tooltip = "Switch to Addon grouping";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_50;
+        };
+        // Music Class button
+        class MusicGroupByMusicClassBtn: ZJ_RscButton
+        {
+            idc = 15510;
+            text = "Music Class";
+            x = 0.3 * safezoneW + safezoneX;
+            y = 0.29 * safezoneH + safezoneY;
+            w = 0.04 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onMusicClassBtn;";
+            tooltip = "Switch to Theme grouping";
             colorBackground[] = COLOR_GREY_30;
             colorFocused[] = COLOR_GREY_30;
             colorBackgroundActive[] = COLOR_GREY_50;

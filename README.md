@@ -9,6 +9,7 @@ The Beta version (testing new features) is available [here](https://steamcommuni
 - **Available Music**: Browse all CfgMusic tracks organized by category
 - **Search**: Filter tracks by name or class name using the search field
 - **Collapsible Categories**: Click on category headers to expand/collapse
+- **Grouping Modes**: Group tracks by Addon, Theme, or Music Class (cycles through modes with the group button)
 - **Track Info Panel**: View track name, class name, file path, and duration
 - **Dynamic Font Size**: Adjust font size with +/- buttons for better readability
 - **Mission Music Support**: Automatically loads music defined in mission description.ext

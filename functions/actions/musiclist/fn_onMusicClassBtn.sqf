@@ -1,6 +1,6 @@
 /*
  * Author: Eludage
- * Handles the Group by Theme button click to switch grouping mode to Addon.
+ * Handles the Group by Music Class button click to switch grouping mode to Theme.
  *
  * Arguments:
  * None
@@ -9,7 +9,7 @@
  * Boolean: true on success, false on failure
  *
  * Example:
- * [] call ZeusJukebox_fnc_onThemeBtn;
+ * [] call ZeusJukebox_fnc_onMusicClassBtn;
  */
 disableSerialization;
 
@@ -18,7 +18,7 @@ if (isNull _display) exitWith { false };
 
 // Toggle the grouping mode
 private _currentMode = uiNamespace getVariable ["ZeusJukebox_groupingMode", "musicclass"];
-private _newMode = "addon";
+private _newMode = "theme";
 
 if (_currentMode == _newMode) exitWith { false };
 

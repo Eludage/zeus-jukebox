@@ -50,22 +50,11 @@ if (_created) then {
 
         // Initialize grouping mode (default theme)
         if (isNil {uiNamespace getVariable "ZeusJukebox_groupingMode"}) then {
-            uiNamespace setVariable ["ZeusJukebox_groupingMode", "theme"];
+            uiNamespace setVariable ["ZeusJukebox_groupingMode", "musicclass"];
         };
 
-        // Update grouping button visibility based on current mode
-        private _groupingMode = uiNamespace getVariable ["ZeusJukebox_groupingMode", "theme"];
-        private _btnAddon = _display displayCtrl 15505;
-        private _btnTheme = _display displayCtrl 15509;
-        if (!isNull _btnAddon && !isNull _btnTheme) then {
-            if (_groupingMode == "addon") then {
-                _btnAddon ctrlShow true;
-                _btnTheme ctrlShow false;
-            } else {
-                _btnAddon ctrlShow false;
-                _btnTheme ctrlShow true;
-            };
-        };
+        // Update grouping button visibility based on current mode - delegated to updateUiMusicList
+        // (called below via the initial music list population)
 
         // Check if there's an existing preview track to restore
         private _existingPreviewTrack = uiNamespace getVariable ["ZeusJukebox_previewTrack", ""];

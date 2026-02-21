@@ -33,6 +33,7 @@ class CfgFunctions
             class onSearchFieldKeyUp {};         // Search field key up
             class onAddonBtn {};                 // Group by Addon button
             class onThemeBtn {};                 // Group by Theme button
+            class onMusicClassBtn {};            // Group by Music Class button
         };
 
         // ===== UI Actions - Options =====
