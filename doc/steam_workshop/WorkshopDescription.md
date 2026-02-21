@@ -42,7 +42,7 @@ The Beta Version is available [url=https://steamcommunity.com/sharedfiles/filede
 [list]
 [*]When using [b]ACE[/b], fading out music is disabled as the ACE battle deafness system would override it.
 [*]If music is played from another source than the Zeus Jukebox, it does not get detected as currently playing.
-[*][b]Music without duration:[/b] If a music track has no duration declared in its config, it will show [b]0:00[/b] in the music list and be defaulted to 3 minutes (180 seconds) when played. This can lead to music continuing to play silently after the actual track ends, or tracks being cut off early if they are longer than 3 minutes.
+[*][b]Music without duration:[/b] If a music track has no duration declared in its config, it will show [b]0:00[/b] in the music list and will be defaulted to 3 minutes (180 seconds) when played. This can lead to music continuing to play silently after the actual track ends, or tracks being cut off early if they are longer than 3 minutes.
 [/list]
 
 Other than that, there are currently no known issues.
@@ -66,6 +66,10 @@ All [b]Zeus Jukebox[/b] documentation is available in the mod's GitHub repositor
 [h2]Issue Tracker/Bug Reports[/h2]
 
 Please report bugs and issues on our dedicated [url=https://github.com/Eludage/zeus-jukebox/issues]GitHub issue tracker[/url].
+
+[h2]Eludage's QoL Collection[/h2]
+
+If you enjoy this mod, have a look at [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3670450844]my other QoL mods[/url].
 
 [h2]Credits[/h2]
 
