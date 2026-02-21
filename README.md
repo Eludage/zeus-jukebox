@@ -12,12 +12,14 @@ The Beta version (testing new features) is available [here](https://steamcommuni
 - **Track Info Panel**: View track name, class name, file path, and duration
 - **Dynamic Font Size**: Adjust font size with +/- buttons for better readability
 - **Mission Music Support**: Automatically loads music defined in mission description.ext
+- **Double-click to Queue**: Double-click any track in the music list to instantly add it to the queue
 
 ### Preview System
 - **Local Preview**: Preview any track locally before playing it for everyone
 - **Play/Pause Controls**: Full playback control for preview
 - **Progress Bar**: Visual progress indicator with click-to-seek functionality
 - **Time Display**: Shows elapsed time and total duration
+- **Autoplay Preview**: When enabled, any track selected from the music list or queue immediately starts playing in the preview area; the server-wide track is locally muted if needed
 
 ### Currently Playing (Server-wide)
 - **Play for All**: Play music for all players on the server
@@ -100,6 +102,7 @@ Custom mission music will appear under the "Mission Music" category in the Jukeb
 - Favorites
 - Selected track
 - Font size preference
+- Autoplay Preview toggle
 
 ### Server-wide (Synced Across All Zeus Users)
 - Currently Playing track

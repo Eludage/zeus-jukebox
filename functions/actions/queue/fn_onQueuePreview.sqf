@@ -60,3 +60,8 @@ uiNamespace setVariable ["ZeusJukebox_previewDuration", _duration];
 
 // Update Preview area
 [] call ZeusJukebox_fnc_updateUiPreviewArea;
+
+// If autoplay preview is enabled, immediately start playing the new track
+if (uiNamespace getVariable ["ZeusJukebox_autoplayPreview", false]) then {
+	[] call ZeusJukebox_fnc_onPreviewPlay;
+};

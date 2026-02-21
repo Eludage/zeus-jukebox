@@ -394,7 +394,7 @@ class ZeusJukebox_Dialog
             style = 2 + 512;  // ST_CENTER + ST_VCENTER (centered horizontally and vertically)
             sizeEx = 0.04;
         };
-        // Currently Preview Track Title
+        // Preview Track Title
         class PreviewTitle: ZJ_RscTextLabel
         {
             idc = 15310;
@@ -505,6 +505,45 @@ class ZeusJukebox_Dialog
             colorBackground[] = COLOR_BLUE;
             colorFocused[] = COLOR_BLUE;
             colorBackgroundActive[] = COLOR_BLUE_ACTIVE;
+        };
+        // Autoplay Preview Label
+        class AutoplayPreviewLabel: ZJ_RscTextLabel
+        {
+            idc = 15313;
+            text = "Autoplay Preview:";
+            x = 0.57 * safezoneW + safezoneX;
+            y = 0.11 * safezoneH + safezoneY;
+            w = 0.06 * safezoneW;
+            h = 0.025 * safezoneH;
+            colorText[] = COLOR_GREY_70;
+        };
+        // Autoplay Preview OFF Button (visible when autoplay is off)
+        class AutoplayPreviewOff: ZJ_RscButton
+        {
+            idc = 15311;
+            text = "Off";
+            x = 0.63 * safezoneW + safezoneX;
+            y = 0.11 * safezoneH + safezoneY;
+            w = 0.05 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onAutoplayPreviewOnBtn;";
+            colorBackground[] = COLOR_DARK_RED;
+            colorFocused[] = COLOR_DARK_RED;
+            colorBackgroundActive[] = COLOR_DARK_RED_ACTIVE;
+        };
+        // Autoplay Preview ON Button (hidden initially; shown when autoplay is on)
+        class AutoplayPreviewOn: ZJ_RscButton
+        {
+            idc = 15312;
+            text = "On";
+            x = 0.63 * safezoneW + safezoneX;
+            y = 0.11 * safezoneH + safezoneY;
+            w = 0.05 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onAutoplayPreviewOffBtn;";
+            colorBackground[] = COLOR_GREEN;
+            colorFocused[] = COLOR_GREEN;
+            colorBackgroundActive[] = COLOR_GREEN_ACTIVE;
         };
 
         // ============== OPTIONS CONTENT ==============
@@ -689,6 +728,7 @@ class ZeusJukebox_Dialog
             w = 0.34 * safezoneW;
             h = 0.50 * safezoneH;
             onLBSelChanged = "[] call ZeusJukebox_fnc_onMusicListEntrySelected;";
+            onLBDblClick = "[] call ZeusJukebox_fnc_onMusicListDblClick;";
         };
         // Mark/Unmark Favorite button
         class MusicMarkFavoriteBtn: ZJ_RscButton
@@ -877,10 +917,10 @@ class ZeusJukebox_Dialog
         class AutoplayLabel: ZJ_RscTextLabel
         {
             idc = 15701;
-            text = "Autoplay";
-            x = 0.76 * safezoneW + safezoneX;
+            text = "Autoplay Global Music:";
+            x = 0.72 * safezoneW + safezoneX;
             y = 0.43 * safezoneH + safezoneY;
-            w = 0.03 * safezoneW;
+            w = 0.07 * safezoneW;
             h = 0.025 * safezoneH;
             colorText[] = COLOR_GREY_70;
         };
