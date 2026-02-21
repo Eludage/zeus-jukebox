@@ -37,6 +37,9 @@ This section lists the main dialog ID (IDD) and the control IDCs used in the Juk
     - 15307 → PreviewPause — Pause button (preview)
     - 15308 → PreviewRemove — Remove / clear preview
     - 15309 → AddToQueueButton — Add current preview to Queue
+    - 15311 → AutoplayPreviewOff — Autoplay Preview OFF button (visible when autoplay preview is off)
+    - 15312 → AutoplayPreviewOn — Autoplay Preview ON button (visible when autoplay preview is on)
+    - 15313 → AutoplayPreviewLabel — label "Autoplay Preview:"
   - Options controls
     - 15401 → FontSizeLabel — label "Font Size"
     - 15402 → FontSizeDecrease — font size decrease button
@@ -47,7 +50,7 @@ This section lists the main dialog ID (IDD) and the control IDCs used in the Juk
   - Music list controls
     - 15501 → MusicSearchLabel — label "Search:"
     - 15502 → MusicSearchField — search edit field for Available Music
-    - 15503 → MusicList — the Available Music listbox
+    - 15503 → MusicList — the Available Music listbox (single-click selects/loads preview; double-click adds to queue)
     - 15504 → MusicGroupByLabel — label "Group by:"
     - 15505 → MusicGroupByAddonBtn — Toggles to grouping by Theme
     - 15506 → MusicFavoriteBtn — label "*"
@@ -114,7 +117,7 @@ This section documents the runtime namespaces and variables used by Zeus Jukebox
 - `ZeusJukebox_isPopulating`: Boolean — Flag indicating music list is currently being populated. Used to prevent concurrent population operations.
 - `ZeusJukebox_groupedTracks`: HashMap — Cached map of grouped tracks by category (theme or addon).
 - `ZeusJukebox_expandedCategories`: HashMap — Map tracking which categories are expanded (true) or collapsed (false) in the music list.
-- `ZeusJukebox_groupingMode`: String — Current grouping mode: "theme" or "addon".
+- `ZeusJukebox_groupingMode`: String — Current grouping mode: "musicclass" (default), "theme", or "addon".
 - `ZeusJukebox_trackData`: HashMap — Alternative storage for track data during population.
 - `ZeusJukebox_filterFavoritesOnly`: Boolean — Whether to show only favorite tracks in the music list.
 
@@ -136,6 +139,7 @@ This section documents the runtime namespaces and variables used by Zeus Jukebox
 - `ZeusJukebox_selectedQueueTrack`: String — Class name of the currently selected track in the queue listbox. Used to restore selection after queue updates. Empty string when no selection.
 - `ZeusJukebox_selectedQueueIdx`: Number — Index of the currently selected track in the queue listbox. Used together with selectedQueueTrack to restore selection, especially when there are duplicate tracks. -1 when no selection.
 - `ZeusJukebox_isListeningLocally`: Boolean — Whether the Zeus is listening to the currently playing track locally. Can be toggled to mute/unmute for preview purposes.
+- `ZeusJukebox_autoplayPreview`: Boolean — Whether autoplay preview is enabled. When true, any track loaded into the preview area immediately starts playing (and locally mutes the currently playing track if needed). Defaults to false.
 - `ZeusJukebox_lastMissionName`: String — Name of the last mission where the dialog was opened. Used to detect mission changes and trigger music list rebuild to include potential mission music.
 
 #### Favorites

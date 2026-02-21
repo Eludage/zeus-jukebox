@@ -35,6 +35,13 @@ private _btnPause = _display displayCtrl 15307;
 private _btnRemove = _display displayCtrl 15308;
 private _btnAddToQueue = _display displayCtrl 15309;
 
+// Always update Autoplay Preview button state regardless of track loaded
+private _autoplayPreview = uiNamespace getVariable ["ZeusJukebox_autoplayPreview", false];
+private _btnAutoplayPreviewOff = _display displayCtrl 15311;
+private _btnAutoplayPreviewOn  = _display displayCtrl 15312;
+if (!isNull _btnAutoplayPreviewOff) then { _btnAutoplayPreviewOff ctrlShow !_autoplayPreview; };
+if (!isNull _btnAutoplayPreviewOn)  then { _btnAutoplayPreviewOn  ctrlShow _autoplayPreview; };
+
 // If no preview track loaded
 if (_previewTrack == "") exitWith {
 	// Show "No Song selected" text

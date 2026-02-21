@@ -29,9 +29,11 @@ class CfgFunctions
             class onFavoriteOffBtn {};           // Favorites filter OFF button
             class onFavoriteOnBtn {};            // Favorites filter ON button
             class onMusicListEntrySelected {};   // Music list entry selected
+            class onMusicListDblClick {};        // Music list double-click (add to queue)
             class onSearchFieldKeyUp {};         // Search field key up
             class onAddonBtn {};                 // Group by Addon button
             class onThemeBtn {};                 // Group by Theme button
+            class onMusicClassBtn {};            // Group by Music Class button
         };
 
         // ===== UI Actions - Options =====
@@ -67,6 +69,8 @@ class CfgFunctions
             class onPreviewPlay {};              // Preview play button
             class onPreviewProgressBarClick {};  // Preview progress bar click
             class onPreviewRemove {};            // Preview remove button
+            class onAutoplayPreviewOnBtn {};     // Enable autoplay preview
+            class onAutoplayPreviewOffBtn {};    // Disable autoplay preview
         };
 
         // ===== UI Actions - Queue =====

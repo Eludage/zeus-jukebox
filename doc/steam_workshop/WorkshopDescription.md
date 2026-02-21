@@ -9,7 +9,9 @@ The Beta Version is available [url=https://steamcommunity.com/sharedfiles/filede
 [*][b]Comprehensive music library[/b] with all Arma 3 tracks organized by addon and theme including Mission Music from the mission description.ext.
 [*][b]Search and filter[/b] capabilities to find the tracks quickly.
 [*][b]Favorite system[/b] Mark your favorite tracks to quickly access them.
+[*][b]Double-click to Queue[/b] - instantly add any track from the music list to the queue.
 [*][b]Preview functionality[/b] allowing you to audition tracks before playing them for everyone.
+[*][b]Autoplay Preview[/b] - optionally start previewing a track immediately when selecting it from the music list or queue.
 [*][b]Queue system[/b] for planning music sequences with drag-and-drop reordering.
 [*][b]Queue import/export[/b] functionality to save and share your music playlists.
 [*][b]Global playback[/b] Play and pause music for all players on the server.

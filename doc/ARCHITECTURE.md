@@ -30,6 +30,7 @@ Used for state that must be synchronized across all Zeus users:
 #### `uiNamespace` (Local State)
 Used for state that is local to each Zeus:
 - **Preview**: Track, playing status, start time, paused position, duration
+- **Autoplay Preview**: Whether selecting a track immediately starts preview playback
 - **Music List**: Cached track data, search state, grouping mode, expanded categories
 - **Favorites**: Marked favorite tracks (synced with `profileNamespace`)
 - **UI Preferences**: Font size, listen/mute state for Zeus
@@ -52,8 +53,8 @@ Used for state that persists across game sessions:
 - **UI Event Handlers**: Respond to button clicks and user interactions
 - **Delegate to Remote Execution**: Don't manipulate state directly
 - **Pattern**: Get user input → validate → call remote execution function
-- **5 subfolders**: musiclist (7 functions), options (4 functions), currentlyPlaying (8 functions), preview (5 functions), queue (8 functions)
-- **32 total functions** organized by UI section
+- **5 subfolders**: musiclist (9 functions), options (4 functions), currentlyPlaying (8 functions), preview (7 functions), queue (8 functions)
+- **36 total functions** organized by UI section
 
 #### 3. UI Functions (`functions/ui/`)
 - **UI Updates**: Read state from namespace and update controls
