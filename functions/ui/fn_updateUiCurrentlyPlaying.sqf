@@ -145,7 +145,8 @@ if (!isNull _btnFade) then {
 		private _fadeStart = missionNamespace getVariable ["ZeusJukebox_fadeStartTime", serverTime];
 		private _fadeRemaining = 5 - (serverTime - _fadeStart);
 		_fadeRemaining = _fadeRemaining max 0;
-		_btnFade ctrlSetText format ["Fading (%1s)", str (round (_fadeRemaining * 10) / 10)];
+		private _tenths = round (_fadeRemaining * 10);
+		_btnFade ctrlSetText format ["Fading (%1.%2s)", floor (_tenths / 10), _tenths mod 10];
 	} else {
 		_btnFade ctrlSetText "Fade (5s)";
 	};
