@@ -1,7 +1,7 @@
 [h1]Beta-Version of the Zeus Jukebox: Music Management for Zeus[/h1]
 
 This is the [b]Beta-Version[/b] of the Zeus-Jukebox, used for testing new features.
-Please use [url=https://steamcommunity.com/sharedfiles/filedetails/?edit=true&id=3665466082]this mod[/url] if you prefer the stable version.
+Please use [url=https://steamcommunity.com/sharedfiles/filedetails/?edit=true&id=3665466082]this mod[/url] if you prefer the stable version. It is not guaranteed that this Beta version contains all features from the stable version at all times.
 
 [h2]Beta-Features[/h2]
 
