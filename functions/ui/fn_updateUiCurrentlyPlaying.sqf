@@ -132,11 +132,24 @@ if (!isNull _btnStop) then {
 // Update other buttons
 if (!isNull _btnFade) then {
 	_btnFade ctrlShow true;
-	// Disable if: currently fading, not playing, or ACE Hearing is active
-	private _aceHearingActive = (!isNil "ace_hearing_fnc_updateVolume" || isClass (configFile >> "CfgPatches" >> "ace_hearing"));
-	private _canFade = _isActive && !_isFading && !_aceHearingActive;
+	// Disable if: currently fading, not playing, or ACE Hearing is overriding music volume
+	// ACE disables fade when EnableCombatDeafness OR EnableNoiseDucking are active
+	private _aceLoaded = isClass (configFile >> "CfgPatches" >> "ace_hearing");
+	private _aceDisablesFade = _aceLoaded && {
+		(missionNamespace getVariable ["ace_hearing_enableCombatDeafness", false]) ||
+		(missionNamespace getVariable ["ace_hearing_enableNoiseDucking", false])
+	};
+	private _canFade = _isActive && !_isFading && !_aceDisablesFade;
 	_btnFade ctrlEnable _canFade;
-	if (_aceHearingActive && !_canFade) then {
+	if (_isFading) then {
+		private _fadeStart = missionNamespace getVariable ["ZeusJukebox_fadeStartTime", serverTime];
+		private _fadeRemaining = 5 - (serverTime - _fadeStart);
+		_fadeRemaining = _fadeRemaining max 0;
+		_btnFade ctrlSetText format ["Fading (%1s)", str (round (_fadeRemaining * 10) / 10)];
+	} else {
+		_btnFade ctrlSetText "Fade (5s)";
+	};
+	if (_aceDisablesFade) then {
 		_btnFade ctrlSetTooltip "Disabled: ACE Hearing overrides music volume";
 	} else {
 		_btnFade ctrlSetTooltip "";

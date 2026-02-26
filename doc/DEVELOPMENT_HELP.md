@@ -102,6 +102,7 @@ This section documents the runtime namespaces and variables used by Zeus Jukebox
 - `ZeusJukebox_currentlyPlayingUpdateHandle`: Script Handle — Handle to the currently playing progress update loop. Stored to prevent spawning duplicate loops.
 - `ZeusJukebox_looping`: Boolean — Whether the currently playing track should loop when it finishes.
 - `ZeusJukebox_isFading`: Boolean — Whether the currently playing track is currently fading out.
+- `ZeusJukebox_fadeStartTime`: Number — `serverTime` at which the fade out started. Used to calculate the remaining fade countdown displayed on the Fade button. Reset to `0` when fading completes.
 
 #### Queue Management
 - `ZeusJukebox_queue`: Array — Array of track info arrays representing queued tracks. Each element is `[className, displayName, duration]`.

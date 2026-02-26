@@ -26,6 +26,11 @@ if (_isPlaying) exitWith { false }; // Already playing, do nothing
 private _pausedAt = uiNamespace getVariable ["ZeusJukebox_previewPausedAt", 0];
 
 // Play the music locally (only for this client)
+// If a fade is currently in progress, immediately cancel it locally so the preview
+// doesn't inherit the fading volume ramp and audibly fade out
+if (missionNamespace getVariable ["ZeusJukebox_isFading", false]) then {
+	0 fadeMusic 1;
+};
 playMusic [_currentPreviewTrack, _pausedAt];
 
 // Auto-mute Currently Playing for Zeus when previewing
