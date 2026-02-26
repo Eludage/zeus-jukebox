@@ -189,10 +189,10 @@ if (_created) then {
                     };
                 };
                 
-                // Update track info display for the restored track only if the track still exists
-                if (_trackFound) then {
-                    [_existingPreviewTrack] call ZeusJukebox_fnc_updateUiTrackInfo;
-                };
+                // Update track info display for the restored track
+                // Do this unconditionally - the track may be in a collapsed category
+                // and not visible in the listbox, but its info should still be shown
+                [_existingPreviewTrack] call ZeusJukebox_fnc_updateUiTrackInfo;
             };
         };
 

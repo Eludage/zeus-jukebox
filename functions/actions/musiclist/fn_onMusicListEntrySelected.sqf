@@ -78,9 +78,6 @@ if ((_data select [0, 7]) == "HEADER:") then {
         _trackInfo params ["", "", "_duration", ""];
         uiNamespace setVariable ["ZeusJukebox_previewDuration", _duration];
         
-        // Update Track Info section
-        [_className] call ZeusJukebox_fnc_updateUiTrackInfo;
-        
         // Update Preview area
         [] call ZeusJukebox_fnc_updateUiPreviewArea;
 
@@ -89,4 +86,8 @@ if ((_data select [0, 7]) == "HEADER:") then {
             [] call ZeusJukebox_fnc_onPreviewPlay;
         };
     };
+
+    // Always update Track Info section - even if the same track is already in the preview
+    // (e.g. after reopening the dialog where the info box would otherwise be empty)
+    [_className] call ZeusJukebox_fnc_updateUiTrackInfo;
 };
