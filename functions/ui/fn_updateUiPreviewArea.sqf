@@ -70,6 +70,14 @@ private _displayName = _previewTrack;
 if (!isNil "_trackData") then {
 	_trackData params ["_name", "_dur", "_file", "_theme", "_isMission"];
 	if (_name != "") then { _displayName = _name; };
+} else {
+	// HashMap not yet populated (e.g. on dialog open before updateUiMusicList runs)
+	// Fall back to getTrackConfig directly
+	private _trackInfo = [_previewTrack] call ZeusJukebox_fnc_getTrackConfig;
+	if (!(_trackInfo isEqualTo [])) then {
+		_trackInfo params ["", "_name", "", ""];
+		if (_name != "") then { _displayName = _name; };
+	};
 };
 
 // Update title with track name and duration
