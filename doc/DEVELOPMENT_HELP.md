@@ -56,6 +56,7 @@ This section lists the main dialog ID (IDD) and the control IDCs used in the Juk
     - 15506 → MusicFavoriteBtn — label "*"
     - 15508 → MusicMarkFavoriteBtn — Mark/Unmark Favorite
     - 15509 → MusicGroupByThemeBtn — Toggles to grouping by Addon
+    - 15511 → MusicListSettings — Cog-wheel button; will open Music List Settings dialog (placeholder)
   - Currently playing controls
     - 15601 → CurrentlyPlayingTitle — currently playing track title
     - 15602 → CurrentlyPlayingProgressBg — currently playing progress background
@@ -79,6 +80,7 @@ This section lists the main dialog ID (IDD) and the control IDCs used in the Juk
     - 15707 → QueuePreviewBtn — Preview queue item
     - 15708 → QueueMoveUpBtn — Move queue item up
     - 15709 → QueueMoveDownBtn — Move queue item down
+    - 15710 → ManageSongListBtn — Opens Manage Song List dialog (placeholder)
   - Misc controls
     - 15011   → CloseButton — Close dialog button
 
@@ -154,3 +156,61 @@ This section documents the runtime namespaces and variables used by Zeus Jukebox
 - **uiNamespace** is used for local state per-Zeus (preview, favorites, UI preferences, music list cache).
 - **profileNamespace** is used for persistent state across game sessions (favorites only).
 - All mod runtime variables use the `ZeusJukebox_` prefix
+
+---
+
+## Checklist: Adding a New Control
+
+Follow these steps every time a new interactive control (button, edit field, listbox, etc.) is added to the dialog.
+
+### 1. Define the control in `dialogs.hpp`
+- Add a new class inside the appropriate section of `Controls` (or `ControlsBackground` for visual-only panels).
+- Inherit from the correct base class (`ZJ_RscButton`, `ZJ_RscTextLabel`, `ZJ_RscEdit`, `ZJ_RscListbox`, `ZJ_RscPanel`).
+- Assign a unique `idc` following the existing numbering convention:
+  | Range   | Section                |
+  |---------|------------------------|
+  | 15011   | Misc (Close button)    |
+  | 151xx   | Box title labels       |
+  | 152xx   | Track Info             |
+  | 153xx   | Preview                |
+  | 154xx   | Options / Import-Export|
+  | 155xx   | Music List             |
+  | 156xx   | Currently Playing      |
+  | 157xx   | Queue                  |
+- Set `idc = -1` only for purely decorative elements that will never be accessed by scripts.
+- Wire the `action` (buttons) or relevant event handler (`onKeyUp`, `onLBSelChanged`, etc.) to the corresponding function: `"[] call ZeusJukebox_fnc_<functionName>;"`.
+- Add a `tooltip` for any button whose purpose is not immediately obvious from its label.
+- Use only macros or defined constants for colors and sizes — never hardcode values.
+
+### 2. Create the action function in `functions/`
+- Place the file in the subdirectory that matches its logical group:
+  | Subdirectory                        | Purpose                                 |
+  |-------------------------------------|-----------------------------------------|
+  | `functions/actions/musiclist/`      | Music list interactions                 |
+  | `functions/actions/currentlyPlaying/` | Currently Playing section buttons    |
+  | `functions/actions/preview/`        | Preview section buttons                 |
+  | `functions/actions/queue/`          | Queue section buttons                   |
+  | `functions/actions/options/`        | Options section buttons                 |
+  | `functions/ui/`                     | UI update/state management              |
+  | `functions/core/`                   | Core / lifecycle functions              |
+- Name the file `fn_<functionName>.sqf` matching the name used in the `action` field.
+- Include the standard header comment block at the top (Author, description, Arguments, Return Value, Example).
+- Always return a boolean (`true`/`false`).
+
+### 3. Register the function in `config.cpp`
+- Add a `class <functionName> {};` entry inside the correct `class actions_*` or other category block, with a short inline comment describing the button/purpose.
+
+### 4. Add the IDC to `fn_changeFontSize.sqf`
+- Open `functions/ui/fn_changeFontSize.sqf`.
+- Add the IDC to the appropriate list:
+  - `_listBigButtons` — large standalone buttons (e.g. Close).
+  - `_listTitleLabels` — section header labels.
+  - `_listNormalLabels` — everything else (buttons, value labels, edit fields, listboxes).
+- Append the IDC to the correct group's line, keeping the inline comment up to date.
+- Skip this step only for controls with `idc = -1` (decorative panels/lines).
+
+### 5. Document the control in `doc/DEVELOPMENT_HELP.md`
+- Add a line to the **Dialog and Control ID Reference** section under the correct heading:
+  ```
+  - <idc> → <ClassName> — brief purpose
+  ```

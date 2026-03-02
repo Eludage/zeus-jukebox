@@ -34,6 +34,7 @@ class CfgFunctions
             class onAddonBtn {};                 // Group by Addon button
             class onThemeBtn {};                 // Group by Theme button
             class onMusicClassBtn {};            // Group by Music Class button
+            class onMusicListSettings {};        // Music List Settings button
         };
 
         // ===== UI Actions - Options =====
@@ -85,6 +86,7 @@ class CfgFunctions
             class onQueuePreview {};             // Queue preview button
             class onQueueRemove {};              // Queue remove button
             class onQueueUp {};                  // Move up button
+            class onManageSongList {};           // Manage Song List button
         };
 
         // ===== Core / Initialization =====
