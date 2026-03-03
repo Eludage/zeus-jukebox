@@ -781,6 +781,7 @@ class ZeusJukebox_Dialog
         {
             idc = 15511;
             text = "\ZeusJukebox\icon\gear.paa";
+            style = 48 + 2048; // ST_PICTURE (48) | ST_KEEP_ASPECT_RATIO (2048) – centres the icon without stretching
             x = 0.475 * safezoneW + safezoneX;
             y = 0.29 * safezoneH + safezoneY;
             w = 0.025 * safezoneW;
