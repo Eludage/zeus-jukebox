@@ -27,10 +27,10 @@ if "%PREFIX%"=="" (
 echo Building ZeusJukebox PBO...
 
 if exist "%PRIVATEKEY%" (
-    "%ADDONBUILDER%" "%SOURCE%" "%DEST%" -clear -prefix=%PREFIX% -sign="%PRIVATEKEY%" -temp="%TEMPDIR%" -project="%PROJECTDIR%" -exclude="%EXCLUDELIST%"
+    "%ADDONBUILDER%" "%SOURCE%" "%DEST%" -clear -prefix=%PREFIX% -sign="%PRIVATEKEY%" -include="%~dp0AddonBuilderIncludes.txt" -temp="%TEMPDIR%" -project="%PROJECTDIR%" -exclude="%EXCLUDELIST%"
 ) else (
     echo WARNING: Private key not found, PBO will not be signed.
-    "%ADDONBUILDER%" "%SOURCE%" "%DEST%" -clear -prefix=%PREFIX% -temp="%TEMPDIR%" -project="%PROJECTDIR%" -exclude="%EXCLUDELIST%"
+    "%ADDONBUILDER%" "%SOURCE%" "%DEST%" -clear -prefix=%PREFIX% -include="%~dp0AddonBuilderIncludes.txt" -temp="%TEMPDIR%" -project="%PROJECTDIR%" -exclude="%EXCLUDELIST%"
 )
 
 if %ERRORLEVEL% == 0 (

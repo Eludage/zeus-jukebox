@@ -41,7 +41,7 @@ build.bat
 The script will:
 1. Load all paths from `.env`
 2. Read the PBO prefix from `$PBOPREFIX$`
-3. Run AddonBuilder to pack and sign the PBO
+3. Run AddonBuilder to pack and sign the PBO, using `AddonBuilderIncludes.txt` to determine which file types are copied directly (`.sqf`, `.hpp`, `.cpp`, `.paa`, `.p3d`)
 4. On success: clear the deploy folder and move the new `.pbo` and `.bisign` files into it
 
 ## Dialog and Control ID Reference
