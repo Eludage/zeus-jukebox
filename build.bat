@@ -24,7 +24,7 @@ if "%PREFIX%"=="" (
     echo ERROR: PBO prefix value is empty. Please ensure "%~dp0$PBOPREFIX$" contains a valid prefix.
     exit /b 1
 )
-echo Building ZeusJukebox PBO...
+echo Building %PREFIX% PBO...
 
 if exist "%PRIVATEKEY%" (
     "%ADDONBUILDER%" "%SOURCE%" "%DEST%" -clear -prefix=%PREFIX% -sign="%PRIVATEKEY%" -include="%~dp0AddonBuilderIncludes.txt" -temp="%TEMPDIR%" -project="%PROJECTDIR%" -exclude="%EXCLUDELIST%"
@@ -39,7 +39,7 @@ if %ERRORLEVEL% == 0 (
     echo.
     echo Deploying to local mods...
     del /Q "%DEPLOYDIR%\*.*"
-    move /Y "%EXPORTDIR%\ZeusJukebox.pbo\*.*" "%DEPLOYDIR%\"
+    move /Y "%EXPORTDIR%\%PREFIX%.pbo\*.*" "%DEPLOYDIR%\"
     echo Deploy complete: %DEPLOYDIR%
 ) else (
     echo.
