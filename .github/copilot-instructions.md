@@ -29,6 +29,7 @@ This project is an Arma 3 mod that allows Zeuses to manage and play music during
  ```
 - When assigining colors or sizes, always use makros or defined constants at the beginning of the function.
 - Each namespace and variable used in it must be defined in the DEVELOPMENT.md file.
+- When making edits to the UI, ensure that the changes are reflected in the DEVELOPMENT.md documentation, including any new controls or displays added, that the checklist for new controls is followed, and that all documentation is always up to date.
 
 ## Style & formatting
 - SQF files: use tabs for indentation and keep existing file style.

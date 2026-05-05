@@ -30,7 +30,9 @@ if (_isPlaying) exitWith {
 // Get paused position (0 if not paused)
 private _pausedAt = missionNamespace getVariable ["ZeusJukebox_currentlyPlayingPausedAt", 0];
 
-// Play the track using remote execution (plays for all clients)
-[_currentTrack, _pausedAt] call ZeusJukebox_fnc_remotePlaySong;
+// Resume using the same sound file that was originally played
+private _soundFile = missionNamespace getVariable ["ZeusJukebox_currentlyPlayingSoundFile", ""];
+
+[_currentTrack, _pausedAt, _soundFile] call ZeusJukebox_fnc_remotePlaySong;
 
 true

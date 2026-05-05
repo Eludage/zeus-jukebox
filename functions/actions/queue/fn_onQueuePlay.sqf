@@ -35,8 +35,9 @@ private _queue = missionNamespace getVariable ["ZeusJukebox_queue", []];
 if (_selectedIdx >= count _queue) exitWith { false };
 
 // Get track info from queue
-private _trackInfo = _queue select _selectedIdx;
-_trackInfo params ["_className", "_displayName", "_duration"];
+private _trackEntry = _queue select _selectedIdx;
+_trackEntry params ["_className", "_displayName", "_duration"];
+private _soundFile = if (count _trackEntry > 3) then { _trackEntry select 3 } else { "" };
 
 // Remove from queue
 _queue deleteAt _selectedIdx;
@@ -46,7 +47,7 @@ missionNamespace setVariable ["ZeusJukebox_queue", _queue, true];
 [] call ZeusJukebox_fnc_remoteTriggerUpdateUiQueue;
 
 // Play the song for all clients (this handles all Currently Playing state setup)
-[_className, 0] call ZeusJukebox_fnc_remotePlaySong;
+[_className, 0, _soundFile] call ZeusJukebox_fnc_remotePlaySong;
 
 true
 

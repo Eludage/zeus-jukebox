@@ -23,7 +23,7 @@ Zeus Jukebox is a client-side Arma 3 mod that allows Zeus players to manage and 
 #### `missionNamespace` (Shared State)
 Used for state that must be synchronized across all Zeus users:
 - **Currently Playing**: Track, active status, start time, paused position, duration, looping, fading
-- **Queue**: Array of queued tracks `[className, displayName, duration]`
+- **Queue**: Array of queued tracks `[className, displayName, duration, soundFile]`
 - **Autoplay**: Whether next track should play automatically
 - **Zeus Registry**: List of Zeus players with dialog open
 
@@ -217,15 +217,27 @@ When stopping Currently Playing music, the mod preserves preview playback:
 ```
 
 ### 4. ACE Hearing Compatibility
-The fade button is automatically disabled when ACE Hearing mod is detected:
+The fade button is disabled when ACE Hearing is loaded **and** at least one of its volume-overriding settings is enabled. This is checked every time `updateUiCurrentlyPlaying` runs:
 ```sqf
-private _aceHearingActive = (!isNil "ace_hearing_fnc_updateVolume" || 
-    isClass (configFile >> "CfgPatches" >> "ace_hearing"));
-if (_aceHearingActive) then {
-    _btnFade ctrlEnable false;
-    _btnFade ctrlSetTooltip "Disabled: ACE Hearing overrides music volume";
+private _aceLoaded = isClass (configFile >> "CfgPatches" >> "ace_hearing");
+private _aceDisablesFade = _aceLoaded && {
+    (missionNamespace getVariable ["ace_hearing_enableCombatDeafness", false]) ||
+    (missionNamespace getVariable ["ace_hearing_enableNoiseDucking", false])
 };
 ```
+If both settings are off, or ACE is not loaded, the button is available.
+
+### 5. Fade Countdown and Cancellation
+When a fade is triggered:
+- `ZeusJukebox_isFading` and `ZeusJukebox_fadeStartTime` are broadcast via `missionNamespace`.
+- `updateUiCurrentlyPlaying` computes `5 - (serverTime - _fadeStart)` and shows e.g. `"Fading (3.7s)"` on the button, updated every 0.2 s by the existing progress loop.
+- If Stop, Remove, or Pause is called during a fade, `isFading` and `fadeStartTime` are cleared immediately and `0 fadeMusic 1` is sent to all clients so the next track does not inherit the fading volume envelope.
+- A guard in the 5 s spawn block bails out silently if `isFading` was already cleared by a cancellation.
+
+### 6. Preview / Local Listen Interaction During Fade
+- **Fade code**: skips `fadeMusic` on any client where a preview is currently playing at the moment the fade code executes.
+- **Preview started after fade begins**: `fn_onPreviewPlay` calls `0 fadeMusic 1` locally before `playMusic` so the preview is not pulled through the fading volume ramp.
+- **Unmute locally during fade**: `fn_onPlayingLocallyMutedBtn` calls `0 fadeMusic 1` locally before resuming the currently playing track for the same reason.
 
 ## Error Handling
 
@@ -270,7 +282,7 @@ if (count _queue == 0) exitWith { false };
 
 ### Known Limitations
 1. **Client-side only**: Cannot detect music played from other sources than Zeus Jukebox. Additionally, it does not know whether players have turned their music volume down/off.
-2. **ACE Hearing conflict**: Fade functionality disabled when ACE Hearing is active
+2. **ACE Hearing conflict**: Fade functionality disabled when ACE Hearing is loaded and `enableCombatDeafness` or `enableNoiseDucking` is enabled
 3. **Race conditions**: Multiple Zeuses acting simultaneously may conflict
 4. **No undo**: Actions cannot be reverted (e.g., queue removal)
 

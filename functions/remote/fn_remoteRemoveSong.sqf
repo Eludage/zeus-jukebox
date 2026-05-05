@@ -13,6 +13,14 @@
  */
 disableSerialization;
 
+// If a fade is in progress, cancel it and immediately restore music volume on all clients
+if (missionNamespace getVariable ["ZeusJukebox_isFading", false]) then {
+	missionNamespace setVariable ["ZeusJukebox_isFading", false, true];
+	missionNamespace setVariable ["ZeusJukebox_fadeStartTime", 0, true];
+	{ 0 fadeMusic 1; } remoteExec ["call", 0, false];
+	0 fadeMusic 1;
+};
+
 // remote Execute code block to stop music on each client
 private _remoteCode = compile "private _wasPreviewPlaying = uiNamespace getVariable ['ZeusJukebox_previewPlaying', false]; private _previewTrack = uiNamespace getVariable ['ZeusJukebox_previewTrack', '']; if (_wasPreviewPlaying && _previewTrack != '') then {} else { playMusic ''; };";
 _remoteCode remoteExec ["call", 0, false];

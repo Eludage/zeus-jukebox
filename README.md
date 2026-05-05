@@ -25,7 +25,7 @@ The Beta version (testing new features) is available [here](https://steamcommuni
 ### Currently Playing (Server-wide)
 - **Play for All**: Play music for all players on the server
 - **Play/Stop**: Start or stop playback for everyone
-- **Fade Out (5s)**: Gradually fade out the current track over 5 seconds (not supported when running ACE)
+- **Fade Out (5s)**: Gradually fade out the current track over 5 seconds. The button shows a live countdown while fading and is disabled for all Zeuses until the fade completes. Not available when ACE Hearing's *Enable Combat Deafness* or *Enable Noise Ducking Effect* setting is on.
 - **Remove**: Immediately stop and clear the current track
 - **Mute/Listen for Zeus**: Toggle whether you hear the server-wide music (useful when previewing)
 
@@ -138,7 +138,11 @@ Build the mod using Arma 3 Tools (Addon Builder) or compatible PBO packing tools
 ## Compatibility
 
 ### ACE3 Hearing
-If ACE3 with the Hearing module is loaded, the **"Fade (5s)"** button will be automatically disabled. This is because ACE Hearing constantly updates sound and music volume according to the state of combat deafness, overriding any manual `fadeMusic` values set by scripts. The button will show a tooltip explaining this when hovered.
+The **"Fade (5s)"** button is automatically disabled if ACE3 Hearing is loaded **and** at least one of the following settings is enabled:
+- **Enable Combat Deafness** (`ace_hearing_enableCombatDeafness`)
+- **Enable Noise Ducking Effect** (`ace_hearing_enableNoiseDucking`)
+
+Both settings cause ACE Hearing to continuously override music volume, making `fadeMusic` ineffective. If ACE is not loaded, or both settings are disabled, the fade button remains available. The button shows a tooltip explaining the reason when hovered.
 
 See: https://github.com/acemod/ACE3/issues/4029
 

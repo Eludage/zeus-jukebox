@@ -69,8 +69,11 @@ private _skippedNames = [];
         if !(_trackInfo isEqualTo []) then {
             _trackInfo params ["_config", "_displayName", "_duration", "_soundFile"];
 
-            // Add to queue [className, displayName, duration]
-            _queue pushBack [_className, _displayName, _duration];
+            // Add to queue [className, displayName, duration, soundFile]
+            // soundFile from getTrackConfig may not match the intended source when the
+            // same class name exists in both an addon and the mission, but import-by-class-name
+            // has no way to distinguish — the engine resolves it via playMusic as usual.
+            _queue pushBack [_className, _displayName, _duration, _soundFile];
             _addedCount = _addedCount + 1;
         } else {
             _skippedCount = _skippedCount + 1;

@@ -149,6 +149,50 @@ class ZJ_RscListbox // Base class for listboxes, see https://community.bistudio.
     };
 };
 
+class ZJ_RscIconButton // Base class for picture/icon buttons, see https://community.bistudio.com/wiki/CT_ACTIVETEXT
+{
+    access = 0;
+    type = 11;  // CT_ACTIVETEXT
+    style = 48; // ST_PICTURE
+    idc = -1;
+    text = "";
+    color[] = COLOR_WHITE_100;
+    colorActive[] = COLOR_WHITE_10;
+    colorDisabled[] = COLOR_GREY_40;
+    colorBackground[] = COLOR_BLACK_0;
+    colorBackgroundActive[] = COLOR_WHITE_10;
+    colorBackgroundDisabled[] = COLOR_BLACK_0;
+    colorFocused[] = COLOR_BLACK_0;
+    colorShadow[] = COLOR_BLACK_0;
+    colorBorder[] = COLOR_BLACK_0;
+    x = 0;
+    y = 0;
+    w = 0;
+    h = 0;
+    shadow = 0;
+    font = "RobotoCondensed";
+    sizeEx = 0.03;
+    offsetX = 0;
+    offsetY = 0;
+    offsetPressedX = 0;
+    offsetPressedY = 0;
+    borderSize = 0;
+    animTextureNormal = "#(argb,8,8,3)color(1,1,1,0)";
+    animTextureDisabled = "#(argb,8,8,3)color(1,1,1,0)";
+    animTextureOver = "#(argb,8,8,3)color(1,1,1,0)";
+    animTextureFocus = "#(argb,8,8,3)color(1,1,1,0)";
+    animTexturePressed = "#(argb,8,8,3)color(1,1,1,0)";
+    animTextureDefault = "#(argb,8,8,3)color(1,1,1,0)";
+    period = 0;
+    tooltipColorText[] = COLOR_WHITE_100;
+    tooltipColorBox[] = COLOR_WHITE_100;
+    tooltipColorShade[] = COLOR_BLACK_65;
+    soundEnter[] = {"\A3\ui_f\data\sound\RscButton\soundEnter", 0.09, 1};
+    soundPush[] = {"\A3\ui_f\data\sound\RscButton\soundPush", 0.09, 1};
+    soundClick[] = {"\A3\ui_f\data\sound\RscButton\soundClick", 0.09, 1};
+    soundEscape[] = {"\A3\ui_f\data\sound\RscButton\soundEscape", 0.09, 1};
+};
+
 class ZJ_RscEdit // Base class for edit fields, see https://community.bistudio.com/wiki/CT_EDIT
 {
     access = 0;
@@ -715,7 +759,7 @@ class ZeusJukebox_Dialog
         {
             idc = 15501;
             text = "Search:";
-            x = 0.39 * safezoneW + safezoneX;
+            x = 0.38 * safezoneW + safezoneX;
             y = 0.29 * safezoneH + safezoneY;
             w = 0.03 * safezoneW;
             h = 0.025 * safezoneH;
@@ -725,12 +769,27 @@ class ZeusJukebox_Dialog
         class MusicSearchField: ZJ_RscEdit
         {
             idc = 15502;
-            x = 0.42 * safezoneW + safezoneX;
+            x = 0.41 * safezoneW + safezoneX;
             y = 0.29 * safezoneH + safezoneY;
-            w = 0.08 * safezoneW;
+            w = 0.06 * safezoneW;
             h = 0.025 * safezoneH;
             maxChars = 100;
             onKeyUp = "[] call ZeusJukebox_fnc_onSearchFieldKeyUp;";
+        };
+        // Music list settings
+        class MusicListSettings: ZJ_RscIconButton
+        {
+            idc = 15511;
+            text = "\ZeusJukebox\icon\gear.paa";
+            style = 48 + 2048; // ST_PICTURE (48) | ST_KEEP_ASPECT_RATIO (2048) – centres the icon without stretching
+            x = 0.475 * safezoneW + safezoneX;
+            y = 0.29 * safezoneH + safezoneY;
+            w = 0.025 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onMusicListSettings;";
+            tooltip = "Music List Settings";
+            colorBackground[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_50;
         };
 
         // ============== BOTTOM ROW CONTENT ==============
@@ -1047,6 +1106,22 @@ class ZeusJukebox_Dialog
             colorFocused[] = COLOR_GREY_30;
             colorBackgroundActive[] = COLOR_GREY_40;
         };
+        // Manage Song List Button
+        class ManageSongListBtn: ZJ_RscButton
+        {
+            idc = 15710;
+            text = "Manage Song List";
+            x = 0.78 * safezoneW + safezoneX;
+            y = 0.65 * safezoneH + safezoneY;
+            w = 0.05 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onManageSongList;";
+            tooltip = "Manage Song Lists";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_40;
+        };
+
         // ============== CLOSE BUTTON ==============
         class CloseButton: ZJ_RscButton
         {

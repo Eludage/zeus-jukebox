@@ -28,12 +28,14 @@ if (_created) then {
         private _display = findDisplay 15000;
         if (isNull _display) exitWith {};
 
-        // Check for ACE Hearing - disable Fade button if ACE Hearing is active
-        // ACE Hearing overrides music volume, making fadeMusic ineffective
-        // Check multiple indicators: function exists, or config class exists
-        private _aceHearingActive = (!isNil "ace_hearing_fnc_updateVolume" ||
-            isClass (configFile >> "CfgPatches" >> "ace_hearing"));
-        if (_aceHearingActive) then {
+        // Check for ACE Hearing - disable Fade button if EnableCombatDeafness OR EnableNoiseDucking are enabled
+        // Both settings cause ACE Hearing to override music volume, making fadeMusic ineffective
+        private _aceLoaded = isClass (configFile >> "CfgPatches" >> "ace_hearing");
+        private _aceDisablesFade = _aceLoaded && {
+            (missionNamespace getVariable ["ace_hearing_enableCombatDeafness", false]) ||
+            (missionNamespace getVariable ["ace_hearing_enableNoiseDucking", false])
+        };
+        if (_aceDisablesFade) then {
             private _fadeBtn = _display displayCtrl 15607;
             if (!isNull _fadeBtn) then {
                 _fadeBtn ctrlEnable false;
@@ -187,10 +189,10 @@ if (_created) then {
                     };
                 };
                 
-                // Update track info display for the restored track only if the track still exists
-                if (_trackFound) then {
-                    [_existingPreviewTrack] call ZeusJukebox_fnc_updateUiTrackInfo;
-                };
+                // Update track info display for the restored track
+                // Do this unconditionally - the track may be in a collapsed category
+                // and not visible in the listbox, but its info should still be shown
+                [_existingPreviewTrack] call ZeusJukebox_fnc_updateUiTrackInfo;
             };
         };
 

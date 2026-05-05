@@ -1,11 +1,13 @@
 [h1]Beta-Version of the Zeus Jukebox: Music Management for Zeus[/h1]
 
 This is the [b]Beta-Version[/b] of the Zeus-Jukebox, used for testing new features.
-Please use [url=https://steamcommunity.com/sharedfiles/filedetails/?edit=true&id=3665466082]this mod[/url] if you prefer the stable version.
+Please use [url=https://steamcommunity.com/sharedfiles/filedetails/?edit=true&id=3665466082]this mod[/url] if you prefer the stable version. It is not guaranteed that this Beta version contains all features from the stable version at all times.
 
 [h2]Beta-Features[/h2]
 
-Currenty none.
+[list]
+[*][b]Improved Fade Out[/b] — The Fade button now shows a live countdown (e.g. [i]Fading (3.6s)[/i]) and is disabled for all Zeuses until the fade completes, preventing it from being triggered multiple times. Stopping or removing a track during a fade cancels it immediately and restores the music volume for all clients. The button is only disabled by ACE Hearing when [b]Enable Combat Deafness[/b] or [b]Enable Noise Ducking Effect[/b] is turned on — if both are off, fading works normally even with ACE loaded.
+[/list]
 
 [h2]Issue Tracker/Bug Reports[/h2]
 

@@ -5,18 +5,22 @@
  * Arguments:
  * 0: String - Class name of the track to play
  * 1: Number - Start position in seconds (default: 0)
+ * 2: String - Sound file path to play (default: ""). When provided, playMusic uses this path
+ *             directly instead of resolving the class name through the engine config, allowing
+ *             correct playback when a mod and mission declare the same class name.
  *
  * Return Value:
  * Boolean: true on success, false on failure
  *
  * Example:
- * ["LeadTrack01_F_EPC", 0] call ZeusJukebox_fnc_remotePlaySong;
+ * ["LeadTrack01_F_EPC", 0, "music\track.ogg"] call ZeusJukebox_fnc_remotePlaySong;
  */
 disableSerialization;
 
 params [
 	["_trackClass", "", [""]],
-	["_startPosition", 0, [0]]
+	["_startPosition", 0, [0]],
+	["_soundFile", "", [""]]
 ];
 
 // Validate track class name
@@ -30,18 +34,23 @@ if (count _trackInfo == 0) exitWith {
 	false
 };
 
-_trackInfo params ["_config", "_displayName", "_duration", "_soundFile"];
+_trackInfo params ["_config", "_displayName", "_duration", "_soundFileFromConfig"];
 
 // Set missionNamespace variables
 missionNamespace setVariable ["ZeusJukebox_currentlyPlayingTrack", _trackClass, true];
 missionNamespace setVariable ["ZeusJukebox_currentlyPlayingStartTime", serverTime - _startPosition, true];
 missionNamespace setVariable ["ZeusJukebox_currentlyPlayingDuration", _duration, true];
 missionNamespace setVariable ["ZeusJukebox_currentlyPlayingActive", true, true];
+missionNamespace setVariable ["ZeusJukebox_currentlyPlayingSoundFile", _soundFile, true];
 
-// Escape single quotes in track class to prevent code injection
-private _trackClassEscaped = _trackClass;
-if (_trackClass find "'" >= 0) then {
-	private _chars = toArray _trackClass;
+// Use explicit sound file path when provided; otherwise fall back to class name so the
+// engine resolves the audio normally (e.g. for import-by-class-name or legacy callers).
+private _playTarget = if (_soundFile != "") then { _soundFile } else { _trackClass };
+
+// Escape single quotes in play target to prevent code injection
+private _playTargetEscaped = _playTarget;
+if (_playTarget find "'" >= 0) then {
+	private _chars = toArray _playTarget;
 	private _result = "";
 	{
 		if (_x == 39) then {
@@ -50,11 +59,11 @@ if (_trackClass find "'" >= 0) then {
 			_result = _result + toString [_x];
 		};
 	} forEach _chars;
-	_trackClassEscaped = _result;
+	_playTargetEscaped = _result;
 };
 
 // remote Execute code block to play music on each client
-private _remoteCode = compile format ["private _wasPreviewPlaying = uiNamespace getVariable ['ZeusJukebox_previewPlaying', false]; private _previewTrack = uiNamespace getVariable ['ZeusJukebox_previewTrack', '']; if (_wasPreviewPlaying && _previewTrack != '') then {} else { playMusic ['%1', %2]; };", _trackClassEscaped, _startPosition];
+private _remoteCode = compile format ["private _wasPreviewPlaying = uiNamespace getVariable ['ZeusJukebox_previewPlaying', false]; private _previewTrack = uiNamespace getVariable ['ZeusJukebox_previewTrack', '']; if (_wasPreviewPlaying && _previewTrack != '') then {} else { playMusic ['%1', %2]; };", _playTargetEscaped, _startPosition];
 _remoteCode remoteExec ["call", 0, false];
 
 // Terminate any existing progress loop before spawning new one
@@ -71,7 +80,7 @@ private _handle = [] spawn {
         [] call ZeusJukebox_fnc_handlePlayingMusicProgress;
         sleep 0.2;
     };
-    
+
     // Clear handle when loop ends
     missionNamespace setVariable ["ZeusJukebox_currentlyPlayingUpdateHandle", scriptNull];
 };

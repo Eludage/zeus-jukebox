@@ -26,7 +26,16 @@ if (_isPlaying) exitWith { false }; // Already playing, do nothing
 private _pausedAt = uiNamespace getVariable ["ZeusJukebox_previewPausedAt", 0];
 
 // Play the music locally (only for this client)
-playMusic [_currentPreviewTrack, _pausedAt];
+// If a fade is currently in progress, immediately cancel it locally so the preview
+// doesn't inherit the fading volume ramp and audibly fade out
+if (missionNamespace getVariable ["ZeusJukebox_isFading", false]) then {
+	0 fadeMusic 1;
+};
+// Use explicit sound file path when available so the correct source file plays
+// even when the class name exists in both an addon and the mission config.
+private _previewSoundFile = uiNamespace getVariable ["ZeusJukebox_previewSoundFile", ""];
+private _playTarget = if (_previewSoundFile != "") then { _previewSoundFile } else { _currentPreviewTrack };
+playMusic [_playTarget, _pausedAt];
 
 // Auto-mute Currently Playing for Zeus when previewing
 // (so Zeus doesn't hear both preview and currently playing at once)

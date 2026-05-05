@@ -31,6 +31,11 @@ private _isActive = missionNamespace getVariable ["ZeusJukebox_currentlyPlayingA
 if (_isActive && _currentTrack != "") then {
     private _startTime = missionNamespace getVariable ["ZeusJukebox_currentlyPlayingStartTime", 0];
     private _elapsed = serverTime - _startTime;
+    // If a fade is currently in progress, immediately restore volume locally so the
+    // resumed track doesn't inherit the fading envelope and fade itself out
+    if (missionNamespace getVariable ["ZeusJukebox_isFading", false]) then {
+        0 fadeMusic 1;
+    };
     playMusic [_currentTrack, _elapsed];
 };
 
