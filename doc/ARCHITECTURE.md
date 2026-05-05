@@ -285,6 +285,7 @@ if (count _queue == 0) exitWith { false };
 2. **ACE Hearing conflict**: Fade functionality disabled when ACE Hearing is loaded and `enableCombatDeafness` or `enableNoiseDucking` is enabled
 3. **Race conditions**: Multiple Zeuses acting simultaneously may conflict
 4. **No undo**: Actions cannot be reverted (e.g., queue removal)
+5. **Mission music shadows addon music with the same class name**: If a mission's `description.ext` defines a `CfgMusic` class that also exists in a loaded addon, the addon entry is hidden from the music list. `playMusic` resolves both to the mission version anyway (mission config takes precedence), so only the mission entry is shown. The addon's track is inaccessible for the duration of that mission.
 
 ## Summary
 

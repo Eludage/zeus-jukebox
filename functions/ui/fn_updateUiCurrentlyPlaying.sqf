@@ -64,10 +64,10 @@ if (_currentTrack == "") exitWith {
 // Track exists - hide overlay
 if (!isNull _noSongOverlay) then { _noSongOverlay ctrlShow false; };
 
-// Get track info from config
-private _config = configFile >> "CfgMusic" >> _currentTrack;
+// Get track info from config — mission takes priority, matching playMusic resolution.
+private _config = missionConfigFile >> "CfgMusic" >> _currentTrack;
 if (!isClass _config) then {
-	_config = missionConfigFile >> "CfgMusic" >> _currentTrack;
+	_config = configFile >> "CfgMusic" >> _currentTrack;
 };
 
 private _displayName = _currentTrack;
