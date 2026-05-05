@@ -64,9 +64,16 @@ if (count _groupedTracks == 0 || _forceRebuild) then {
 
     diag_log format ["[ZeusJukebox] Music classes found - Addons: %1, Mission: %2", count _allModMusicClasses, count _missionMusicClasses];
 
-    // Tag each entry with its source. Same class name can appear twice (once from a mod,
-    // once from the mission) — they belong in different categories.
-    private _allEntries = (_allModMusicClasses apply { [_x, false] }) + (_missionMusicClasses apply { [_x, true] });
+    // Build a set of mission class names for O(1) lookup.
+    // When the same class name exists in both an addon and the mission, the mission
+    // version takes precedence for playMusic, so the addon entry is suppressed to
+    // avoid a misleading duplicate that would play the same (mission) audio.
+    private _missionClassSet = createHashMap;
+    { _missionClassSet set [configName _x, true]; } forEach _missionMusicClasses;
+
+    private _allEntries = (
+        (_allModMusicClasses select { !(_missionClassSet getOrDefault [configName _x, false]) }) apply { [_x, false] }
+    ) + (_missionMusicClasses apply { [_x, true] });
 
     // If no tracks found, show a message
     if (count _allEntries == 0) exitWith {
