@@ -94,10 +94,12 @@ This section lists the main dialog ID (IDD) and the control IDCs used in the Juk
     - 15502 → MusicSearchField — search edit field for Available Music
     - 15503 → MusicList — the Available Music listbox (single-click selects/loads preview; double-click adds to queue)
     - 15504 → MusicGroupByLabel — label "Group by:"
-    - 15505 → MusicGroupByAddonBtn — Toggles to grouping by Theme
-    - 15506 → MusicFavoriteBtn — label "*"
+    - 15505 → MusicGroupByAddonBtn — Toggles to grouping by Addon (visible when current mode is not Addon)
+    - 15506 → MusicFavoriteOff — Favorites filter OFF button (visible when filter is inactive)
+    - 15507 → MusicFavoriteOn — Favorites filter ON button (visible when filter is active)
     - 15508 → MusicMarkFavoriteBtn — Mark/Unmark Favorite
-    - 15509 → MusicGroupByThemeBtn — Toggles to grouping by Addon
+    - 15509 → MusicGroupByThemeBtn — Toggles to grouping by Theme (visible when current mode is not Theme)
+    - 15510 → MusicGroupByMusicClassBtn — Toggles to grouping by Music Class (visible when current mode is not Music Class)
     - 15511 → MusicListSettings — Cog-wheel button; will open Music List Settings dialog (placeholder)
   - Currently playing controls
     - 15601 → CurrentlyPlayingTitle — currently playing track title
@@ -145,11 +147,12 @@ This section documents the runtime namespaces and variables used by Zeus Jukebox
 - `ZeusJukebox_currentlyPlayingDuration`: Number — Duration of the currently playing track in seconds.
 - `ZeusJukebox_currentlyPlayingUpdateHandle`: Script Handle — Handle to the currently playing progress update loop. Stored to prevent spawning duplicate loops.
 - `ZeusJukebox_looping`: Boolean — Whether the currently playing track should loop when it finishes.
+- `ZeusJukebox_currentlyPlayingSoundFile`: String — Sound file path (from `CfgMusic >> sound`) of the currently playing track. Stored alongside the class name so looping and resume can replay the exact source file, which matters when the same class name exists in both an addon and the mission config.
 - `ZeusJukebox_isFading`: Boolean — Whether the currently playing track is currently fading out.
 - `ZeusJukebox_fadeStartTime`: Number — `serverTime` at which the fade out started. Used to calculate the remaining fade countdown displayed on the Fade button. Reset to `0` when fading completes.
 
 #### Queue Management
-- `ZeusJukebox_queue`: Array — Array of track info arrays representing queued tracks. Each element is `[className, displayName, duration]`.
+- `ZeusJukebox_queue`: Array — Array of track info arrays representing queued tracks. Each element is `[className, displayName, duration, soundFile]`.
 - `ZeusJukebox_autoplay`: Boolean — Whether autoplay is enabled.
 
 #### Zeus Management
@@ -166,19 +169,17 @@ This section documents the runtime namespaces and variables used by Zeus Jukebox
 - `ZeusJukebox_trackData`: HashMap — Alternative storage for track data during population.
 - `ZeusJukebox_filterFavoritesOnly`: Boolean — Whether to show only favorite tracks in the music list.
 
-#### Currently Playing State
+#### Preview Playback State
+- `ZeusJukebox_previewTrack`: String — Class name of the track currently loaded in the preview area. Empty string when no preview is loaded.
+- `ZeusJukebox_previewSoundFile`: String — Sound file path of the track loaded in preview. Stored alongside the class name so `onPreviewPlay` plays the correct source file when the same class name exists in both an addon and the mission config.
 - `ZeusJukebox_previewPlaying`: Boolean — Whether the preview track is currently playing.
 - `ZeusJukebox_previewStartTime`: Number — Game time when preview playback started. Used to calculate elapsed time and preserve preview position.
 - `ZeusJukebox_previewPausedAt`: Number — Time position where preview was paused (in seconds). Used for resume functionality.
 - `ZeusJukebox_previewDuration`: Number — Duration of the currently previewed track in seconds.
-#### Preview Playback State
-- `ZeusJukebox_previewTrack`: String — Class name of the track currently loaded in the preview area. Empty string when no preview is loaded. 
-- `ZeusJukebox_previewPlaying`: Boolean — Whether the preview track is currently playing. 
-- `ZeusJukebox_previewStartTime`: Number — Game time when preview playback started. Used to calculate elapsed time and preserve preview position. 
-- `ZeusJukebox_previewPausedAt`: Number — Time position where preview was paused (in seconds). Used for resume functionality. 
-- `ZeusJukebox_previewUpdateHandle`: Script Handle — Handle to the preview update loop script. Used to terminate the loop when stopping preview. 
+- `ZeusJukebox_previewUpdateHandle`: Script Handle — Handle to the preview update loop script. Used to terminate the loop when stopping preview.
 
 #### UI State
+- `ZeusJukebox_selectedMusicListTrack`: String — Class name of the track most recently selected in the music list. Set by `onMusicListEntrySelected` and `onQueuePreview` when loading a track into the preview area.
 - `ZeusJukebox_fontSizeLevel`: Number — Current font size level for UI elements. Range: 0-4, where 2 is default size. Maximum available level is limited by `ZeusJukebox_maxFontSizeLevel`.
 - `ZeusJukebox_maxFontSizeLevel`: Number — Maximum font size level allowed based on display aspect ratio. Set once on first dialog open. Value: 4 for ultra-wide (21:9+), 2 for standard (16:9).
 - `ZeusJukebox_selectedQueueTrack`: String — Class name of the currently selected track in the queue listbox. Used to restore selection after queue updates. Empty string when no selection.

@@ -23,7 +23,7 @@ Zeus Jukebox is a client-side Arma 3 mod that allows Zeus players to manage and 
 #### `missionNamespace` (Shared State)
 Used for state that must be synchronized across all Zeus users:
 - **Currently Playing**: Track, active status, start time, paused position, duration, looping, fading
-- **Queue**: Array of queued tracks `[className, displayName, duration]`
+- **Queue**: Array of queued tracks `[className, displayName, duration, soundFile]`
 - **Autoplay**: Whether next track should play automatically
 - **Zeus Registry**: List of Zeus players with dialog open
 
