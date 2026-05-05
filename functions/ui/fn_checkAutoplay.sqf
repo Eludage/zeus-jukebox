@@ -27,12 +27,14 @@ if (_currentTrack != "") exitWith { false };
 private _queue = missionNamespace getVariable ["ZeusJukebox_queue", []];
 if (count _queue == 0) exitWith { false };
 
-// Get next track from queue
-private _nextTrack = [] call ZeusJukebox_fnc_getNextInQueue;
-if (_nextTrack == "") exitWith { false };
+// Get next track from queue (returns full entry array)
+private _nextTrackInfo = [] call ZeusJukebox_fnc_getNextInQueue;
+if (count _nextTrackInfo == 0) exitWith { false };
+
+_nextTrackInfo params ["_className", "_displayName", "_duration"];
+private _soundFile = if (count _nextTrackInfo > 3) then { _nextTrackInfo select 3 } else { "" };
 
 // Play the song for all clients (remotePlaySong handles all state setup)
-[_nextTrack, 0] call ZeusJukebox_fnc_remotePlaySong;
-
+[_className, 0, _soundFile] call ZeusJukebox_fnc_remotePlaySong;
 
 true

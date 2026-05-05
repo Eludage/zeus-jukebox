@@ -16,7 +16,8 @@ params [["_className", "", [""]]];
 
 if (_className == "") exitWith { [] };
 
-// Get track config - check both configFile (addons) and missionConfigFile (mission)
+// Check addon config first; fall back to mission config for mission-only tracks.
+// Source selection for playback is handled by the caller via the soundFile path.
 private _config = configFile >> "CfgMusic" >> _className;
 if (!isClass _config) then {
     _config = missionConfigFile >> "CfgMusic" >> _className;

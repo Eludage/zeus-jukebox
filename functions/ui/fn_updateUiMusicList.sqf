@@ -59,46 +59,44 @@ if (!isNull _btnMusicClass) then { _btnMusicClass ctrlShow (_groupingMode == "mu
 if (count _groupedTracks == 0 || _forceRebuild) then {
     _groupedTracks = createHashMap;
 
-    // Get all music classes from configFile (addons/mods)
-    private _cfgMusic = configFile >> "CfgMusic";
-    private _musicClasses = "true" configClasses _cfgMusic;
+    private _allModMusicClasses = "true" configClasses (configFile >> "CfgMusic");
+    private _missionMusicClasses = "true" configClasses (missionConfigFile >> "CfgMusic");
 
-    // Also get music classes from missionConfigFile (mission description.ext)
-    private _missionCfgMusic = missionConfigFile >> "CfgMusic";
-    private _missionMusicClasses = "true" configClasses _missionCfgMusic;
+    diag_log format ["[ZeusJukebox] Music classes found - Addons: %1, Mission: %2", count _allModMusicClasses, count _missionMusicClasses];
 
-    diag_log format ["[ZeusJukebox] Music classes found - Addons: %1, Mission: %2", count _musicClasses, count _missionMusicClasses];
-
-    // Combine both lists
-    private _allMusicClasses = _musicClasses + _missionMusicClasses;
+    // Tag each entry with its source. Same class name can appear twice (once from a mod,
+    // once from the mission) — they belong in different categories.
+    private _allEntries = (_allModMusicClasses apply { [_x, false] }) + (_missionMusicClasses apply { [_x, true] });
 
     // If no tracks found, show a message
-    if (count _allMusicClasses == 0) exitWith {
+    if (count _allEntries == 0) exitWith {
         _listBox lbAdd "No music tracks found in CfgMusic";
         uiNamespace setVariable ["ZeusJukebox_isPopulating", false];
     };
 
     {
-        private _config = _x;
+        _x params ["_config", "_isMissionMusic"];
         private _className = configName _config;
 
-        // Check if this is from mission config
-        private _isMissionMusic = isClass (missionConfigFile >> "CfgMusic" >> _className);
+        // Get track info before grouping (needed for the file-existence check below)
+        private _displayName = getText (_config >> "name");
+        private _duration = getNumber (_config >> "duration");
+        private _sound = getArray (_config >> "sound");
+        private _soundFile = if (count _sound > 0) then { _sound select 0 } else { "" };
+
+        if (_displayName == "") then { _displayName = _className; };
+        if (_duration == 0) then { _duration = 180; };
 
         private _groupName = "";
-        
+
         if (_isMissionMusic) then {
-            // Mission music always goes to "Mission Music" category
             _groupName = "Mission Music";
         } else {
-            // Group by mode (addon, theme, or musicclass)
             if (_groupingMode == "theme") then {
-                // Group by theme
                 private _theme = getText (_config >> "theme");
                 if (_theme == "") then {
                     _groupName = "No Theme";
                 } else {
-                    // Capitalize first letter of theme safely
                     private _len = count _theme;
                     private _firstChar = _theme select [0, 1];
                     private _rest = if (_len > 1) then { _theme select [1]; } else { "" };
@@ -106,7 +104,6 @@ if (count _groupedTracks == 0 || _forceRebuild) then {
                 };
             } else {
                 if (_groupingMode == "musicclass") then {
-                    // Group by music class display name
                     private _musicClassKey = getText (_config >> "musicClass");
                     if (_musicClassKey == "") then {
                         _groupName = "No Music Class";
@@ -119,7 +116,6 @@ if (count _groupedTracks == 0 || _forceRebuild) then {
                         };
                     };
                 } else {
-                    // Group by addon (default)
                     private _sourceAddons = configSourceAddonList _config;
                     if (count _sourceAddons > 0) then {
                         _groupName = _sourceAddons select 0;
@@ -130,17 +126,6 @@ if (count _groupedTracks == 0 || _forceRebuild) then {
             };
         };
 
-        // Get track info
-        private _displayName = getText (_config >> "name");
-        private _duration = getNumber (_config >> "duration");
-        private _sound = getArray (_config >> "sound");
-        private _soundFile = if (count _sound > 0) then { _sound select 0 } else { "" };
-
-        if (_displayName == "") then {
-            _displayName = _className;
-        };
-
-        // Add to grouped tracks
         private _trackInfo = [_className, _displayName, _duration, _soundFile];
 
         if (_groupName in _groupedTracks) then {
@@ -149,7 +134,7 @@ if (count _groupedTracks == 0 || _forceRebuild) then {
             _groupedTracks set [_groupName, [_trackInfo]];
         };
 
-    } forEach _allMusicClasses;
+    } forEach _allEntries;
 
     // Store grouped tracks
     uiNamespace setVariable ["ZeusJukebox_groupedTracks", _groupedTracks];
@@ -241,7 +226,8 @@ _groupNames sort true;
             private _listEntry = format ["     ► %1 (%2)%3", _displayName, _durationStr, _favIndicator];
 
             private _lbIndex = _listBox lbAdd _listEntry;
-            _listBox lbSetData [_lbIndex, _className];
+            _listBox lbSetData [_lbIndex, _className + "|" + _soundFile];
+            _listBox lbSetValue [_lbIndex, _duration];
             _listBox lbSetColor [_lbIndex, _COLOR_TRACK];  // White color for tracks
 
             // Store track data

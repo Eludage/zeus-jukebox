@@ -46,13 +46,18 @@ if ((_data select [0, 7]) == "HEADER:") then {
     // Skip if empty data (shouldn't happen now but just in case)
     if (_data == "") exitWith {};
 
-    // This is a track - check if it's different from current preview
-    private _className = _data;
+    // Parse className and soundFile from lbData ("className|soundFile")
+    private _dataParts = _data splitString "|";
+    private _className = _dataParts select 0;
+    private _soundFile = if (count _dataParts > 1) then { _dataParts select 1 } else { "" };
+    private _duration = _listBox lbValue _selectedIndex;
+
     private _currentPreviewTrack = uiNamespace getVariable ["ZeusJukebox_previewTrack", ""];
+    private _currentPreviewSoundFile = uiNamespace getVariable ["ZeusJukebox_previewSoundFile", ""];
     private _isPlaying = uiNamespace getVariable ["ZeusJukebox_previewPlaying", false];
 
-    // If a different track is selected, stop current preview and load new one
-    if (_currentPreviewTrack != _className) then {
+    // If a different track (or same class but different sound file) is selected, reload preview
+    if (_currentPreviewTrack != _className || _currentPreviewSoundFile != _soundFile) then {
         if (_isPlaying) then {
             playMusic "";
             // Stop update handle
@@ -63,21 +68,15 @@ if ((_data select [0, 7]) == "HEADER:") then {
             };
         };
 
-        // Load the new song into preview by setting uiNamespace and updating UI
+        // Load the new song into preview
         uiNamespace setVariable ["ZeusJukebox_selectedMusicListTrack", _className];
         uiNamespace setVariable ["ZeusJukebox_previewTrack", _className];
+        uiNamespace setVariable ["ZeusJukebox_previewSoundFile", _soundFile];
         uiNamespace setVariable ["ZeusJukebox_previewPlaying", false];
         uiNamespace setVariable ["ZeusJukebox_previewStartTime", 0];
         uiNamespace setVariable ["ZeusJukebox_previewPausedAt", 0];
-        
-        // Get track info for preview duration
-        private _trackInfo = [_className] call ZeusJukebox_fnc_getTrackConfig;
-        if (_trackInfo isEqualTo []) exitWith {
-            false
-        };
-        _trackInfo params ["", "", "_duration", ""];
         uiNamespace setVariable ["ZeusJukebox_previewDuration", _duration];
-        
+
         // Update Preview area
         [] call ZeusJukebox_fnc_updateUiPreviewArea;
 
@@ -87,7 +86,6 @@ if ((_data select [0, 7]) == "HEADER:") then {
         };
     };
 
-    // Always update Track Info section - even if the same track is already in the preview
-    // (e.g. after reopening the dialog where the info box would otherwise be empty)
-    [_className] call ZeusJukebox_fnc_updateUiTrackInfo;
+    // Always update Track Info section
+    [_className, _soundFile] call ZeusJukebox_fnc_updateUiTrackInfo;
 };

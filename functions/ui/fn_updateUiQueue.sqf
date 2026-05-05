@@ -33,7 +33,7 @@ private _newSelectedIdx = -1;
 
 // Populate queue listbox
 {
-    _x params ["_className", "_displayName", "_duration"];
+    _x params [["_className", "", [""]], ["_displayName", "", [""]], ["_duration", 0, [0]]];
 
     private _durationStr = [_duration] call ZeusJukebox_fnc_formatDuration;
     private _text = format ["%1 (%2)", _displayName, _durationStr];

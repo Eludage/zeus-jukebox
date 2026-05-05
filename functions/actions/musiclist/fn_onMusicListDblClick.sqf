@@ -30,17 +30,20 @@ if (_selectedIndex < 0) exitWith { false };
 private _data = _listBox lbData _selectedIndex;
 if (_data == "" || (_data select [0, 7]) == "HEADER:") exitWith { false };
 
-private _className = _data;
+// Parse className and soundFile from lbData ("className|soundFile")
+private _dataParts = _data splitString "|";
+private _className = _dataParts select 0;
+private _soundFile = if (count _dataParts > 1) then { _dataParts select 1 } else { "" };
+private _duration = _listBox lbValue _selectedIndex;
 
-// Get track info
+// Get display name from config (duration and soundFile already known from listbox)
 private _trackInfo = [_className] call ZeusJukebox_fnc_getTrackConfig;
 if (_trackInfo isEqualTo []) exitWith { false };
-
-_trackInfo params ["_config", "_displayName", "_duration", "_soundFile"];
+_trackInfo params ["", "_displayName", "", ""];
 
 // Add to queue
 private _queue = missionNamespace getVariable ["ZeusJukebox_queue", []];
-_queue pushBack [_className, _displayName, _duration];
+_queue pushBack [_className, _displayName, _duration, _soundFile];
 missionNamespace setVariable ["ZeusJukebox_queue", _queue, true];
 
 // Trigger UI update for all registered Zeuses

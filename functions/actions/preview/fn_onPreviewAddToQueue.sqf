@@ -20,19 +20,22 @@ if (_selectedTrack == "") exitWith {
 	false;
 };
 
-// Get track info using utility function
+// Sound file and duration are stored in uiNamespace when the track was loaded into preview
+private _soundFile = uiNamespace getVariable ["ZeusJukebox_previewSoundFile", ""];
+private _duration = uiNamespace getVariable ["ZeusJukebox_previewDuration", 0];
+
+// Get display name from config
 private _trackInfo = [_selectedTrack] call ZeusJukebox_fnc_getTrackConfig;
 if (_trackInfo isEqualTo []) exitWith {
 	false;
 };
-
-_trackInfo params ["_config", "_displayName", "_duration", "_soundFile"];
+_trackInfo params ["", "_displayName", "", ""];
 
 // Get current queue
 private _queue = missionNamespace getVariable ["ZeusJukebox_queue", []];
 
-// Add track to end of queue [className, displayName, duration]
-_queue pushBack [_selectedTrack, _displayName, _duration];
+// Add track to end of queue [className, displayName, duration, soundFile]
+_queue pushBack [_selectedTrack, _displayName, _duration, _soundFile];
 
 // Store updated queue
 missionNamespace setVariable ["ZeusJukebox_queue", _queue, true];
