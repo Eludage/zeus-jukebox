@@ -790,10 +790,6 @@ class ZeusJukebox_Dialog
             tooltip = "Music List Settings";
             colorBackground[] = COLOR_GREY_30;
             colorBackgroundActive[] = COLOR_GREY_50;
-            // ToDo: remove when implemented
-            ctrlEnable = false;
-            ctrlSetTooltip = "Disabled: Not implemented yet";
-
         };
 
         // ============== BOTTOM ROW CONTENT ==============
@@ -1124,9 +1120,6 @@ class ZeusJukebox_Dialog
             colorBackground[] = COLOR_GREY_30;
             colorFocused[] = COLOR_GREY_30;
             colorBackgroundActive[] = COLOR_GREY_40;
-            // ToDo: remove when implemented
-            ctrlEnable = false;
-            ctrlSetTooltip = "Disabled: Not implemented yet";
         };
 
         // ============== CLOSE BUTTON ==============
