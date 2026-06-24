@@ -118,6 +118,14 @@ if (_created) then {
             uiNamespace setVariable ["ZeusJukebox_maxFontSizeLevel", _maxLevel];
         };
 
+        // Music List Settings overlay starts hidden
+        private _settingsBlocker = _display displayCtrl 15800;
+        private _settingsBackground = _display displayCtrl 15801;
+        private _settingsCloseButton = _display displayCtrl 15802;
+        if (!isNull _settingsBlocker) then { _settingsBlocker ctrlShow false; };
+        if (!isNull _settingsBackground) then { _settingsBackground ctrlShow false; };
+        if (!isNull _settingsCloseButton) then { _settingsCloseButton ctrlShow false; };
+
         // Update Favorites Filter button state
         private _isFavoritesFilter = uiNamespace getVariable ["ZeusJukebox_filterFavoritesOnly", false];
         private _btnFavoritesOff = _display displayCtrl 15506;

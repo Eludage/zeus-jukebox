@@ -53,15 +53,15 @@ Used for state that persists across game sessions:
 - **UI Event Handlers**: Respond to button clicks and user interactions
 - **Delegate to Remote Execution**: Don't manipulate state directly
 - **Pattern**: Get user input → validate → call remote execution function
-- **5 subfolders**: musiclist (9 functions), options (4 functions), currentlyPlaying (8 functions), preview (7 functions), queue (8 functions)
-- **36 total functions** organized by UI section
+- **5 subfolders**: musiclist (11 functions), options (4 functions), currentlyPlaying (8 functions), preview (7 functions), queue (9 functions)
+- **39 total functions** organized by UI section
 
 #### 3. UI Functions (`functions/ui/`)
 - **UI Updates**: Read state from namespace and update controls
 - **Progress Handlers**: Monitor playback progress for preview and currently playing
 - **Clear Functions**: Reset UI areas and state
 - **Business Logic**: Autoplay, queue management, font size
-- **11 functions**: updateUiMusicList, clearPreviewArea, handlePreviewMusicProgress, updateUiPreviewArea, clearCurrentlyPlaying, handlePlayingMusicProgress, updateUiCurrentlyPlaying, updateUiQueue, getNextInQueue, checkAutoplay, changeFontSize
+- **12 functions**: updateUiMusicList, updateUiTrackInfo, clearPreviewArea, handlePreviewMusicProgress, updateUiPreviewArea, clearCurrentlyPlaying, handlePlayingMusicProgress, updateUiCurrentlyPlaying, updateUiQueue, getNextInQueue, checkAutoplay, changeFontSize
 
 #### 4. Remote Execution Functions (`functions/remote/`)
 - **Cross-Client Operations**: Execute code on all clients or specific Zeus clients
@@ -74,8 +74,8 @@ Used for state that persists across game sessions:
 - **1 function**: loadFavorites
 
 #### 6. Utility Functions (`functions/utilities/`)
-- **Helper Functions**: Formatting and configuration retrieval
-- **2 functions**: formatDuration, getTrackConfig
+- **Helper Functions**: Formatting, configuration retrieval, version/migration helpers
+- **4 functions**: formatDuration, getTrackConfig, getModVersion, migrateProfileData
 
 ## Data Flow Patterns
 

@@ -50,7 +50,7 @@ private _listTitleLabelSize = [0.030, 0.035, 0.040, 0.045, 0.050];
 private _listNormalLabelSize = [0.020, 0.025, 0.030, 0.035, 0.040];
 
 // Define control categories
-private _listBigButtons = [15011];
+private _listBigButtons = [15011, 15802];
 private _listTitleLabels = [15101, 15102, 15103, 15104, 15105, 15106];
 private _listNormalLabels = [
 15201, 15202, 15203, 15204, 15205, 15206, 15207, 15208, // Track Info Labels

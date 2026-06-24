@@ -100,7 +100,10 @@ This section lists the main dialog ID (IDD) and the control IDCs used in the Juk
     - 15508 → MusicMarkFavoriteBtn — Mark/Unmark Favorite
     - 15509 → MusicGroupByThemeBtn — Toggles to grouping by Theme (visible when current mode is not Theme)
     - 15510 → MusicGroupByMusicClassBtn — Toggles to grouping by Music Class (visible when current mode is not Music Class)
-    - 15511 → MusicListSettings — Cog-wheel button; will open Music List Settings dialog (placeholder)
+    - 15511 → MusicListSettings — Cog-wheel button; shows the Music List Settings overlay
+    - 15800 → SettingsOverlayBlocker — Full-dialog dim/click-blocker shown behind the overlay so the rest of ZeusJukebox_Dialog can't be interacted with while it's open; clicking it also closes the overlay (click outside to dismiss) via ZeusJukebox_fnc_onMusicListSettingsClose
+    - 15801 → SettingsOverlayBackground — Music List Settings overlay panel, hidden by default, shown over the rest of ZeusJukebox_Dialog by ZeusJukebox_fnc_onMusicListSettings
+    - 15802 → SettingsOverlayCloseButton — Red "X" button, hides the overlay via ZeusJukebox_fnc_onMusicListSettingsClose
   - Currently playing controls
     - 15601 → CurrentlyPlayingTitle — currently playing track title
     - 15602 → CurrentlyPlayingProgressBg — currently playing progress background
@@ -257,25 +260,6 @@ Follow these steps every time a new interactive control (button, edit field, lis
   ```
   - <idc> → <ClassName> — brief purpose
   ```
-## Versioning and Data Migration
-
-This section describes how to handle breaking changes to persistent data stored in .
-
-### Current Version
-The current mod version is retrieved via .
-
-> **IMPORTANT**: Only update the return value in  when there are **breaking changes** to persistent data or the mod's structure.
-
-### Migration Process
-
-1.  **Define the new version**: Update  with the new version number (e.g., ).
-2.  **Implement Migration Logic**: Add a new  block in  to handle the transition from the previous version to the new one.
-    *   The function iterates through migration steps sequentially, ensuring users upgrading from very old versions are brought up to date through all intermediate steps.
-3.  **Execution**: The migration logic is automatically executed in  every time the dialog is opened.
-
-### Data Migration Example
-If you rename a variable or change the structure of an array in , add a transformation step within the appropriate  block in .
-
 ## Versioning and Data Migration
 
 This section describes how to handle breaking changes to persistent data stored in `profileNamespace`.

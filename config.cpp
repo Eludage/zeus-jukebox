@@ -35,6 +35,7 @@ class CfgFunctions
             class onThemeBtn {};                 // Group by Theme button
             class onMusicClassBtn {};            // Group by Music Class button
             class onMusicListSettings {};        // Music List Settings button
+            class onMusicListSettingsClose {};   // Music List Settings overlay close (X) button
         };
 
         // ===== UI Actions - Options =====
@@ -143,6 +144,8 @@ class CfgFunctions
             file = "ZeusJukebox\functions\utilities";
             class formatDuration {};             // Format seconds to MM:SS
             class getTrackConfig {};             // Get track info from CfgMusic
+            class getModVersion {};              // Get current mod version string
+            class migrateProfileData {};         // Migrate profileNamespace data to latest version
         };
     };
 };

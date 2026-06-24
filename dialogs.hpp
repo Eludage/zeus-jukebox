@@ -1137,5 +1137,52 @@ class ZeusJukebox_Dialog
             colorBackgroundActive[] = COLOR_GREY_50;
             sizeEx = 0.05;
         };
+
+        // ============== MUSIC LIST SETTINGS OVERLAY ==============
+        // All three controls are hidden at dialog init (fn_openJukeboxDialog.sqf)
+        // and toggled together by onMusicListSettings / onMusicListSettingsClose.
+        // Declared last so they paint on top of every other control in this dialog.
+
+        // Full-dialog click blocker - dims and intercepts clicks on the rest of the
+        // dialog so it can't be interacted with while the overlay is open. Its hit area
+        // overlaps the close button, so clicking it also closes the overlay (click
+        // outside to dismiss) rather than swallowing the click as a no-op.
+        class SettingsOverlayBlocker: ZJ_RscButton
+        {
+            idc = 15800;
+            text = "";
+            x = 0.15 * safezoneW + safezoneX;
+            y = 0.1 * safezoneH + safezoneY;
+            w = 0.7 * safezoneW;
+            h = 0.8 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onMusicListSettingsClose;";
+            colorBackground[] = COLOR_BLACK_65;
+            colorBackgroundActive[] = COLOR_BLACK_65;
+            colorBackgroundDisabled[] = COLOR_BLACK_65;
+        };
+
+        class SettingsOverlayBackground: ZJ_RscPanel
+        {
+            idc = 15801;
+            x = 0.35 * safezoneW + safezoneX;
+            y = 0.35 * safezoneH + safezoneY;
+            w = 0.3 * safezoneW;
+            h = 0.3 * safezoneH;
+            colorBackground[] = COLOR_GREY_10;
+        };
+
+        // Close Button (Red X)
+        class SettingsOverlayCloseButton: ZJ_RscButton
+        {
+            idc = 15802;
+            text = "X";
+            x = 0.6 * safezoneW + safezoneX;
+            y = 0.35 * safezoneH + safezoneY;
+            w = 0.05 * safezoneW;
+            h = 0.05 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onMusicListSettingsClose;";
+            colorBackground[] = COLOR_RED;
+            colorBackgroundActive[] = COLOR_RED_ACTIVE;
+        };
     };
 };
