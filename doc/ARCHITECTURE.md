@@ -38,7 +38,7 @@ Used for state that is local to each Zeus:
 
 #### `profileNamespace` (Persistent State)
 Used for state that persists across game sessions:
-- **Favorites**: Saved list of favorite tracks
+- **Favorites**: Saved list of favorite tracks (versioned and migrated via `ZeusJukebox_fnc_migrateProfileData`)
 
 ## Function Architecture
 

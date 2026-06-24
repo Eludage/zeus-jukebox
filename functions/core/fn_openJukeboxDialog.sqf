@@ -43,6 +43,9 @@ if (_created) then {
             };
         };
 
+        // Migrate profile data to current version
+        [] call ZeusJukebox_fnc_migrateProfileData;
+
         // Load favorites from profileNamespace
         private _favorites = [] call ZeusJukebox_fnc_loadFavorites;
         uiNamespace setVariable ["ZeusJukebox_favorites", _favorites];

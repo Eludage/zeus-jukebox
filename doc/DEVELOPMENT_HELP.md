@@ -257,3 +257,40 @@ Follow these steps every time a new interactive control (button, edit field, lis
   ```
   - <idc> → <ClassName> — brief purpose
   ```
+## Versioning and Data Migration
+
+This section describes how to handle breaking changes to persistent data stored in .
+
+### Current Version
+The current mod version is retrieved via .
+
+> **IMPORTANT**: Only update the return value in  when there are **breaking changes** to persistent data or the mod's structure.
+
+### Migration Process
+
+1.  **Define the new version**: Update  with the new version number (e.g., ).
+2.  **Implement Migration Logic**: Add a new  block in  to handle the transition from the previous version to the new one.
+    *   The function iterates through migration steps sequentially, ensuring users upgrading from very old versions are brought up to date through all intermediate steps.
+3.  **Execution**: The migration logic is automatically executed in  every time the dialog is opened.
+
+### Data Migration Example
+If you rename a variable or change the structure of an array in , add a transformation step within the appropriate  block in .
+
+## Versioning and Data Migration
+
+This section describes how to handle breaking changes to persistent data stored in `profileNamespace`.
+
+### Current Version
+The current mod version is retrieved via `ZeusJukebox_fnc_getModVersion`.
+
+> **IMPORTANT**: Only update the return value in `functions/utilities/fn_getModVersion.sqf` when there are **breaking changes** to persistent data or the mod's structure.
+
+### Migration Process
+
+1.  **Define the new version**: Update `functions/utilities/fn_getModVersion.sqf` with the new version number (e.g., `"1.1.0"`).
+2.  **Implement Migration Logic**: Add a new `if` block in `functions/utilities/fn_migrateProfileData.sqf` to handle the transition from the previous version to the new one.
+    *   The function iterates through migration steps sequentially, ensuring users upgrading from very old versions are brought up to date through all intermediate steps.
+3.  **Execution**: The migration logic is automatically executed in `functions/core/fn_openJukeboxDialog.sqf` every time the dialog is opened.
+
+### Data Migration Example
+If you rename a variable or change the structure of an array in `profileNamespace`, add a transformation step within the appropriate `if` block in `fn_migrateProfileData.sqf`.
