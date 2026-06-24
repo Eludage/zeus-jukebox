@@ -101,9 +101,6 @@ This section lists the main dialog ID (IDD) and the control IDCs used in the Juk
     - 15509 → MusicGroupByThemeBtn — Toggles to grouping by Theme (visible when current mode is not Theme)
     - 15510 → MusicGroupByMusicClassBtn — Toggles to grouping by Music Class (visible when current mode is not Music Class)
     - 15511 → MusicListSettings — Cog-wheel button; shows the Music List Settings overlay
-    - 15800 → SettingsOverlayBlocker — Full-dialog dim/click-blocker shown behind the overlay so the rest of ZeusJukebox_Dialog can't be interacted with while it's open; clicking it also closes the overlay (click outside to dismiss) via ZeusJukebox_fnc_onMusicListSettingsClose
-    - 15801 → SettingsOverlayBackground — Music List Settings overlay panel, hidden by default, shown over the rest of ZeusJukebox_Dialog by ZeusJukebox_fnc_onMusicListSettings
-    - 15802 → SettingsOverlayCloseButton — Red "X" button, hides the overlay via ZeusJukebox_fnc_onMusicListSettingsClose
   - Currently playing controls
     - 15601 → CurrentlyPlayingTitle — currently playing track title
     - 15602 → CurrentlyPlayingProgressBg — currently playing progress background
@@ -128,6 +125,22 @@ This section lists the main dialog ID (IDD) and the control IDCs used in the Juk
     - 15708 → QueueMoveUpBtn — Move queue item up
     - 15709 → QueueMoveDownBtn — Move queue item down
     - 15710 → ManageSongListBtn — Opens Manage Song List dialog (placeholder)
+  - Music List Settings
+    - 15800 → SettingsOverlayBlocker — Full-dialog dim/click-blocker shown behind the overlay so the rest of ZeusJukebox_Dialog can't be interacted with while it's open; clicking it also closes the overlay (click outside to dismiss) via ZeusJukebox_fnc_onMusicListSettingsClose
+    - 15801 → SettingsOverlayBackground — Music List Settings overlay panel, hidden by default, shown over the rest of ZeusJukebox_Dialog by ZeusJukebox_fnc_onMusicListSettings
+    - 15802 → SettingsOverlayTitle — "Music List Settings" title, top-left corner aligned with the close button
+    - 15803 → SettingsOverlayCloseButton — Red "X" button, hides the overlay via ZeusJukebox_fnc_onMusicListSettingsClose
+    - 15811 → SettingsOverlaySortLabel — "Currently Sorting:" label
+    - 15812 → SettingsSortAlphabeticalBtn — Sort field toggle; visible when `ZeusJukebox_sortMode` is "alphabetical", switches to "time"
+    - 15813 → SettingsSortByTimeBtn — Sort field toggle; visible when `ZeusJukebox_sortMode` is "time", switches to "alphabetical"
+    - 15814 → SettingsSortAscendingBtn — Sort direction toggle; visible when `ZeusJukebox_sortDirection` is "ascending", switches to "descending"
+    - 15815 → SettingsSortDescendingBtn — Sort direction toggle; visible when `ZeusJukebox_sortDirection` is "descending", switches to "ascending"
+    - 15821 → SettingsOverlayHideNoDurationLabel — "Hiding Music with no duration:" label
+    - 15822 → SettingsHideNoDurationYesBtn — Visible when `ZeusJukebox_hideNoDuration` is true, click to stop hiding
+    - 15823 → SettingsHideNoDurationNoBtn — Visible when `ZeusJukebox_hideNoDuration` is false, click to start hiding
+    - 15831 → SettingsOverlayHideBlacklistedLabel — "Hiding blacklisted Music:" label
+    - 15832 → SettingsHideBlacklistedYesBtn — Visible when `ZeusJukebox_hideBlacklisted` is true, click to stop hiding
+    - 15833 → SettingsHideBlacklistedNoBtn — Visible when `ZeusJukebox_hideBlacklisted` is false, click to start hiding  
   - Misc controls
     - 15011   → CloseButton — Close dialog button
 
@@ -190,6 +203,10 @@ This section documents the runtime namespaces and variables used by Zeus Jukebox
 - `ZeusJukebox_isListeningLocally`: Boolean — Whether the Zeus is listening to the currently playing track locally. Can be toggled to mute/unmute for preview purposes.
 - `ZeusJukebox_autoplayPreview`: Boolean — Whether autoplay preview is enabled. When true, any track loaded into the preview area immediately starts playing (and locally mutes the currently playing track if needed). Defaults to false.
 - `ZeusJukebox_lastMissionName`: String — Name of the last mission where the dialog was opened. Used to detect mission changes and trigger music list rebuild to include potential mission music.
+- `ZeusJukebox_sortMode`: String — "alphabetical" or "time". Set by the Music List Settings overlay toggle buttons (15812/15813). Defaults to "alphabetical". Not yet read by `updateUiMusicList`.
+- `ZeusJukebox_sortDirection`: String — "ascending" or "descending". Set by the Music List Settings overlay toggle buttons (15814/15815). Defaults to "ascending". Not yet read by `updateUiMusicList`.
+- `ZeusJukebox_hideNoDuration`: Boolean — Whether to hide tracks with no duration from the Available Music list. Set by the Music List Settings overlay toggle buttons (15822/15823). Defaults to false. Not yet read by `updateUiMusicList`.
+- `ZeusJukebox_hideBlacklisted`: Boolean — Whether to hide blacklisted tracks from the Available Music list. Set by the Music List Settings overlay toggle buttons (15832/15833). Defaults to false. Not yet read by `updateUiMusicList`.
 
 #### Favorites
 - `ZeusJukebox_favorites`: Array — Array of class names marked as favorite tracks. Synchronized with profileNamespace for persistence. 
@@ -223,6 +240,7 @@ Follow these steps every time a new interactive control (button, edit field, lis
   | 155xx   | Music List             |
   | 156xx   | Currently Playing      |
   | 157xx   | Queue                  |
+  | 158xx   | Music List Settings Overlay |
 - Set `idc = -1` only for purely decorative elements that will never be accessed by scripts.
 - Wire the `action` (buttons) or relevant event handler (`onKeyUp`, `onLBSelChanged`, etc.) to the corresponding function: `"[] call ZeusJukebox_fnc_<functionName>;"`.
 - Add a `tooltip` for any button whose purpose is not immediately obvious from its label.
@@ -233,6 +251,7 @@ Follow these steps every time a new interactive control (button, edit field, lis
   | Subdirectory                        | Purpose                                 |
   |-------------------------------------|-----------------------------------------|
   | `functions/actions/musiclist/`      | Music list interactions                 |
+  | `functions/actions/musiclistSettings/` | Music List Settings overlay toggles  |
   | `functions/actions/currentlyPlaying/` | Currently Playing section buttons    |
   | `functions/actions/preview/`        | Preview section buttons                 |
   | `functions/actions/queue/`          | Queue section buttons                   |

@@ -53,8 +53,8 @@ Used for state that persists across game sessions:
 - **UI Event Handlers**: Respond to button clicks and user interactions
 - **Delegate to Remote Execution**: Don't manipulate state directly
 - **Pattern**: Get user input → validate → call remote execution function
-- **5 subfolders**: musiclist (11 functions), options (4 functions), currentlyPlaying (8 functions), preview (7 functions), queue (9 functions)
-- **39 total functions** organized by UI section
+- **6 subfolders**: musiclist (11 functions), musiclistSettings (8 functions), options (4 functions), currentlyPlaying (8 functions), preview (7 functions), queue (9 functions)
+- **47 total functions** organized by UI section
 
 #### 3. UI Functions (`functions/ui/`)
 - **UI Updates**: Read state from namespace and update controls

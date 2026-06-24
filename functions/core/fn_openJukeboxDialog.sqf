@@ -119,12 +119,15 @@ if (_created) then {
         };
 
         // Music List Settings overlay starts hidden
-        private _settingsBlocker = _display displayCtrl 15800;
-        private _settingsBackground = _display displayCtrl 15801;
-        private _settingsCloseButton = _display displayCtrl 15802;
-        if (!isNull _settingsBlocker) then { _settingsBlocker ctrlShow false; };
-        if (!isNull _settingsBackground) then { _settingsBackground ctrlShow false; };
-        if (!isNull _settingsCloseButton) then { _settingsCloseButton ctrlShow false; };
+        {
+            private _ctrl = _display displayCtrl _x;
+            if (!isNull _ctrl) then { _ctrl ctrlShow false; };
+        } forEach [
+            15800, 15801, 15802, 15803,
+            15811, 15812, 15813, 15814, 15815,
+            15821, 15822, 15823,
+            15831, 15832, 15833
+        ];
 
         // Update Favorites Filter button state
         private _isFavoritesFilter = uiNamespace getVariable ["ZeusJukebox_filterFavoritesOnly", false];

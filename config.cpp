@@ -38,6 +38,20 @@ class CfgFunctions
             class onMusicListSettingsClose {};   // Music List Settings overlay close (X) button
         };
 
+        // ===== UI Actions - Music List Settings =====
+        class actions_musiclistSettings
+        {
+            file = "ZeusJukebox\functions\actions\musiclistSettings";
+            class onSettingsSortAlphabeticalBtn {}; // Settings: switch sort to by Time
+            class onSettingsSortByTimeBtn {};       // Settings: switch sort to Alphabetical
+            class onSettingsSortAscendingBtn {};    // Settings: switch sort direction to Descending
+            class onSettingsSortDescendingBtn {};   // Settings: switch sort direction to Ascending
+            class onSettingsHideNoDurationYesBtn {}; // Settings: stop hiding music with no duration
+            class onSettingsHideNoDurationNoBtn {};  // Settings: start hiding music with no duration
+            class onSettingsHideBlacklistedYesBtn {}; // Settings: stop hiding blacklisted music
+            class onSettingsHideBlacklistedNoBtn {};  // Settings: start hiding blacklisted music
+        };
+
         // ===== UI Actions - Options =====
         class actions_options
         {

@@ -1164,22 +1164,184 @@ class ZeusJukebox_Dialog
         class SettingsOverlayBackground: ZJ_RscPanel
         {
             idc = 15801;
-            x = 0.35 * safezoneW + safezoneX;
-            y = 0.35 * safezoneH + safezoneY;
-            w = 0.3 * safezoneW;
-            h = 0.3 * safezoneH;
+            x = 0.26 * safezoneW + safezoneX;
+            y = 0.28 * safezoneH + safezoneY;
+            w = 0.25 * safezoneW;
+            h = 0.14 * safezoneH;
             colorBackground[] = COLOR_GREY_10;
+        };
+
+        // Title Label - top left corner, aligned with the close button
+        class SettingsOverlayTitle: ZJ_RscBoxTitle
+        {
+            idc = 15802;
+            text = "Music List Settings";
+            x = 0.27 * safezoneW + safezoneX;
+            y = 0.29 * safezoneH + safezoneY;
+            w = 0.1 * safezoneW;
+            h = 0.025 * safezoneH;
+        };
+
+        // Currently Sorting By Label
+        class SettingsOverlaySortLabel: ZJ_RscTextLabel
+        {
+            idc = 15811;
+            text = "Currently Sorting:";
+            x = 0.27 * safezoneW + safezoneX;
+            y = 0.33 * safezoneH + safezoneY;
+            w = 0.1 * safezoneW;
+            h = 0.025 * safezoneH;
+        };
+
+        class SettingsSortAlphabeticalBtn: ZJ_RscButton
+        {
+            idc = 15812;
+            text = "Alphabetically";
+            x = 0.38 * safezoneW + safezoneX;
+            y = 0.33 * safezoneH + safezoneY;
+            w = 0.05 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onSettingsSortAlphabeticalBtn;";
+            tooltip = "Switch to sorting by time";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_50;
+        };
+        class SettingsSortByTimeBtn: ZJ_RscButton
+        {
+            idc = 15813;
+            text = "by Time";
+            x = 0.38 * safezoneW + safezoneX;
+            y = 0.33 * safezoneH + safezoneY;
+            w = 0.05 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onSettingsSortByTimeBtn;";
+            tooltip = "Switch to sorting alphabetically";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_50;
+        };
+
+        class SettingsSortAscendingBtn: ZJ_RscButton
+        {
+            idc = 15814;
+            text = "Ascending";
+            x = 0.44 * safezoneW + safezoneX;
+            y = 0.33 * safezoneH + safezoneY;
+            w = 0.05 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onSettingsSortAscendingBtn;";
+            tooltip = "Switch to descending order";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_50;
+        };
+        class SettingsSortDescendingBtn: ZJ_RscButton
+        {
+            idc = 15815;
+            text = "Descending";
+            x = 0.44 * safezoneW + safezoneX;
+            y = 0.33 * safezoneH + safezoneY;
+            w = 0.05 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onSettingsSortDescendingBtn;";
+            tooltip = "Switch to ascending order";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_50;
+        };
+
+        // Hiding Music With No Duration Label
+        class SettingsOverlayHideNoDurationLabel: ZJ_RscTextLabel
+        {
+            idc = 15821;
+            text = "Hiding Music with no duration:";
+            x = 0.27 * safezoneW + safezoneX;
+            y = 0.36 * safezoneH + safezoneY;
+            w = 0.1 * safezoneW;
+            h = 0.025 * safezoneH;
+        };
+
+        // Hide-no-duration toggle (split into two: Yes (15811) and No (15812))
+        class SettingsHideNoDurationYesBtn: ZJ_RscButton
+        {
+            idc = 15822;
+            text = "Yes";
+            x = 0.38 * safezoneW + safezoneX;
+            y = 0.36 * safezoneH + safezoneY;
+            w = 0.05 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onSettingsHideNoDurationYesBtn;";
+            tooltip = "Click to show music with no duration";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_50;
+        };
+        class SettingsHideNoDurationNoBtn: ZJ_RscButton
+        {
+            idc = 15823;
+            text = "No";
+            x = 0.38 * safezoneW + safezoneX;
+            y = 0.36 * safezoneH + safezoneY;
+            w = 0.05 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onSettingsHideNoDurationNoBtn;";
+            tooltip = "Click to hide music with no duration";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_50;
+        };
+
+        // Hiding Blacklisted Music Label
+        class SettingsOverlayHideBlacklistedLabel: ZJ_RscTextLabel
+        {
+            idc = 15831;
+            text = "Hiding blacklisted Music:";
+            x = 0.27 * safezoneW + safezoneX;
+            y = 0.39 * safezoneH + safezoneY;
+            w = 0.1 * safezoneW;
+            h = 0.025 * safezoneH;
+        };
+
+        // Hide-blacklisted toggle (split into two: Yes (15813) and No (15814))
+        class SettingsHideBlacklistedYesBtn: ZJ_RscButton
+        {
+            idc = 15832;
+            text = "Yes";
+            x = 0.38 * safezoneW + safezoneX;
+            y = 0.39 * safezoneH + safezoneY;
+            w = 0.05 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onSettingsHideBlacklistedYesBtn;";
+            tooltip = "Click to show blacklisted music";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_50;
+        };
+        class SettingsHideBlacklistedNoBtn: ZJ_RscButton
+        {
+            idc = 15833;
+            text = "No";
+            x = 0.38 * safezoneW + safezoneX;
+            y = 0.39 * safezoneH + safezoneY;
+            w = 0.05 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onSettingsHideBlacklistedNoBtn;";
+            tooltip = "Click to hide blacklisted music";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_50;
         };
 
         // Close Button (Red X)
         class SettingsOverlayCloseButton: ZJ_RscButton
         {
-            idc = 15802;
+            idc = 15803;
             text = "X";
-            x = 0.6 * safezoneW + safezoneX;
-            y = 0.35 * safezoneH + safezoneY;
-            w = 0.05 * safezoneW;
-            h = 0.05 * safezoneH;
+            x = 0.475 * safezoneW + safezoneX;
+            y = 0.29 * safezoneH + safezoneY;
+            w = 0.025 * safezoneW;
+            h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onMusicListSettingsClose;";
             colorBackground[] = COLOR_RED;
             colorBackgroundActive[] = COLOR_RED_ACTIVE;

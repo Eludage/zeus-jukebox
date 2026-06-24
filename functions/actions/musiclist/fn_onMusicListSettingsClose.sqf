@@ -17,13 +17,15 @@ disableSerialization;
 private _display = findDisplay 15000;
 if (isNull _display) exitWith { false };
 
-private _blocker = _display displayCtrl 15800;
-private _background = _display displayCtrl 15801;
-private _closeButton = _display displayCtrl 15802;
-if (isNull _blocker || isNull _background || isNull _closeButton) exitWith { false };
-
-_blocker ctrlShow false;
-_background ctrlShow false;
-_closeButton ctrlShow false;
+private _overlayIdcs = [
+    15800, 15801, 15802, 15803,
+    15811, 15812, 15813, 15814, 15815,
+    15821, 15822, 15823,
+    15831, 15832, 15833
+];
+{
+    private _ctrl = _display displayCtrl _x;
+    if (!isNull _ctrl) then { _ctrl ctrlShow false; };
+} forEach _overlayIdcs;
 
 true

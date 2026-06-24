@@ -50,15 +50,18 @@ private _listTitleLabelSize = [0.030, 0.035, 0.040, 0.045, 0.050];
 private _listNormalLabelSize = [0.020, 0.025, 0.030, 0.035, 0.040];
 
 // Define control categories
-private _listBigButtons = [15011, 15802];
-private _listTitleLabels = [15101, 15102, 15103, 15104, 15105, 15106];
+private _listBigButtons = [15011, 15803];
+private _listTitleLabels = [15101, 15102, 15103, 15104, 15105, 15106, 15802];
 private _listNormalLabels = [
 15201, 15202, 15203, 15204, 15205, 15206, 15207, 15208, // Track Info Labels
 15301, 15305, 15306, 15307, 15308, 15309, 15310, 15311, 15312, 15313, // Preview Labels
 15401, 15402, 15403, 15404, 15405, 15406, // Options Labels
 15501, 15502, 15503, 15504, 15505, 15506, 15507, 15508, 15509, 15510,  // Music List (15511 is a picture button, no font)
 15601, 15604, 15605, 15606, 15607, 15608, 15609, 15610, 15611, 15612, 15613, // Currently Playing Labels
-15701, 15702, 15703, 15704, 15705, 15706, 15707, 15708, 15709, 15710 // Queue Labels
+15701, 15702, 15703, 15704, 15705, 15706, 15707, 15708, 15709, 15710, // Queue Labels
+15811, 15812, 15813, 15814, 15815, // Music List Settings Overlay - Sort row
+15821, 15822, 15823, // Music List Settings Overlay - Hide No Duration row
+15831, 15832, 15833 // Music List Settings Overlay - Hide Blacklisted row
 ];
 
 // Get sizes for current level

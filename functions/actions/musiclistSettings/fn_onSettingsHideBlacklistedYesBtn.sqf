@@ -1,0 +1,27 @@
+/*
+ * Author: Eludage
+ * Handles the "Hiding blacklisted Music: Yes" button click to stop hiding them.
+ *
+ * Arguments:
+ * None
+ *
+ * Return Value:
+ * Boolean: true on success, false on failure
+ *
+ * Example:
+ * [] call ZeusJukebox_fnc_onSettingsHideBlacklistedYesBtn;
+ */
+
+disableSerialization;
+
+private _display = findDisplay 15000;
+if (isNull _display) exitWith { false };
+
+uiNamespace setVariable ["ZeusJukebox_hideBlacklisted", false];
+
+private _btnYes = _display displayCtrl 15832;
+private _btnNo = _display displayCtrl 15833;
+if (!isNull _btnYes) then { _btnYes ctrlShow false; };
+if (!isNull _btnNo) then { _btnNo ctrlShow true; };
+
+true
