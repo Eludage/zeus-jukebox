@@ -108,6 +108,9 @@ if (_created) then {
             uiNamespace setVariable ["ZeusJukebox_isListeningLocally", true];
         };
 
+        // Music List Settings overlay starts closed
+        uiNamespace setVariable ["ZeusJukebox_settingsOverlayOpen", false];
+
         // Detect display aspect ratio and set maximum font size level
         if (isNil {uiNamespace getVariable "ZeusJukebox_maxFontSizeLevel"}) then {
             private _resolution = getResolution;
@@ -123,7 +126,7 @@ if (_created) then {
             private _ctrl = _display displayCtrl _x;
             if (!isNull _ctrl) then { _ctrl ctrlShow false; };
         } forEach [
-            15800, 15801, 15802, 15803,
+            15800, 15801, 15802, 15803, 15804,
             15811, 15812, 15813, 15814, 15815,
             15821, 15822, 15823,
             15831, 15832, 15833

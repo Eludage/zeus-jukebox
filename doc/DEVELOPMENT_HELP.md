@@ -114,6 +114,7 @@ This section lists the main dialog ID (IDD) and the control IDCs used in the Juk
     - 15610 → CurrentlyPlayingListenOn — "Locally playing" button (visible when Zeus is listening locally)
     - 15611 → CurrentlyPlayingLoopOff — looping off button (visible when looping is disabled)
     - 15612 → CurrentlyPlayingLoopOn — looping on button (visible when looping is enabled)
+    - 15613 → CurrentlyPlayingNoSongText — "No song selected" placeholder panel covering the entire Currently Playing box, shown when no track is loaded
   - Queue controls
     - 15701 → AutoplayLabel — label "Autoplay"
     - 15702 → AutoplayOff — Autoplay OFF button (visible when autoplay is off)
@@ -126,10 +127,11 @@ This section lists the main dialog ID (IDD) and the control IDCs used in the Juk
     - 15709 → QueueMoveDownBtn — Move queue item down
     - 15710 → ManageSongListBtn — Opens Manage Song List dialog (placeholder)
   - Music List Settings
-    - 15800 → SettingsOverlayBlocker — Full-dialog dim/click-blocker shown behind the overlay so the rest of ZeusJukebox_Dialog can't be interacted with while it's open; clicking it also closes the overlay (click outside to dismiss) via ZeusJukebox_fnc_onMusicListSettingsClose
+    - 15800 → SettingsOverlayDim — Decorative dim panel covering the full dialog area while the overlay is open (ZJ_RscPanel, CT_STATIC, never captures clicks); no text, intentionally excluded from fn_changeFontSize.sqf
     - 15801 → SettingsOverlayBackground — Music List Settings overlay panel, hidden by default, shown over the rest of ZeusJukebox_Dialog by ZeusJukebox_fnc_onMusicListSettings
     - 15802 → SettingsOverlayTitle — "Music List Settings" title, top-left corner aligned with the close button
     - 15803 → SettingsOverlayCloseButton — Red "X" button, hides the overlay via ZeusJukebox_fnc_onMusicListSettingsClose
+    - 15804 → SettingsOverlayBorder — White ST_FRAME outline drawn around SettingsOverlayBackground; no text, so intentionally excluded from fn_changeFontSize.sqf
     - 15811 → SettingsOverlaySortLabel — "Currently Sorting:" label
     - 15812 → SettingsSortAlphabeticalBtn — Sort field toggle; visible when `ZeusJukebox_sortMode` is "alphabetical", switches to "time"
     - 15813 → SettingsSortByTimeBtn — Sort field toggle; visible when `ZeusJukebox_sortMode` is "time", switches to "alphabetical"
@@ -141,6 +143,23 @@ This section lists the main dialog ID (IDD) and the control IDCs used in the Juk
     - 15831 → SettingsOverlayHideBlacklistedLabel — "Hiding blacklisted Music:" label
     - 15832 → SettingsHideBlacklistedYesBtn — Visible when `ZeusJukebox_hideBlacklisted` is true, click to stop hiding
     - 15833 → SettingsHideBlacklistedNoBtn — Visible when `ZeusJukebox_hideBlacklisted` is false, click to start hiding  
+  - Music List Settings — interaction blocking mechanism
+    - The dim panel (15800) is purely visual and cannot intercept clicks. The rest
+      of the dialog is made non-interactive while the overlay is open by explicitly
+      ctrlEnable false-ing every real interactive control in ZeusJukebox_Dialog
+      (everything outside the 158xx range, including the gear button 15511 itself),
+      done in ZeusJukebox_fnc_onMusicListSettings. ZeusJukebox_fnc_onMusicListSettingsClose
+      mirrors this with ctrlEnable true (then re-runs fn_changeFontSize/
+      fn_updateUiCurrentlyPlaying/fn_updateUiQueue to restore their namespace-driven
+      conditional enable states). The only way to close the overlay is the red X
+      button (15803) — clicking outside the panel no longer dismisses it.
+    - fn_updateUiCurrentlyPlaying and fn_updateUiQueue can also be re-invoked while
+      the overlay is open by code that has nothing to do with it (the 0.2s
+      playback-progress loop in fn_openJukeboxDialog.sqf, or a remote trigger fired
+      when another Zeus client changes playback/queue state) and would otherwise
+      silently re-enable the buttons the overlay just disabled. Both functions check
+      the ZeusJukebox_settingsOverlayOpen uiNamespace flag and skip re-enabling while
+      it's true, so those externally-triggered refreshes can't undo the block.
   - Misc controls
     - 15011   → CloseButton — Close dialog button
 
@@ -207,6 +226,7 @@ This section documents the runtime namespaces and variables used by Zeus Jukebox
 - `ZeusJukebox_sortDirection`: String — "ascending" or "descending". Set by the Music List Settings overlay toggle buttons (15814/15815). Defaults to "ascending". Not yet read by `updateUiMusicList`.
 - `ZeusJukebox_hideNoDuration`: Boolean — Whether to hide tracks with no duration from the Available Music list. Set by the Music List Settings overlay toggle buttons (15822/15823). Defaults to false. Not yet read by `updateUiMusicList`.
 - `ZeusJukebox_hideBlacklisted`: Boolean — Whether to hide blacklisted tracks from the Available Music list. Set by the Music List Settings overlay toggle buttons (15832/15833). Defaults to false. Not yet read by `updateUiMusicList`.
+- `ZeusJukebox_settingsOverlayOpen`: Boolean — Whether the Music List Settings overlay is currently open. Set by `onMusicListSettings`/`onMusicListSettingsClose`. Read by `updateUiCurrentlyPlaying` and `updateUiQueue` so externally-triggered refreshes (the playback-progress loop, other Zeus clients' remote triggers) can't re-enable buttons the overlay disabled. Defaults to false.
 
 #### Favorites
 - `ZeusJukebox_favorites`: Array — Array of class names marked as favorite tracks. Synchronized with profileNamespace for persistence. 

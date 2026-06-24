@@ -1139,26 +1139,24 @@ class ZeusJukebox_Dialog
         };
 
         // ============== MUSIC LIST SETTINGS OVERLAY ==============
-        // All three controls are hidden at dialog init (fn_openJukeboxDialog.sqf)
+        // All controls below are hidden at dialog init (fn_openJukeboxDialog.sqf)
         // and toggled together by onMusicListSettings / onMusicListSettingsClose.
         // Declared last so they paint on top of every other control in this dialog.
 
-        // Full-dialog click blocker - dims and intercepts clicks on the rest of the
-        // dialog so it can't be interacted with while the overlay is open. Its hit area
-        // overlaps the close button, so clicking it also closes the overlay (click
-        // outside to dismiss) rather than swallowing the click as a no-op.
-        class SettingsOverlayBlocker: ZJ_RscButton
+        // Dim layer - purely decorative background dimming for the rest of the
+        // dialog while the overlay is open. This is a plain CT_STATIC panel (never
+        // captures clicks, so it cannot suffer from Arma's click-priority bug where
+        // earlier-declared controls win hit-testing over later-declared ones).
+        // Actual interaction blocking is done by disabling every other interactive
+        // control via ctrlEnable in onMusicListSettings.sqf / onMusicListSettingsClose.sqf.
+        class SettingsOverlayDim: ZJ_RscPanel
         {
             idc = 15800;
-            text = "";
             x = 0.15 * safezoneW + safezoneX;
             y = 0.1 * safezoneH + safezoneY;
             w = 0.7 * safezoneW;
             h = 0.8 * safezoneH;
-            action = "[] call ZeusJukebox_fnc_onMusicListSettingsClose;";
             colorBackground[] = COLOR_BLACK_65;
-            colorBackgroundActive[] = COLOR_BLACK_65;
-            colorBackgroundDisabled[] = COLOR_BLACK_65;
         };
 
         class SettingsOverlayBackground: ZJ_RscPanel
@@ -1167,8 +1165,20 @@ class ZeusJukebox_Dialog
             x = 0.26 * safezoneW + safezoneX;
             y = 0.28 * safezoneH + safezoneY;
             w = 0.25 * safezoneW;
-            h = 0.14 * safezoneH;
+            h = 0.15 * safezoneH;
             colorBackground[] = COLOR_GREY_10;
+        };
+
+        // White border around the overlay panel.
+        // Using colorText (white, inherited from ZJ_RscStatic) with a transparent fill.
+        class SettingsOverlayBorder: ZJ_RscStatic
+        {
+            idc = 15804;
+            style = 64; // ST_FRAME
+            x = 0.26 * safezoneW + safezoneX;
+            y = 0.28 * safezoneH + safezoneY;
+            w = 0.25 * safezoneW;
+            h = 0.15 * safezoneH;
         };
 
         // Title Label - top left corner, aligned with the close button
