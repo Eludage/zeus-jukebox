@@ -45,6 +45,7 @@ class CfgFunctions
             class onTrackHistoryOpen {};         // Track History button (open overlay)
             class onTrackHistoryClose {};        // Track History overlay close (X) button
             class onClearTrackHistoryBtn {};     // Clear History button
+            class onTrackHistoryDblClick {};     // Double-click a history entry to re-add it to the queue
         };
 
         // ===== UI Actions - Music List Settings =====

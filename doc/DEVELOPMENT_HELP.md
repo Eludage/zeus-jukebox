@@ -170,7 +170,7 @@ This section lists the main dialog ID (IDD) and the control IDCs used in the Juk
     - 15902 → HistoryOverlayTitle — "Track History" title, top-left corner aligned with the close button
     - 15903 → HistoryOverlayCloseButton — Red "X" button, hides the overlay via ZeusJukebox_fnc_onTrackHistoryClose
     - 15904 → HistoryOverlayBorder — White ST_FRAME outline drawn around HistoryOverlayBackground; no text, so intentionally excluded from fn_changeFontSize.sqf
-    - 15905 → HistoryList — Listbox of previously played tracks, newest first, populated by ZeusJukebox_fnc_updateUiHistory from `ZeusJukebox_trackHistory`
+    - 15905 → HistoryList — Listbox of previously played tracks, newest first, populated by ZeusJukebox_fnc_updateUiHistory from `ZeusJukebox_trackHistory`; double-click adds the track back to the queue via ZeusJukebox_fnc_onTrackHistoryDblClick (keeps the exact soundFile from the history entry rather than re-resolving it, to avoid mission/addon classname-shadowing ambiguity)
     - 15906 → HistoryClearBtn — Clears `ZeusJukebox_trackHistory` for all Zeus clients via ZeusJukebox_fnc_onClearTrackHistoryBtn
   - Track History — interaction blocking mechanism
     - Mirrors the Music List Settings mechanism above exactly: the dim panel (15900)

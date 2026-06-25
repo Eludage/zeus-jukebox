@@ -1445,6 +1445,7 @@ class ZeusJukebox_Dialog
             y = 0.225 * safezoneH + safezoneY;
             w = 0.32 * safezoneW;
             h = 0.40 * safezoneH;
+            onLBDblClick = "[] call ZeusJukebox_fnc_onTrackHistoryDblClick;";
         };
 
         // Clear History Button
