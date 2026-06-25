@@ -223,3 +223,6 @@ class CfgVehicles
 
 // Include dialog definitions from external file
 #include "dialogs.hpp"
+
+// Include blacklisted track classname+soundFile entries from external file
+#include "blacklist.hpp"

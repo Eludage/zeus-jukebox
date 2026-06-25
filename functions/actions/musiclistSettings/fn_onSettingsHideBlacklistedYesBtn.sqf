@@ -24,4 +24,6 @@ private _btnNo = _display displayCtrl 15833;
 if (!isNull _btnYes) then { _btnYes ctrlShow false; };
 if (!isNull _btnNo) then { _btnNo ctrlShow true; };
 
+[] call ZeusJukebox_fnc_updateUiMusicList;
+
 true

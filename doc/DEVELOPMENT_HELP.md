@@ -225,7 +225,7 @@ This section documents the runtime namespaces and variables used by Zeus Jukebox
 - `ZeusJukebox_sortMode`: String — "alphabetical" or "time". Set by the Music List Settings overlay toggle buttons (15812/15813). Defaults to "alphabetical". Read by `updateUiMusicList`, which sorts the tracks within each category by display name or duration accordingly; the toggle buttons call `updateUiMusicList` after changing it.
 - `ZeusJukebox_sortDirection`: String — "ascending" or "descending". Set by the Music List Settings overlay toggle buttons (15814/15815). Defaults to "ascending". Read by `updateUiMusicList`, which sorts the tracks within each category ascending or descending accordingly; the toggle buttons call `updateUiMusicList` after changing it.
 - `ZeusJukebox_hideNoDuration`: Boolean — Whether to hide tracks with no duration from the Available Music list. Set by the Music List Settings overlay toggle buttons (15822/15823). Defaults to false. Read by `updateUiMusicList`, which filters out tracks whose `CfgMusic` entry has no `duration` set; the toggle buttons call `updateUiMusicList` after changing it.
-- `ZeusJukebox_hideBlacklisted`: Boolean — Whether to hide blacklisted tracks from the Available Music list. Set by the Music List Settings overlay toggle buttons (15832/15833). Defaults to false. Not yet read by `updateUiMusicList`.
+- `ZeusJukebox_hideBlacklisted`: Boolean — Whether to hide blacklisted tracks from the Available Music list. Set by the Music List Settings overlay toggle buttons (15832/15833). Defaults to false. Read by `updateUiMusicList`, which filters out tracks whose classname appears in `ZeusJukebox_Blacklist >> classNames` (see `blacklist.hpp`); the toggle buttons call `updateUiMusicList` after changing it.
 - `ZeusJukebox_settingsOverlayOpen`: Boolean — Whether the Music List Settings overlay is currently open. Set by `onMusicListSettings`/`onMusicListSettingsClose`. Read by `updateUiCurrentlyPlaying` and `updateUiQueue` so externally-triggered refreshes (the playback-progress loop, other Zeus clients' remote triggers) can't re-enable buttons the overlay disabled. Defaults to false.
 
 #### Favorites
@@ -233,6 +233,9 @@ This section documents the runtime namespaces and variables used by Zeus Jukebox
 
 ### Namespace `profileNamespace`
 - `ZeusJukebox_favorites`: Array — Array of class names marked as favorite tracks. Persisted across game sessions. Loaded into uiNamespace on dialog open.
+
+### Static config data (not a namespace variable)
+- `ZeusJukebox_Blacklist >> entries[]` (defined in `blacklist.hpp`, `#include`d from `config.cpp`): Array of `"<className>|<soundFile>"` strings identifying `CfgMusic` tracks with known-bad metadata (wrong name/duration) from mods whose authors won't fix them upstream. Matched on both classname and sound file path (not classname alone) so a classname collision with an unrelated, correctly-tagged track from a different mod isn't hidden by mistake — same `"|"` delimiter convention `updateUiMusicList` already uses for the music listbox's `lbSetData`. Read by `updateUiMusicList` via `getArray (configFile >> "ZeusJukebox_Blacklist" >> "entries")` and filtered out when `ZeusJukebox_hideBlacklisted` is true. To blacklist a new track, add an `"className|soundFile"` entry to the array in `blacklist.hpp` and rebuild - there's no in-game way to edit this list.
 
 ## Notes
 - **missionNamespace** is used for state shared across all Zeus users (currently playing, queue, autoplay, looping).

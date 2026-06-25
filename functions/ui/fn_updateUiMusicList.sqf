@@ -176,6 +176,10 @@ private _favorites = uiNamespace getVariable ["ZeusJukebox_favorites", []];
 // Check if hiding tracks with no duration is active
 private _hideNoDuration = uiNamespace getVariable ["ZeusJukebox_hideNoDuration", false];
 
+// Check if hiding blacklisted tracks is active
+private _hideBlacklisted = uiNamespace getVariable ["ZeusJukebox_hideBlacklisted", false];
+private _blacklistedEntries = getArray (configFile >> "ZeusJukebox_Blacklist" >> "entries");
+
 // Get track sort preferences (set via the Music List Settings overlay)
 private _sortByTime = (uiNamespace getVariable ["ZeusJukebox_sortMode", "alphabetical"]) == "time";
 private _sortAscending = (uiNamespace getVariable ["ZeusJukebox_sortDirection", "ascending"]) == "ascending";
@@ -219,6 +223,16 @@ _groupNames sort true;
         };
     };
 
+    // Further filter out blacklisted tracks (bad metadata from upstream mods), if active.
+    // Matched on className + soundFile together so a classname collision with an
+    // unrelated, correctly-tagged track from a different mod isn't hidden by mistake.
+    if (_hideBlacklisted) then {
+        _filteredTracks = _filteredTracks select {
+            _x params ["_className", "_displayName", "_duration", "_soundFile"];
+            (_blacklistedEntries find (_className + "|" + _soundFile)) == -1
+        };
+    };
+
     // Sort tracks within this category according to the stored sort preferences.
     // Pair each track with its sort key so vanilla `sort` can order them - className
     // is carried along as a deterministic tiebreak when keys are equal.
@@ -232,7 +246,7 @@ _groupNames sort true;
     private _trackCount = count _filteredTracks;
 
     // Skip categories with no matching tracks when searching or filtering favorites
-    if ((_searchText != "" || _favoritesOnly || _hideNoDuration) && _trackCount == 0) then {
+    if ((_searchText != "" || _favoritesOnly || _hideNoDuration || _hideBlacklisted) && _trackCount == 0) then {
         continue;
     };
 
