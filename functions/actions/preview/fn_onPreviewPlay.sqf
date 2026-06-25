@@ -31,11 +31,9 @@ private _pausedAt = uiNamespace getVariable ["ZeusJukebox_previewPausedAt", 0];
 if (missionNamespace getVariable ["ZeusJukebox_isFading", false]) then {
 	0 fadeMusic 1;
 };
-// Use explicit sound file path when available so the correct source file plays
-// even when the class name exists in both an addon and the mission config.
-private _previewSoundFile = uiNamespace getVariable ["ZeusJukebox_previewSoundFile", ""];
-private _playTarget = if (_previewSoundFile != "") then { _previewSoundFile } else { _currentPreviewTrack };
-playMusic [_playTarget, _pausedAt];
+// Use the class name for playMusic — the [filePath, offset] form does not produce audio.
+// The sound file path stored in uiNamespace is kept for queue/track-info use.
+playMusic [_currentPreviewTrack, _pausedAt];
 
 // Auto-mute Currently Playing for Zeus when previewing
 // (so Zeus doesn't hear both preview and currently playing at once)
@@ -58,13 +56,16 @@ uiNamespace setVariable ["ZeusJukebox_previewPlaying", true];
 [] call ZeusJukebox_fnc_updateUiPreviewArea;
 
 // Start progress update loop
-[] spawn {
+private _handle = [] spawn {
     disableSerialization;
 
     while {uiNamespace getVariable ["ZeusJukebox_previewPlaying", false]} do {
         [] call ZeusJukebox_fnc_handlePreviewMusicProgress;
         sleep 0.1;
     };
+
+    uiNamespace setVariable ["ZeusJukebox_previewUpdateHandle", scriptNull];
 };
+uiNamespace setVariable ["ZeusJukebox_previewUpdateHandle", _handle];
 
 true

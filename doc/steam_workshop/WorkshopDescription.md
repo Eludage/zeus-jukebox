@@ -45,6 +45,7 @@ The Beta Version is available [url=https://steamcommunity.com/sharedfiles/filede
 [*]When using [b]ACE[/b], fading out music is disabled if [b]Enable Combat Deafness[/b] or [b]Enable Noise Ducking Effect[/b] is turned on, as those settings cause ACE to continuously override music volume. If both are disabled, fading works normally.
 [*]If music is played from another source than the Zeus Jukebox, it does not get detected as currently playing.
 [*][b]Music without duration:[/b] If a music track has no duration declared in its config, it will show [b]0:00[/b] in the music list and will be defaulted to 3 minutes (180 seconds) when played. This can lead to music continuing to play silently after the actual track ends, or tracks being cut off early if they are longer than 3 minutes.
+[*][b]Mission music shadows addon music with the same class name[/b]: If a mission's `description.ext` defines a `CfgMusic` class that also exists in a loaded addon, the addon entry is hidden from the music list. `playMusic` resolves both to the mission version anyway (mission config takes precedence), so only the mission entry is shown. The addon's track is inaccessible for the duration of that mission.
 [/list]
 
 Other than that, there are currently no known issues.

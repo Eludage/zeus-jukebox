@@ -43,27 +43,10 @@ missionNamespace setVariable ["ZeusJukebox_currentlyPlayingDuration", _duration,
 missionNamespace setVariable ["ZeusJukebox_currentlyPlayingActive", true, true];
 missionNamespace setVariable ["ZeusJukebox_currentlyPlayingSoundFile", _soundFile, true];
 
-// Use explicit sound file path when provided; otherwise fall back to class name so the
-// engine resolves the audio normally (e.g. for import-by-class-name or legacy callers).
-private _playTarget = if (_soundFile != "") then { _soundFile } else { _trackClass };
-
-// Escape single quotes in play target to prevent code injection
-private _playTargetEscaped = _playTarget;
-if (_playTarget find "'" >= 0) then {
-	private _chars = toArray _playTarget;
-	private _result = "";
-	{
-		if (_x == 39) then {
-			_result = _result + "''";
-		} else {
-			_result = _result + toString [_x];
-		};
-	} forEach _chars;
-	_playTargetEscaped = _result;
-};
-
-// remote Execute code block to play music on each client
-private _remoteCode = compile format ["private _wasPreviewPlaying = uiNamespace getVariable ['ZeusJukebox_previewPlaying', false]; private _previewTrack = uiNamespace getVariable ['ZeusJukebox_previewTrack', '']; if (_wasPreviewPlaying && _previewTrack != '') then {} else { playMusic ['%1', %2]; };", _playTargetEscaped, _startPosition];
+// Always use the class name for playMusic — raw file paths from CfgMusic's sound[]
+// array reference packed PBO files that cannot be opened directly by playMusic.
+// The _soundFile is kept for display/metadata purposes only.
+private _remoteCode = compile format ["private _wasPreviewPlaying = uiNamespace getVariable ['ZeusJukebox_previewPlaying', false]; private _previewTrack = uiNamespace getVariable ['ZeusJukebox_previewTrack', '']; if (_wasPreviewPlaying && _previewTrack != '') then {} else { playMusic ['%1', %2]; };", _trackClass, _startPosition];
 _remoteCode remoteExec ["call", 0, false];
 
 // Terminate any existing progress loop before spawning new one

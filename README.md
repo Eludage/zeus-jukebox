@@ -134,6 +134,7 @@ Build the mod using Arma 3 Tools (Addon Builder) or compatible PBO packing tools
 - ZeusJukebox cannot know whether players have turned their music volume down/off in game settings.
 - Multiple Zeuses acting simultaneously may have race conditions (first action wins).
 - **Music without duration**: If a music track has no duration declared in its config, it will show `0:00` in the music list and be defaulted to 3 minutes (180 seconds) when played. This can lead to music continuing to play silently after the actual track ends, or tracks being cut off early if they are longer than 3 minutes.
+- **Mission music shadows addon music with the same class name**: If a mission defines a `CfgMusic` class that shares its name with an addon track, the addon entry is hidden from the music list. Arma 3 resolves `playMusic` to the mission version in this case, so only the mission entry is shown. The addon track is inaccessible for the duration of that mission.
 
 ## Compatibility
 
