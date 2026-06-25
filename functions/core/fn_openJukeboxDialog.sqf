@@ -224,6 +224,9 @@ if (_created) then {
         // Populate the music list (force rebuild if mission changed)
         [_forceRebuild] call ZeusJukebox_fnc_updateUiMusicList;
 
+        // Initialize Mark/Unmark Favorite button visibility for the current selection (or lack thereof)
+        [] call ZeusJukebox_fnc_updateUiFavoriteMarkBtn;
+
         // Restore preview track selection in music list if exists
         if (_hasExistingPreview) then {
             private _listBox = _display displayCtrl 15503;

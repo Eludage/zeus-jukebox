@@ -44,7 +44,7 @@ private _disableIdcs = [
     15402, 15403, 15404, 15405, 15406,
     // Music List (including the gear button and the History button, so neither
     // can be re-clicked while this overlay is already showing)
-    15502, 15503, 15505, 15506, 15507, 15508, 15509, 15510, 15511, 15512,
+    15502, 15503, 15505, 15506, 15507, 15508, 15509, 15510, 15511, 15512, 15513,
     // Currently Playing
     15605, 15606, 15607, 15608, 15609, 15610, 15611, 15612,
     // Queue (including the Manage Song List button itself, idc 15710)

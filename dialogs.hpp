@@ -571,6 +571,7 @@ class ZeusJukebox_Dialog
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onAutoplayPreviewOnBtn;";
+            tooltip = "Click to enable preview autoplay";
             colorBackground[] = COLOR_DARK_RED;
             colorFocused[] = COLOR_DARK_RED;
             colorBackgroundActive[] = COLOR_DARK_RED_ACTIVE;
@@ -585,6 +586,7 @@ class ZeusJukebox_Dialog
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onAutoplayPreviewOffBtn;";
+            tooltip = "Click to disable preview autoplay";
             colorBackground[] = COLOR_GREEN;
             colorFocused[] = COLOR_GREEN;
             colorBackgroundActive[] = COLOR_GREEN_ACTIVE;
@@ -728,13 +730,13 @@ class ZeusJukebox_Dialog
         class MusicFavoriteOff: ZJ_RscButton
         {
             idc = 15506;
-            text = "*";
+            text = "All";
             x = 0.35 * safezoneW + safezoneX;
             y = 0.29 * safezoneH + safezoneY;
             w = 0.025 * safezoneW;
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onFavoriteOffBtn;";
-            tooltip = "Show favorites only";
+            tooltip = "Click to show favorites only";
             colorBackground[] = COLOR_GREY_30;
             colorFocused[] = COLOR_GREY_30;
             colorBackgroundActive[] = COLOR_GREY_50;
@@ -743,13 +745,13 @@ class ZeusJukebox_Dialog
         class MusicFavoriteOn: ZJ_RscButton
         {
             idc = 15507;
-            text = "*";
+            text = "Fav";
             x = 0.35 * safezoneW + safezoneX;
             y = 0.29 * safezoneH + safezoneY;
             w = 0.025 * safezoneW;
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onFavoriteOnBtn;";
-            tooltip = "Showing favorites only (click to show all)";
+            tooltip = "Click to show all tracks";
             colorBackground[] = COLOR_GOLDEN_BROWN;
             colorFocused[] = COLOR_GOLDEN_BROWN;
             colorBackgroundActive[] = COLOR_GOLDEN_BROWN_ACTIVE;
@@ -804,20 +806,35 @@ class ZeusJukebox_Dialog
             onLBSelChanged = "[] call ZeusJukebox_fnc_onMusicListEntrySelected;";
             onLBDblClick = "[] call ZeusJukebox_fnc_onMusicListDblClick;";
         };
-        // Mark/Unmark Favorite button
+        // Mark Favorite button (visible when selected track is not a favorite)
         class MusicMarkFavoriteBtn: ZJ_RscButton
         {
             idc = 15508;
-            text = "Mark/Unmark Favorite";
+            text = "Mark Favorite";
             x = 0.16 * safezoneW + safezoneX;
             y = 0.83 * safezoneH + safezoneY;
             w = 0.08 * safezoneW;
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onFavoriteMarkBtn;";
-            tooltip = "Toggle favorite status for selected track";
+            tooltip = "Mark selected track as favorite";
             colorBackground[] = COLOR_GOLDEN_BROWN;
             colorFocused[] = COLOR_GOLDEN_BROWN;
             colorBackgroundActive[] = COLOR_GOLDEN_BROWN_ACTIVE;
+        };
+        // Unmark Favorite button (visible when selected track is already a favorite)
+        class MusicUnmarkFavoriteBtn: ZJ_RscButton
+        {
+            idc = 15513;
+            text = "Unmark Favorite";
+            x = 0.16 * safezoneW + safezoneX;
+            y = 0.83 * safezoneH + safezoneY;
+            w = 0.08 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onFavoriteMarkBtn;";
+            tooltip = "Unmark selected track as favorite";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_50;
         };
         // Track History button - opens the Track History overlay
         class MusicHistoryBtn: ZJ_RscButton
@@ -955,6 +972,7 @@ class ZeusJukebox_Dialog
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onPlayingLocallyMutedBtn;";
+            tooltip = "Click to listen locally";
             colorBackground[] = COLOR_DARK_RED;
             colorFocused[] = COLOR_DARK_RED;
             colorBackgroundActive[] = COLOR_DARK_RED_ACTIVE;
@@ -968,6 +986,7 @@ class ZeusJukebox_Dialog
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onPlayingLocallyUnmutedBtn;";
+            tooltip = "Click to mute locally";
             colorBackground[] = COLOR_GREEN;
             colorFocused[] = COLOR_GREEN;
             colorBackgroundActive[] = COLOR_GREEN_ACTIVE;
@@ -982,9 +1001,10 @@ class ZeusJukebox_Dialog
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onPlayingLoopingOffBtn;";
-            colorBackground[] = COLOR_BLUE;
-            colorFocused[] = COLOR_BLUE;
-            colorBackgroundActive[] = COLOR_BLUE_ACTIVE;
+            tooltip = "Click to enable looping";
+            colorBackground[] = COLOR_DARK_RED;
+            colorFocused[] = COLOR_DARK_RED;
+            colorBackgroundActive[] = COLOR_DARK_RED_ACTIVE;
         };
         // New hidden "Looping on" button (same position/size as Looping off). Shown when looping is active.
         class CurrentlyPlayingLoopOn: ZJ_RscButton
@@ -996,9 +1016,10 @@ class ZeusJukebox_Dialog
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onPlayingLoopingOnBtn;";
-            colorBackground[] = COLOR_BLUE;
-            colorFocused[] = COLOR_BLUE;
-            colorBackgroundActive[] = COLOR_BLUE_ACTIVE;
+            tooltip = "Click to disable looping";
+            colorBackground[] = COLOR_GREEN;
+            colorFocused[] = COLOR_GREEN;
+            colorBackgroundActive[] = COLOR_GREEN_ACTIVE;
         };
 
         // ============== QUEUE SECTION ==============
@@ -1023,6 +1044,7 @@ class ZeusJukebox_Dialog
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onQueueAutoplayOnBtn;";
+            tooltip = "Click to enable autoplay";
             colorBackground[] = COLOR_DARK_RED;
             colorFocused[] = COLOR_DARK_RED;
             colorBackgroundActive[] = COLOR_DARK_RED_ACTIVE;
@@ -1037,6 +1059,7 @@ class ZeusJukebox_Dialog
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onQueueAutoplayOffBtn;";
+            tooltip = "Click to disable autoplay";
             colorBackground[] = COLOR_GREEN;
             colorFocused[] = COLOR_GREEN;
             colorBackgroundActive[] = COLOR_GREEN_ACTIVE;

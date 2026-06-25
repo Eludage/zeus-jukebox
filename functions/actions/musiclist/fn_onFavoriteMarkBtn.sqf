@@ -35,4 +35,7 @@ saveProfileNamespace;
 // Refresh the music list
 [] call ZeusJukebox_fnc_updateUiMusicList;
 
+// Refresh the Mark/Unmark Favorite button to reflect the new state
+[] call ZeusJukebox_fnc_updateUiFavoriteMarkBtn;
+
 true;

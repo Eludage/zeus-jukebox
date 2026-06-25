@@ -97,11 +97,12 @@ This section lists the main dialog ID (IDD) and the control IDCs used in the Juk
     - 15505 → MusicGroupByAddonBtn — Toggles to grouping by Addon (visible when current mode is not Addon)
     - 15506 → MusicFavoriteOff — Favorites filter OFF button (visible when filter is inactive)
     - 15507 → MusicFavoriteOn — Favorites filter ON button (visible when filter is active)
-    - 15508 → MusicMarkFavoriteBtn — Mark/Unmark Favorite
+    - 15508 → MusicMarkFavoriteBtn — "Mark Favorite" button (visible when the selected track is not a favorite)
     - 15509 → MusicGroupByThemeBtn — Toggles to grouping by Theme (visible when current mode is not Theme)
     - 15510 → MusicGroupByMusicClassBtn — Toggles to grouping by Music Class (visible when current mode is not Music Class)
     - 15511 → MusicListSettings — Cog-wheel button; shows the Music List Settings overlay
     - 15512 → MusicHistoryBtn — "History" button; shows the Track History overlay
+    - 15513 → MusicUnmarkFavoriteBtn — "Unmark Favorite" button (visible when the selected track is already a favorite); `updateUiFavoriteMarkBtn` toggles 15508/15513 visibility based on `ZeusJukebox_selectedMusicListTrack` vs `ZeusJukebox_favorites`, called from `onMusicListEntrySelected` and `onFavoriteMarkBtn`
   - Currently playing controls
     - 15601 → CurrentlyPlayingTitle — currently playing track title
     - 15602 → CurrentlyPlayingProgressBg — currently playing progress background
@@ -268,7 +269,7 @@ This section documents the runtime namespaces and variables used by Zeus Jukebox
 - `ZeusJukebox_previewUpdateHandle`: Script Handle — Handle to the preview update loop script. Used to terminate the loop when stopping preview.
 
 #### UI State
-- `ZeusJukebox_selectedMusicListTrack`: String — `"className|soundFile"` composite key (see `ZeusJukebox_favorites` below) of the track most recently selected in the music list. Set by `onMusicListEntrySelected` and `onQueuePreview` when loading a track into the preview area; read by `onFavoriteMarkBtn` as the favorite key.
+- `ZeusJukebox_selectedMusicListTrack`: String — `"className|soundFile"` composite key (see `ZeusJukebox_favorites` below) of the track most recently selected in the music list. Set by `onMusicListEntrySelected` and `onQueuePreview` when loading a track into the preview area; read by `onFavoriteMarkBtn` as the favorite key and by `updateUiFavoriteMarkBtn` to pick which of 15508/15513 to show.
 - `ZeusJukebox_fontSizeLevel`: Number — Current font size level for UI elements. Range: 0-4, where 2 is default size. Maximum available level is limited by `ZeusJukebox_maxFontSizeLevel`.
 - `ZeusJukebox_maxFontSizeLevel`: Number — Maximum font size level allowed based on display aspect ratio. Set once on first dialog open. Value: 4 for ultra-wide (21:9+), 2 for standard (16:9).
 - `ZeusJukebox_selectedQueueTrack`: String — Class name of the currently selected track in the queue listbox. Used to restore selection after queue updates. Empty string when no selection.

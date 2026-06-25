@@ -88,4 +88,7 @@ if ((_data select [0, 7]) == "HEADER:") then {
 
     // Always update Track Info section
     [_className, _soundFile] call ZeusJukebox_fnc_updateUiTrackInfo;
+
+    // Update Mark/Unmark Favorite button to reflect the selected track
+    [] call ZeusJukebox_fnc_updateUiFavoriteMarkBtn;
 };

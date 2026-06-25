@@ -161,6 +161,7 @@ class CfgFunctions
             file = "ZeusJukebox\functions\ui";
             class updateUiMusicList {};          // Updates music list UI
             class updateUiTrackInfo {};          // Updates Track Info section
+            class updateUiFavoriteMarkBtn {};    // Updates Mark/Unmark Favorite button to match selected track
             class clearPreviewArea {};           // Clear the preview area
             class handlePreviewMusicProgress {}; // Handle preview track progress
             class updateUiPreviewArea {};        // Updates preview UI
