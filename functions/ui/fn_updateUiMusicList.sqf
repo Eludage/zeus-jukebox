@@ -89,8 +89,16 @@ if (count _groupedTracks == 0 || _forceRebuild) then {
         // Get track info before grouping (needed for the file-existence check below)
         private _displayName = getText (_config >> "name");
         private _duration = getNumber (_config >> "duration");
-        private _sound = getArray (_config >> "sound");
-        private _soundFile = if (count _sound > 0) then { _sound select 0 } else { "" };
+        // Mission-authored tracks use a constant soundFile placeholder so favorites
+        // (which persist across missions) don't break when a Zeus reuses the same
+        // className across mission templates with the file in a different folder —
+        // see the matching comment in fn_getTrackConfig.sqf.
+        private _soundFile = if (_isMissionMusic) then {
+            "mission_music"
+        } else {
+            private _sound = getArray (_config >> "sound");
+            if (count _sound > 0) then { _sound select 0 } else { "" };
+        };
 
         // Capture before the fallback below overwrites it, so the Hide-no-duration
         // setting can still tell these apart from tracks with a real 180s duration
@@ -222,8 +230,8 @@ _groupNames sort true;
     // Further filter by favorites if favorites-only is active
     if (_favoritesOnly) then {
         _filteredTracks = _filteredTracks select {
-            _x params ["_className"];
-            (_favorites find _className) != -1
+            _x params ["_className", "_displayName", "_duration", "_soundFile"];
+            (_favorites find (_className + "|" + _soundFile)) != -1
         };
     };
 
@@ -279,7 +287,7 @@ _groupNames sort true;
             private _durationStr = [_duration] call ZeusJukebox_fnc_formatDuration;
 
             // Check if this track is a favorite
-            private _isFav = (_favorites find _className) != -1;
+            private _isFav = (_favorites find (_className + "|" + _soundFile)) != -1;
             private _favIndicator = if (_isFav) then { " *" } else { "" };
 
             // Check if this track has already been played

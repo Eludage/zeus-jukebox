@@ -250,13 +250,13 @@ This section documents the runtime namespaces and variables used by Zeus Jukebox
 ### Namespace `uiNamespace`
 
 #### Music List & Loading
-- `ZeusJukebox_musicTracks`: HashMap — Cached map of music class name → track data array. Each value is an array: `[displayName, durationSeconds, soundFile, theme, isMissionMusic]`
 - `ZeusJukebox_isPopulating`: Boolean — Flag indicating music list is currently being populated. Used to prevent concurrent population operations.
-- `ZeusJukebox_groupedTracks`: HashMap — Cached map of grouped tracks by category (theme or addon).
+- `ZeusJukebox_groupedTracks`: HashMap — Cached map of grouped tracks by category (theme or addon). This is the actual track cache read by `updateUiMusicList`.
 - `ZeusJukebox_expandedCategories`: HashMap — Map tracking which categories are expanded (true) or collapsed (false) in the music list.
 - `ZeusJukebox_groupingMode`: String — Current grouping mode: "musicclass" (default), "theme", or "addon".
-- `ZeusJukebox_trackData`: HashMap — Alternative storage for track data during population.
 - `ZeusJukebox_filterFavoritesOnly`: Boolean — Whether to show only favorite tracks in the music list.
+
+> **Dead variables (read or written, but not both):** `ZeusJukebox_musicTracks` is read by `fn_updateUiPreviewArea.sqf` (expecting a HashMap of `[displayName, durationSeconds, soundFile, theme, isMissionMusic]`) but never written anywhere, so the lookup always misses and the function always falls back to `ZeusJukebox_fnc_getTrackConfig`. `ZeusJukebox_trackData` is written by `fn_updateUiMusicList.sqf` (as an Array, not a HashMap) but never read anywhere. Both look like leftovers from a superseded caching design — `ZeusJukebox_groupedTracks` is what's actually used. Left in place rather than removed since that's a code change, not a doc fix; flagging here so they aren't mistaken for live behavior.
 
 #### Preview Playback State
 - `ZeusJukebox_previewTrack`: String — Class name of the track currently loaded in the preview area. Empty string when no preview is loaded.
@@ -268,7 +268,7 @@ This section documents the runtime namespaces and variables used by Zeus Jukebox
 - `ZeusJukebox_previewUpdateHandle`: Script Handle — Handle to the preview update loop script. Used to terminate the loop when stopping preview.
 
 #### UI State
-- `ZeusJukebox_selectedMusicListTrack`: String — Class name of the track most recently selected in the music list. Set by `onMusicListEntrySelected` and `onQueuePreview` when loading a track into the preview area.
+- `ZeusJukebox_selectedMusicListTrack`: String — `"className|soundFile"` composite key (see `ZeusJukebox_favorites` below) of the track most recently selected in the music list. Set by `onMusicListEntrySelected` and `onQueuePreview` when loading a track into the preview area; read by `onFavoriteMarkBtn` as the favorite key.
 - `ZeusJukebox_fontSizeLevel`: Number — Current font size level for UI elements. Range: 0-4, where 2 is default size. Maximum available level is limited by `ZeusJukebox_maxFontSizeLevel`.
 - `ZeusJukebox_maxFontSizeLevel`: Number — Maximum font size level allowed based on display aspect ratio. Set once on first dialog open. Value: 4 for ultra-wide (21:9+), 2 for standard (16:9).
 - `ZeusJukebox_selectedQueueTrack`: String — Class name of the currently selected track in the queue listbox. Used to restore selection after queue updates. Empty string when no selection.
@@ -286,13 +286,13 @@ This section documents the runtime namespaces and variables used by Zeus Jukebox
 - `ZeusJukebox_selectedPlaylistName`: String — Name of the currently selected playlist in the Manage Song Lists overlay listbox (16021). Used to restore selection after the listbox is rebuilt, and as the target for Update/Rename/Load/Delete. Empty string when no selection.
 
 #### Favorites
-- `ZeusJukebox_favorites`: Array — Array of class names marked as favorite tracks. Synchronized with profileNamespace for persistence. 
+- `ZeusJukebox_favorites`: Array — Array of `"className|soundFile"` composite-key strings (same `"|"` delimiter convention as `ZeusJukebox_Blacklist >> entries[]` and the music listbox's `lbSetData`) identifying favorited `CfgMusic` tracks. Composite keying avoids the same classname-collision problem the blacklist entry describes: the same class name can exist in both an addon and the mission's own config as genuinely different tracks, so favoriting one must not favorite the other. For mission-sourced tracks, the `soundFile` component is the constant `"mission_music"` instead of the literal (mission-relative, unstable-across-missions) `sound[]` path, since favorites persist across missions and a real mission-relative path would silently stop matching once a Zeus reuses the same className in a different mission. Synchronized with profileNamespace for persistence.
 
 #### Playlists
 - `ZeusJukebox_playlists`: Array — Array of `[name, classNames]` saved playlist records, where `classNames` is an array of `CfgMusic` class name strings. Synchronized with profileNamespace for persistence via `ZeusJukebox_fnc_savePlaylists`.
 
 ### Namespace `profileNamespace`
-- `ZeusJukebox_favorites`: Array — Array of class names marked as favorite tracks. Persisted across game sessions. Loaded into uiNamespace on dialog open.
+- `ZeusJukebox_favorites`: Array — Array of `"className|soundFile"` composite-key strings (see the `uiNamespace` entry above for the full key format, including the `"mission_music"` constant used for mission-sourced tracks). Persisted across game sessions. Loaded into uiNamespace on dialog open. Pre-2.0.0 plain-className favorites are re-keyed by `ZeusJukebox_fnc_migrateProfileData`'s `1.0.0 → 2.0.0` step (tracks that no longer resolve to any `CfgMusic` entry are dropped).
 - `ZeusJukebox_playlists`: Array — Array of `[name, classNames]` saved playlist records. Persisted across game sessions via `ZeusJukebox_fnc_savePlaylists`. Loaded into uiNamespace on dialog open via `ZeusJukebox_fnc_loadPlaylists`.
 
 ### Static config data (not a namespace variable)

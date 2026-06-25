@@ -48,7 +48,7 @@ if (_isPreviewPlaying) then {
 };
 
 // Load song into preview by setting uiNamespace and updating UI
-uiNamespace setVariable ["ZeusJukebox_selectedMusicListTrack", _className];
+uiNamespace setVariable ["ZeusJukebox_selectedMusicListTrack", _className + "|" + _soundFile];
 uiNamespace setVariable ["ZeusJukebox_previewTrack", _className];
 uiNamespace setVariable ["ZeusJukebox_previewSoundFile", _soundFile];
 uiNamespace setVariable ["ZeusJukebox_previewPlaying", false];

@@ -69,7 +69,7 @@ if ((_data select [0, 7]) == "HEADER:") then {
         };
 
         // Load the new song into preview
-        uiNamespace setVariable ["ZeusJukebox_selectedMusicListTrack", _className];
+        uiNamespace setVariable ["ZeusJukebox_selectedMusicListTrack", _className + "|" + _soundFile];
         uiNamespace setVariable ["ZeusJukebox_previewTrack", _className];
         uiNamespace setVariable ["ZeusJukebox_previewSoundFile", _soundFile];
         uiNamespace setVariable ["ZeusJukebox_previewPlaying", false];
