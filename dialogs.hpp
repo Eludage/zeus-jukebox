@@ -1177,9 +1177,9 @@ class ZeusJukebox_Dialog
         class SettingsOverlayBackground: ZJ_RscPanel
         {
             idc = 15801;
-            x = 0.26 * safezoneW + safezoneX;
+            x = 0.38 * safezoneW + safezoneX;
             y = 0.28 * safezoneH + safezoneY;
-            w = 0.25 * safezoneW;
+            w = 0.24 * safezoneW;
             h = 0.15 * safezoneH;
             colorBackground[] = COLOR_GREY_10;
         };
@@ -1190,9 +1190,9 @@ class ZeusJukebox_Dialog
         {
             idc = 15804;
             style = 64; // ST_FRAME
-            x = 0.26 * safezoneW + safezoneX;
+            x = 0.38 * safezoneW + safezoneX;
             y = 0.28 * safezoneH + safezoneY;
-            w = 0.25 * safezoneW;
+            w = 0.24 * safezoneW;
             h = 0.15 * safezoneH;
         };
 
@@ -1201,7 +1201,7 @@ class ZeusJukebox_Dialog
         {
             idc = 15802;
             text = "Music List Settings";
-            x = 0.27 * safezoneW + safezoneX;
+            x = 0.39 * safezoneW + safezoneX;
             y = 0.29 * safezoneH + safezoneY;
             w = 0.1 * safezoneW;
             h = 0.025 * safezoneH;
@@ -1212,7 +1212,7 @@ class ZeusJukebox_Dialog
         {
             idc = 15811;
             text = "Currently Sorting:";
-            x = 0.27 * safezoneW + safezoneX;
+            x = 0.39 * safezoneW + safezoneX;
             y = 0.33 * safezoneH + safezoneY;
             w = 0.1 * safezoneW;
             h = 0.025 * safezoneH;
@@ -1222,7 +1222,7 @@ class ZeusJukebox_Dialog
         {
             idc = 15812;
             text = "Alphabetically";
-            x = 0.38 * safezoneW + safezoneX;
+            x = 0.50 * safezoneW + safezoneX;
             y = 0.33 * safezoneH + safezoneY;
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
@@ -1236,7 +1236,7 @@ class ZeusJukebox_Dialog
         {
             idc = 15813;
             text = "by Time";
-            x = 0.38 * safezoneW + safezoneX;
+            x = 0.50 * safezoneW + safezoneX;
             y = 0.33 * safezoneH + safezoneY;
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
@@ -1251,7 +1251,7 @@ class ZeusJukebox_Dialog
         {
             idc = 15814;
             text = "Ascending";
-            x = 0.44 * safezoneW + safezoneX;
+            x = 0.56 * safezoneW + safezoneX;
             y = 0.33 * safezoneH + safezoneY;
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
@@ -1265,7 +1265,7 @@ class ZeusJukebox_Dialog
         {
             idc = 15815;
             text = "Descending";
-            x = 0.44 * safezoneW + safezoneX;
+            x = 0.56 * safezoneW + safezoneX;
             y = 0.33 * safezoneH + safezoneY;
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
@@ -1281,7 +1281,7 @@ class ZeusJukebox_Dialog
         {
             idc = 15821;
             text = "Hiding Music with no duration:";
-            x = 0.27 * safezoneW + safezoneX;
+            x = 0.39 * safezoneW + safezoneX;
             y = 0.36 * safezoneH + safezoneY;
             w = 0.1 * safezoneW;
             h = 0.025 * safezoneH;
@@ -1292,7 +1292,7 @@ class ZeusJukebox_Dialog
         {
             idc = 15822;
             text = "Yes";
-            x = 0.38 * safezoneW + safezoneX;
+            x = 0.50 * safezoneW + safezoneX;
             y = 0.36 * safezoneH + safezoneY;
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
@@ -1306,7 +1306,7 @@ class ZeusJukebox_Dialog
         {
             idc = 15823;
             text = "No";
-            x = 0.38 * safezoneW + safezoneX;
+            x = 0.50 * safezoneW + safezoneX;
             y = 0.36 * safezoneH + safezoneY;
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
@@ -1322,7 +1322,7 @@ class ZeusJukebox_Dialog
         {
             idc = 15831;
             text = "Hiding blacklisted Music:";
-            x = 0.27 * safezoneW + safezoneX;
+            x = 0.39 * safezoneW + safezoneX;
             y = 0.39 * safezoneH + safezoneY;
             w = 0.1 * safezoneW;
             h = 0.025 * safezoneH;
@@ -1333,7 +1333,7 @@ class ZeusJukebox_Dialog
         {
             idc = 15832;
             text = "Yes";
-            x = 0.38 * safezoneW + safezoneX;
+            x = 0.50 * safezoneW + safezoneX;
             y = 0.39 * safezoneH + safezoneY;
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
@@ -1347,7 +1347,7 @@ class ZeusJukebox_Dialog
         {
             idc = 15833;
             text = "No";
-            x = 0.38 * safezoneW + safezoneX;
+            x = 0.50 * safezoneW + safezoneX;
             y = 0.39 * safezoneH + safezoneY;
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
@@ -1363,7 +1363,7 @@ class ZeusJukebox_Dialog
         {
             idc = 15803;
             text = "X";
-            x = 0.475 * safezoneW + safezoneX;
+            x = 0.585 * safezoneW + safezoneX;
             y = 0.29 * safezoneH + safezoneY;
             w = 0.025 * safezoneW;
             h = 0.025 * safezoneH;
