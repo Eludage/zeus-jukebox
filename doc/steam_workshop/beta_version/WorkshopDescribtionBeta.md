@@ -7,6 +7,9 @@ Please use [url=https://steamcommunity.com/sharedfiles/filedetails/?edit=true&id
 
 [list]
 [*][b]Improved Fade Out[/b] — The Fade button now shows a live countdown (e.g. [i]Fading (3.6s)[/i]) and is disabled for all Zeuses until the fade completes, preventing it from being triggered multiple times. Stopping or removing a track during a fade cancels it immediately and restores the music volume for all clients. The button is only disabled by ACE Hearing when [b]Enable Combat Deafness[/b] or [b]Enable Noise Ducking Effect[/b] is turned on — if both are off, fading works normally even with ACE loaded.
+[*][b]Manage Song Lists[/b] Save your current queue as a named playlist ingame, then load, rename, or delete saved playlists later.
+[*][b]Music List Settings[/b] Sort the music list alphabetically or by duration, and optionally hide tracks with no duration or known-bad metadata.
+[*][b]Played Music History[/b] View previously played tracks (additionally, already-played tracks are marked in the music list) and double-click any history entry to re-add it to the queue.
 [/list]
 
 [h2]Issue Tracker/Bug Reports[/h2]

@@ -14,6 +14,9 @@ The Beta Version is available [url=https://steamcommunity.com/sharedfiles/filede
 [*][b]Autoplay Preview[/b] - optionally start previewing a track immediately when selecting it from the music list or queue.
 [*][b]Queue system[/b] for planning music sequences with drag-and-drop reordering.
 [*][b]Queue import/export[/b] functionality to save and share your music playlists.
+[*][b]Manage Song Lists[/b] Save your current queue as a named playlist ingame, then load, rename, or delete saved playlists later.
+[*][b]Music List Settings[/b] Sort the music list alphabetically or by duration, and optionally hide tracks with no duration or known-bad metadata.
+[*][b]Played Music History[/b] View previously played tracks (additionally, already-played tracks are marked in the music list) and double-click any history entry to re-add it to the queue.
 [*][b]Global playback[/b] Play and pause music for all players on the server.
 [*][b]Autoplay mode[/b] for continuous music playback from your queue.
 [*][b]Loop functionality[/b] to repeat tracks as needed.
