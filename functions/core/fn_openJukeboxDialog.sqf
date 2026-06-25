@@ -49,6 +49,10 @@ if (_created) then {
         // Load favorites from profileNamespace
         private _favorites = [] call ZeusJukebox_fnc_loadFavorites;
         uiNamespace setVariable ["ZeusJukebox_favorites", _favorites];
+
+        // Load saved playlists from profileNamespace
+        private _playlists = [] call ZeusJukebox_fnc_loadPlaylists;
+        uiNamespace setVariable ["ZeusJukebox_playlists", _playlists];
         
         // Initialize favorites filter state (default off)
         uiNamespace setVariable ["ZeusJukebox_filterFavoritesOnly", false];
@@ -119,6 +123,9 @@ if (_created) then {
         // Track History overlay starts closed
         uiNamespace setVariable ["ZeusJukebox_historyOverlayOpen", false];
 
+        // Manage Song Lists overlay starts closed
+        uiNamespace setVariable ["ZeusJukebox_manageSongListsOverlayOpen", false];
+
         // Detect display aspect ratio and set maximum font size level
         if (isNil {uiNamespace getVariable "ZeusJukebox_maxFontSizeLevel"}) then {
             private _resolution = getResolution;
@@ -146,6 +153,16 @@ if (_created) then {
             if (!isNull _ctrl) then { _ctrl ctrlShow false; };
         } forEach [
             15900, 15901, 15902, 15903, 15904, 15905, 15906
+        ];
+
+        // Manage Song Lists overlay starts hidden
+        {
+            private _ctrl = _display displayCtrl _x;
+            if (!isNull _ctrl) then { _ctrl ctrlShow false; };
+        } forEach [
+            16000, 16001, 16002, 16003, 16004,
+            16010, 16011, 16012, 16013,
+            16020, 16021, 16022, 16023, 16024
         ];
 
         // Update Favorites Filter button state

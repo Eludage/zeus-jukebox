@@ -110,7 +110,14 @@ class CfgFunctions
             class onQueuePreview {};             // Queue preview button
             class onQueueRemove {};              // Queue remove button
             class onQueueUp {};                  // Move up button
-            class onManageSongList {};           // Manage Song List button
+            class onManageSongList {};           // Manage Song List button (opens Manage Song Lists overlay)
+            class onManageSongListClose {};      // Manage Song Lists overlay close (X) button
+            class onPlaylistSaveNew {};          // Save current queue as a new playlist
+            class onPlaylistUpdateSelected {};   // Overwrite selected playlist with current queue
+            class onPlaylistLoad {};             // Load selected playlist into queue
+            class onPlaylistRename {};           // Rename selected playlist
+            class onPlaylistDelete {};           // Delete selected playlist
+            class onPlaylistEntrySelected {};    // Playlist entry selected
         };
 
         // ===== Core / Initialization =====
@@ -129,6 +136,8 @@ class CfgFunctions
         {
             file = "ZeusJukebox\functions\data";
             class loadFavorites {};              // Load favorites from profileNamespace
+            class loadPlaylists {};              // Load saved playlists from profileNamespace
+            class savePlaylists {};              // Persist saved playlists to profileNamespace
         };
 
         // ===== Remote Executions =====
@@ -142,6 +151,7 @@ class CfgFunctions
             class remoteTriggerUpdateUiCurrentlyPlaying {}; // Trigger UI update for currently playing
             class remoteTriggerUpdateUiQueue {};       // Trigger UI update for queue
             class remoteTriggerUpdateUiHistory {};     // Trigger UI update for track history + played highlight
+            class remoteAddClassNamesToQueue {};       // Validate class names and append them to the queue for all Zeuses
         };
 
         // ===== UI Updates & Management =====
@@ -158,6 +168,7 @@ class CfgFunctions
             class updateUiCurrentlyPlaying {};   // Updates currently playing UI
             class updateUiQueue {};              // Updates queue UI
             class updateUiHistory {};            // Updates track history overlay UI
+            class updateUiManageSongLists {};    // Updates Manage Song Lists overlay UI
             class getNextInQueue {};             // Get and remove next track from queue
             class checkAutoplay {};              // Check if autoplay should trigger
             class changeFontSize {};             // Adjust UI font size

@@ -79,12 +79,14 @@ private _btnDown = _display displayCtrl 15709;
 private _currentTrack = missionNamespace getVariable ["ZeusJukebox_currentlyPlayingTrack", ""];
 private _currentlyPlayingEmpty = (_currentTrack == "");
 
-// While the Music List Settings overlay is open, these buttons are deliberately
-// disabled by ZeusJukebox_fnc_onMusicListSettings. This function can be re-invoked
-// while the overlay is still open (a remote trigger from another Zeus client adding/
-// removing a queue item) - skip re-enabling so those calls can't silently undo the
-// overlay's block.
-private _settingsOverlayOpen = uiNamespace getVariable ["ZeusJukebox_settingsOverlayOpen", false];
+// While the Music List Settings or Manage Song Lists overlay is open, these
+// buttons are deliberately disabled by ZeusJukebox_fnc_onMusicListSettings /
+// ZeusJukebox_fnc_onManageSongList. This function can be re-invoked while an
+// overlay is still open (a remote trigger from another Zeus client adding/
+// removing a queue item) - skip re-enabling so those calls can't silently undo
+// the overlay's block.
+private _settingsOverlayOpen = (uiNamespace getVariable ["ZeusJukebox_settingsOverlayOpen", false]) ||
+	(uiNamespace getVariable ["ZeusJukebox_manageSongListsOverlayOpen", false]);
 if (!_settingsOverlayOpen) then {
     // Update Play button - only enabled if selection exists AND Currently Playing is empty
     if (!isNull _btnPlay) then {

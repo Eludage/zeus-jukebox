@@ -183,6 +183,34 @@ This section lists the main dialog ID (IDD) and the control IDCs used in the Juk
       is the red X button (15903). The ZeusJukebox_historyOverlayOpen uiNamespace flag
       serves the same "don't let externally-triggered refreshes undo the block"
       purpose as ZeusJukebox_settingsOverlayOpen does for the Settings overlay.
+  - Manage Song Lists
+    - 16000 → ManageSongListsOverlayDim — Decorative dim panel covering the full dialog area while the overlay is open; no text, intentionally excluded from fn_changeFontSize.sqf
+    - 16001 → ManageSongListsOverlayBackground — Manage Song Lists overlay panel, hidden by default, shown over the rest of ZeusJukebox_Dialog by ZeusJukebox_fnc_onManageSongList
+    - 16002 → ManageSongListsOverlayTitle — "Manage Song Lists" title, top-left corner aligned with the close button
+    - 16003 → ManageSongListsOverlayCloseButton — Red "X" button, hides the overlay via ZeusJukebox_fnc_onManageSongListClose
+    - 16004 → ManageSongListsOverlayBorder — White ST_FRAME outline drawn around ManageSongListsOverlayBackground; no text, so intentionally excluded from fn_changeFontSize.sqf
+    - 16010 → PlaylistNameLabel — "Playlist Name:" label
+    - 16011 → PlaylistNameField — Edit field used by both "Save as New" (16012) and "Rename Selected" (16023)
+    - 16012 → SaveNewPlaylistBtn — Saves the current queue as a new playlist named from 16011 via ZeusJukebox_fnc_onPlaylistSaveNew
+    - 16013 → UpdateSelectedPlaylistBtn — Overwrites the selected playlist's tracks with the current queue via ZeusJukebox_fnc_onPlaylistUpdateSelected
+    - 16020 → PlaylistsListLabel — "Saved Playlists:" label
+    - 16021 → PlaylistsList — Listbox of saved playlists (name + track count), populated by ZeusJukebox_fnc_updateUiManageSongLists from `ZeusJukebox_playlists`; `onLBSelChanged` calls ZeusJukebox_fnc_onPlaylistEntrySelected
+    - 16022 → LoadPlaylistBtn — Appends the selected playlist's tracks to the queue via ZeusJukebox_fnc_onPlaylistLoad (calls the shared ZeusJukebox_fnc_remoteAddClassNamesToQueue helper)
+    - 16023 → RenamePlaylistBtn — Renames the selected playlist to the text in 16011 via ZeusJukebox_fnc_onPlaylistRename
+    - 16024 → DeletePlaylistBtn — Deletes the selected playlist via ZeusJukebox_fnc_onPlaylistDelete, no confirmation prompt
+  - Manage Song Lists — interaction blocking mechanism
+    - Mirrors the Music List Settings mechanism above exactly: the dim panel (16000)
+      is purely visual, the rest of the dialog (everything outside the 160xx range,
+      including the gear button 15511, the History button 15512, and the Manage Song
+      List button 15710 itself) is made non-interactive via ctrlEnable false in
+      ZeusJukebox_fnc_onManageSongList, mirrored by ZeusJukebox_fnc_onManageSongListClose
+      (which also re-runs fn_changeFontSize/fn_updateUiCurrentlyPlaying/fn_updateUiQueue
+      to restore their namespace-driven conditional enable states). The only way to
+      close the overlay is the red X button (16003). The
+      ZeusJukebox_manageSongListsOverlayOpen uiNamespace flag serves the same
+      "don't let externally-triggered refreshes undo the block" purpose as
+      ZeusJukebox_settingsOverlayOpen does for the Settings overlay — both flags are
+      checked (OR'd together) in fn_updateUiCurrentlyPlaying.sqf and fn_updateUiQueue.sqf.
   - Misc controls
     - 15011   → CloseButton — Close dialog button
 
@@ -252,14 +280,20 @@ This section documents the runtime namespaces and variables used by Zeus Jukebox
 - `ZeusJukebox_sortDirection`: String — "ascending" or "descending". Set by the Music List Settings overlay toggle buttons (15814/15815). Defaults to "ascending". Read by `updateUiMusicList`, which sorts the tracks within each category ascending or descending accordingly; the toggle buttons call `updateUiMusicList` after changing it.
 - `ZeusJukebox_hideNoDuration`: Boolean — Whether to hide tracks with no duration from the Available Music list. Set by the Music List Settings overlay toggle buttons (15822/15823). Defaults to false. Read by `updateUiMusicList`, which filters out tracks whose `CfgMusic` entry has no `duration` set; the toggle buttons call `updateUiMusicList` after changing it.
 - `ZeusJukebox_hideBlacklisted`: Boolean — Whether to hide blacklisted tracks from the Available Music list. Set by the Music List Settings overlay toggle buttons (15832/15833). Defaults to false. Read by `updateUiMusicList`, which filters out tracks whose classname appears in `ZeusJukebox_Blacklist >> classNames` (see `blacklist.hpp`); the toggle buttons call `updateUiMusicList` after changing it.
-- `ZeusJukebox_settingsOverlayOpen`: Boolean — Whether the Music List Settings overlay is currently open. Set by `onMusicListSettings`/`onMusicListSettingsClose`. Read by `updateUiCurrentlyPlaying` and `updateUiQueue` so externally-triggered refreshes (the playback-progress loop, other Zeus clients' remote triggers) can't re-enable buttons the overlay disabled. Defaults to false.
+- `ZeusJukebox_settingsOverlayOpen`: Boolean — Whether the Music List Settings overlay is currently open. Set by `onMusicListSettings`/`onMusicListSettingsClose`. Read by `updateUiCurrentlyPlaying` and `updateUiQueue` (OR'd with `ZeusJukebox_manageSongListsOverlayOpen`) so externally-triggered refreshes (the playback-progress loop, other Zeus clients' remote triggers) can't re-enable buttons the overlay disabled. Defaults to false.
 - `ZeusJukebox_historyOverlayOpen`: Boolean — Whether the Track History overlay is currently open. Set by `onTrackHistoryOpen`/`onTrackHistoryClose`. Same externally-triggered-refresh protection role as `ZeusJukebox_settingsOverlayOpen`, for the Track History overlay. Defaults to false.
+- `ZeusJukebox_manageSongListsOverlayOpen`: Boolean — Whether the Manage Song Lists overlay is currently open. Set by `onManageSongList`/`onManageSongListClose`. Read by `updateUiCurrentlyPlaying` and `updateUiQueue` (OR'd with `ZeusJukebox_settingsOverlayOpen`) for the same externally-triggered-refresh protection. Defaults to false.
+- `ZeusJukebox_selectedPlaylistName`: String — Name of the currently selected playlist in the Manage Song Lists overlay listbox (16021). Used to restore selection after the listbox is rebuilt, and as the target for Update/Rename/Load/Delete. Empty string when no selection.
 
 #### Favorites
 - `ZeusJukebox_favorites`: Array — Array of class names marked as favorite tracks. Synchronized with profileNamespace for persistence. 
 
+#### Playlists
+- `ZeusJukebox_playlists`: Array — Array of `[name, classNames]` saved playlist records, where `classNames` is an array of `CfgMusic` class name strings. Synchronized with profileNamespace for persistence via `ZeusJukebox_fnc_savePlaylists`.
+
 ### Namespace `profileNamespace`
 - `ZeusJukebox_favorites`: Array — Array of class names marked as favorite tracks. Persisted across game sessions. Loaded into uiNamespace on dialog open.
+- `ZeusJukebox_playlists`: Array — Array of `[name, classNames]` saved playlist records. Persisted across game sessions via `ZeusJukebox_fnc_savePlaylists`. Loaded into uiNamespace on dialog open via `ZeusJukebox_fnc_loadPlaylists`.
 
 ### Static config data (not a namespace variable)
 - `ZeusJukebox_Blacklist >> entries[]` (defined in `blacklist.hpp`, `#include`d from `config.cpp`): Array of `"<className>|<soundFile>"` strings identifying `CfgMusic` tracks with known-bad metadata (wrong name/duration) from mods whose authors won't fix them upstream. Matched on both classname and sound file path (not classname alone) so a classname collision with an unrelated, correctly-tagged track from a different mod isn't hidden by mistake — same `"|"` delimiter convention `updateUiMusicList` already uses for the music listbox's `lbSetData`. Read by `updateUiMusicList` via `getArray (configFile >> "ZeusJukebox_Blacklist" >> "entries")` and filtered out when `ZeusJukebox_hideBlacklisted` is true. To blacklist a new track, add an `"className|soundFile"` entry to the array in `blacklist.hpp` and rebuild - there's no in-game way to edit this list.
@@ -267,7 +301,7 @@ This section documents the runtime namespaces and variables used by Zeus Jukebox
 ## Notes
 - **missionNamespace** is used for state shared across all Zeus users (currently playing, queue, track history, autoplay, looping).
 - **uiNamespace** is used for local state per-Zeus (preview, favorites, UI preferences, music list cache).
-- **profileNamespace** is used for persistent state across game sessions (favorites only).
+- **profileNamespace** is used for persistent state across game sessions (favorites and saved playlists).
 - All mod runtime variables use the `ZeusJukebox_` prefix
 
 ---
@@ -292,6 +326,7 @@ Follow these steps every time a new interactive control (button, edit field, lis
   | 157xx   | Queue                  |
   | 158xx   | Music List Settings Overlay |
   | 159xx   | Track History Overlay |
+  | 160xx   | Manage Song Lists Overlay |
 - Set `idc = -1` only for purely decorative elements that will never be accessed by scripts.
 - Wire the `action` (buttons) or relevant event handler (`onKeyUp`, `onLBSelChanged`, etc.) to the corresponding function: `"[] call ZeusJukebox_fnc_<functionName>;"`.
 - Add a `tooltip` for any button whose purpose is not immediately obvious from its label.

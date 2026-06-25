@@ -27,12 +27,14 @@ private _isFading = missionNamespace getVariable ["ZeusJukebox_isFading", false]
 // Get uiNamespace variable for local listening state
 private _isListening = uiNamespace getVariable ["ZeusJukebox_isListeningLocally", true];
 
-// While the Music List Settings overlay is open, these buttons are deliberately
-// disabled by ZeusJukebox_fnc_onMusicListSettings. This function can be re-invoked
-// while the overlay is still open (the playback-progress loop in
-// fn_openJukeboxDialog.sqf, or a remote trigger from another Zeus client) - skip
-// re-enabling so those calls can't silently undo the overlay's block.
-private _settingsOverlayOpen = uiNamespace getVariable ["ZeusJukebox_settingsOverlayOpen", false];
+// While the Music List Settings or Manage Song Lists overlay is open, these
+// buttons are deliberately disabled by ZeusJukebox_fnc_onMusicListSettings /
+// ZeusJukebox_fnc_onManageSongList. This function can be re-invoked while an
+// overlay is still open (the playback-progress loop in fn_openJukeboxDialog.sqf,
+// or a remote trigger from another Zeus client) - skip re-enabling so those
+// calls can't silently undo the overlay's block.
+private _settingsOverlayOpen = (uiNamespace getVariable ["ZeusJukebox_settingsOverlayOpen", false]) ||
+	(uiNamespace getVariable ["ZeusJukebox_manageSongListsOverlayOpen", false]);
 
 // Get controls
 private _noSongOverlay = _display displayCtrl 15613;

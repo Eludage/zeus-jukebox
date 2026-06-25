@@ -1461,5 +1461,193 @@ class ZeusJukebox_Dialog
             colorFocused[] = COLOR_RED;
             colorBackgroundActive[] = COLOR_RED_ACTIVE;
         };
+
+        // ============== MANAGE SONG LISTS OVERLAY ==============
+        // All controls below are hidden at dialog init (fn_openJukeboxDialog.sqf)
+        // and toggled together by onManageSongList / onManageSongListClose.
+        // Declared last so they paint on top of every other control in this dialog,
+        // including the Music List Settings and Track History overlays (never shown at once).
+
+        // Dim layer - see SettingsOverlayDim above for why this is a plain CT_STATIC
+        // panel rather than a click-blocker; interaction blocking is done via ctrlEnable
+        // in onManageSongList.sqf / onManageSongListClose.sqf.
+        class ManageSongListsOverlayDim: ZJ_RscPanel
+        {
+            idc = 16000;
+            x = 0.15 * safezoneW + safezoneX;
+            y = 0.1 * safezoneH + safezoneY;
+            w = 0.7 * safezoneW;
+            h = 0.8 * safezoneH;
+            colorBackground[] = COLOR_BLACK_65;
+        };
+
+        class ManageSongListsOverlayBackground: ZJ_RscPanel
+        {
+            idc = 16001;
+            x = 0.33 * safezoneW + safezoneX;
+            y = 0.15 * safezoneH + safezoneY;
+            w = 0.34 * safezoneW;
+            h = 0.6 * safezoneH;
+            colorBackground[] = COLOR_GREY_10;
+        };
+
+        // Title Label - top left corner, aligned with the close button
+        class ManageSongListsOverlayTitle: ZJ_RscBoxTitle
+        {
+            idc = 16002;
+            text = "Manage Song Lists";
+            x = 0.34 * safezoneW + safezoneX;
+            y = 0.16 * safezoneH + safezoneY;
+            w = 0.2 * safezoneW;
+            h = 0.025 * safezoneH;
+        };
+
+        // Close Button (Red X)
+        class ManageSongListsOverlayCloseButton: ZJ_RscButton
+        {
+            idc = 16003;
+            text = "X";
+            x = 0.635 * safezoneW + safezoneX;
+            y = 0.16 * safezoneH + safezoneY;
+            w = 0.025 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onManageSongListClose;";
+            colorBackground[] = COLOR_RED;
+            colorBackgroundActive[] = COLOR_RED_ACTIVE;
+        };
+
+        // White border around the overlay panel.
+        class ManageSongListsOverlayBorder: ZJ_RscStatic
+        {
+            idc = 16004;
+            style = 64; // ST_FRAME
+            x = 0.33 * safezoneW + safezoneX;
+            y = 0.15 * safezoneH + safezoneY;
+            w = 0.34 * safezoneW;
+            h = 0.6 * safezoneH;
+        };
+
+        // Playlist Name Label
+        class PlaylistNameLabel: ZJ_RscTextLabel
+        {
+            idc = 16010;
+            text = "Playlist Name:";
+            x = 0.34 * safezoneW + safezoneX;
+            y = 0.195 * safezoneH + safezoneY;
+            w = 0.1 * safezoneW;
+            h = 0.025 * safezoneH;
+        };
+
+        // Playlist Name Field (used for both Save as New and Rename)
+        class PlaylistNameField: ZJ_RscEdit
+        {
+            idc = 16011;
+            x = 0.44 * safezoneW + safezoneX;
+            y = 0.195 * safezoneH + safezoneY;
+            w = 0.21 * safezoneW;
+            h = 0.025 * safezoneH;
+        };
+
+        // Save Current Queue as New Playlist Button
+        class SaveNewPlaylistBtn: ZJ_RscButton
+        {
+            idc = 16012;
+            text = "Save as New";
+            x = 0.34 * safezoneW + safezoneX;
+            y = 0.225 * safezoneH + safezoneY;
+            w = 0.155 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onPlaylistSaveNew;";
+            tooltip = "Save the current queue as a new playlist";
+            colorBackground[] = COLOR_GREEN;
+            colorFocused[] = COLOR_GREEN;
+            colorBackgroundActive[] = COLOR_GREEN_ACTIVE;
+        };
+
+        // Overwrite Selected Playlist Button
+        class UpdateSelectedPlaylistBtn: ZJ_RscButton
+        {
+            idc = 16013;
+            text = "Update Selected";
+            x = 0.5 * safezoneW + safezoneX;
+            y = 0.225 * safezoneH + safezoneY;
+            w = 0.155 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onPlaylistUpdateSelected;";
+            tooltip = "Overwrite the selected playlist with the current queue";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_40;
+        };
+
+        // Saved Playlists Label
+        class PlaylistsListLabel: ZJ_RscTextLabel
+        {
+            idc = 16020;
+            text = "Saved Playlists:";
+            x = 0.34 * safezoneW + safezoneX;
+            y = 0.26 * safezoneH + safezoneY;
+            w = 0.2 * safezoneW;
+            h = 0.025 * safezoneH;
+        };
+
+        // Saved Playlists Listbox
+        class PlaylistsList: ZJ_RscListbox
+        {
+            idc = 16021;
+            x = 0.34 * safezoneW + safezoneX;
+            y = 0.29 * safezoneH + safezoneY;
+            w = 0.31 * safezoneW;
+            h = 0.34 * safezoneH;
+            onLBSelChanged = "[] call ZeusJukebox_fnc_onPlaylistEntrySelected;";
+        };
+
+        // Load Selected Playlist Into Queue Button
+        class LoadPlaylistBtn: ZJ_RscButton
+        {
+            idc = 16022;
+            text = "Load to Queue";
+            x = 0.34 * safezoneW + safezoneX;
+            y = 0.64 * safezoneH + safezoneY;
+            w = 0.1 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onPlaylistLoad;";
+            tooltip = "Append the selected playlist's tracks to the current queue";
+            colorBackground[] = COLOR_BLUE;
+            colorFocused[] = COLOR_BLUE;
+            colorBackgroundActive[] = COLOR_BLUE_ACTIVE;
+        };
+
+        // Rename Selected Playlist Button
+        class RenamePlaylistBtn: ZJ_RscButton
+        {
+            idc = 16023;
+            text = "Rename Selected";
+            x = 0.445 * safezoneW + safezoneX;
+            y = 0.64 * safezoneH + safezoneY;
+            w = 0.1 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onPlaylistRename;";
+            tooltip = "Rename the selected playlist using the name field above";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_40;
+        };
+
+        // Delete Selected Playlist Button
+        class DeletePlaylistBtn: ZJ_RscButton
+        {
+            idc = 16024;
+            text = "Delete Selected";
+            x = 0.55 * safezoneW + safezoneX;
+            y = 0.64 * safezoneH + safezoneY;
+            w = 0.1 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onPlaylistDelete;";
+            tooltip = "Delete the selected playlist";
+            colorBackground[] = COLOR_RED;
+            colorFocused[] = COLOR_RED;
+            colorBackgroundActive[] = COLOR_RED_ACTIVE;
+        };
     };
 };

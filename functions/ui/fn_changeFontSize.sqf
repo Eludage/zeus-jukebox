@@ -50,8 +50,8 @@ private _listTitleLabelSize = [0.030, 0.035, 0.040, 0.045, 0.050];
 private _listNormalLabelSize = [0.020, 0.025, 0.030, 0.035, 0.040];
 
 // Define control categories
-private _listBigButtons = [15011, 15803, 15903];
-private _listTitleLabels = [15101, 15102, 15103, 15104, 15105, 15106, 15802, 15902];
+private _listBigButtons = [15011, 15803, 15903, 16003];
+private _listTitleLabels = [15101, 15102, 15103, 15104, 15105, 15106, 15802, 15902, 16002];
 private _listNormalLabels = [
 15201, 15202, 15203, 15204, 15205, 15206, 15207, 15208, // Track Info Labels
 15301, 15305, 15306, 15307, 15308, 15309, 15310, 15311, 15312, 15313, // Preview Labels
@@ -62,7 +62,9 @@ private _listNormalLabels = [
 15811, 15812, 15813, 15814, 15815, // Music List Settings Overlay - Sort row
 15821, 15822, 15823, // Music List Settings Overlay - Hide No Duration row
 15831, 15832, 15833, // Music List Settings Overlay - Hide Blacklisted row
-15905, 15906 // Track History Overlay - listbox and Clear History button
+15905, 15906, // Track History Overlay - listbox and Clear History button
+16010, 16011, 16012, 16013, // Manage Song Lists Overlay - name field and save/update buttons
+16020, 16021, 16022, 16023, 16024 // Manage Song Lists Overlay - listbox and load/rename/delete buttons
 ];
 
 // Get sizes for current level
