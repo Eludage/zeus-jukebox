@@ -43,6 +43,14 @@ missionNamespace setVariable ["ZeusJukebox_currentlyPlayingDuration", _duration,
 missionNamespace setVariable ["ZeusJukebox_currentlyPlayingActive", true, true];
 missionNamespace setVariable ["ZeusJukebox_currentlyPlayingSoundFile", _soundFile, true];
 
+// Append to track history (mission-scoped, capped to bound unbounded growth over a session)
+private _history = missionNamespace getVariable ["ZeusJukebox_trackHistory", []];
+_history pushBack [_trackClass, _displayName, _duration, _soundFile, serverTime];
+if (count _history > 50) then {
+	_history deleteAt 0;
+};
+missionNamespace setVariable ["ZeusJukebox_trackHistory", _history, true];
+
 // Always use the class name for playMusic — raw file paths from CfgMusic's sound[]
 // array reference packed PBO files that cannot be opened directly by playMusic.
 // The _soundFile is kept for display/metadata purposes only.
@@ -71,5 +79,6 @@ missionNamespace setVariable ["ZeusJukebox_currentlyPlayingUpdateHandle", _handl
 
 // Trigger UI update for all registered Zeuses
 [] call ZeusJukebox_fnc_remoteTriggerUpdateUiCurrentlyPlaying;
+[] call ZeusJukebox_fnc_remoteTriggerUpdateUiHistory;
 
 true

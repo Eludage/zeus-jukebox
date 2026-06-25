@@ -38,6 +38,15 @@ class CfgFunctions
             class onMusicListSettingsClose {};   // Music List Settings overlay close (X) button
         };
 
+        // ===== UI Actions - Track History =====
+        class actions_history
+        {
+            file = "ZeusJukebox\functions\actions\history";
+            class onTrackHistoryOpen {};         // Track History button (open overlay)
+            class onTrackHistoryClose {};        // Track History overlay close (X) button
+            class onClearTrackHistoryBtn {};     // Clear History button
+        };
+
         // ===== UI Actions - Music List Settings =====
         class actions_musiclistSettings
         {
@@ -132,6 +141,7 @@ class CfgFunctions
             class remoteRemoveSong {};                 // Remove song for all clients
             class remoteTriggerUpdateUiCurrentlyPlaying {}; // Trigger UI update for currently playing
             class remoteTriggerUpdateUiQueue {};       // Trigger UI update for queue
+            class remoteTriggerUpdateUiHistory {};     // Trigger UI update for track history + played highlight
         };
 
         // ===== UI Updates & Management =====
@@ -147,6 +157,7 @@ class CfgFunctions
             class handlePlayingMusicProgress {}; // Handle track progress and autoplay/loop
             class updateUiCurrentlyPlaying {};   // Updates currently playing UI
             class updateUiQueue {};              // Updates queue UI
+            class updateUiHistory {};            // Updates track history overlay UI
             class getNextInQueue {};             // Get and remove next track from queue
             class checkAutoplay {};              // Check if autoplay should trigger
             class changeFontSize {};             // Adjust UI font size
@@ -157,6 +168,7 @@ class CfgFunctions
         {
             file = "ZeusJukebox\functions\utilities";
             class formatDuration {};             // Format seconds to MM:SS
+            class formatTimeAgo {};              // Format elapsed serverTime into a relative "time ago" string
             class getTrackConfig {};             // Get track info from CfgMusic
             class getModVersion {};              // Get current mod version string
             class migrateProfileData {};         // Migrate profileNamespace data to latest version

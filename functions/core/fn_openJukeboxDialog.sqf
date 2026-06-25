@@ -98,6 +98,11 @@ if (_created) then {
             missionNamespace setVariable ["ZeusJukebox_queue", [], true];
         };
 
+        // Initialize Track History from missionNamespace
+        if (isNil {missionNamespace getVariable "ZeusJukebox_trackHistory"}) then {
+            missionNamespace setVariable ["ZeusJukebox_trackHistory", [], true];
+        };
+
         // Initialize Autoplay from missionNamespace
         if (isNil {missionNamespace getVariable "ZeusJukebox_autoplay"}) then {
             missionNamespace setVariable ["ZeusJukebox_autoplay", false, true];
@@ -110,6 +115,9 @@ if (_created) then {
 
         // Music List Settings overlay starts closed
         uiNamespace setVariable ["ZeusJukebox_settingsOverlayOpen", false];
+
+        // Track History overlay starts closed
+        uiNamespace setVariable ["ZeusJukebox_historyOverlayOpen", false];
 
         // Detect display aspect ratio and set maximum font size level
         if (isNil {uiNamespace getVariable "ZeusJukebox_maxFontSizeLevel"}) then {
@@ -130,6 +138,14 @@ if (_created) then {
             15811, 15812, 15813, 15814, 15815,
             15821, 15822, 15823,
             15831, 15832, 15833
+        ];
+
+        // Track History overlay starts hidden
+        {
+            private _ctrl = _display displayCtrl _x;
+            if (!isNull _ctrl) then { _ctrl ctrlShow false; };
+        } forEach [
+            15900, 15901, 15902, 15903, 15904, 15905, 15906
         ];
 
         // Update Favorites Filter button state
@@ -215,6 +231,9 @@ if (_created) then {
 
         // Refresh queue display
         [] call ZeusJukebox_fnc_updateUiQueue;
+
+        // Refresh track history display (overlay starts hidden but should have fresh data)
+        [] call ZeusJukebox_fnc_updateUiHistory;
     };
 } else {
     diag_log "[ZeusJukebox] Error: Failed to create dialog";

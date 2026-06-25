@@ -819,6 +819,21 @@ class ZeusJukebox_Dialog
             colorFocused[] = COLOR_GOLDEN_BROWN;
             colorBackgroundActive[] = COLOR_GOLDEN_BROWN_ACTIVE;
         };
+        // Track History button - opens the Track History overlay
+        class MusicHistoryBtn: ZJ_RscButton
+        {
+            idc = 15512;
+            text = "Played Music History";
+            x = 0.25 * safezoneW + safezoneX;
+            y = 0.83 * safezoneH + safezoneY;
+            w = 0.08 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onTrackHistoryOpen;";
+            tooltip = "View Track History";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_50;
+        };
         // ============== CURRENTLY PLAYING CONTENT ==============
         // No song selected placeholder - covers entire currently playing box
         class CurrentlyPlayingNoSongText: ZJ_RscPanel
@@ -1354,6 +1369,96 @@ class ZeusJukebox_Dialog
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onMusicListSettingsClose;";
             colorBackground[] = COLOR_RED;
+            colorBackgroundActive[] = COLOR_RED_ACTIVE;
+        };
+
+        // ============== TRACK HISTORY OVERLAY ==============
+        // All controls below are hidden at dialog init (fn_openJukeboxDialog.sqf)
+        // and toggled together by onTrackHistoryOpen / onTrackHistoryClose.
+        // Declared last so they paint on top of every other control in this dialog,
+        // including the Music List Settings overlay (the two are never shown at once).
+
+        // Dim layer - see SettingsOverlayDim above for why this is a plain CT_STATIC
+        // panel rather than a click-blocker; interaction blocking is done via ctrlEnable
+        // in onTrackHistoryOpen.sqf / onTrackHistoryClose.sqf.
+        class HistoryOverlayDim: ZJ_RscPanel
+        {
+            idc = 15900;
+            x = 0.15 * safezoneW + safezoneX;
+            y = 0.1 * safezoneH + safezoneY;
+            w = 0.7 * safezoneW;
+            h = 0.8 * safezoneH;
+            colorBackground[] = COLOR_BLACK_65;
+        };
+
+        class HistoryOverlayBackground: ZJ_RscPanel
+        {
+            idc = 15901;
+            x = 0.33 * safezoneW + safezoneX;
+            y = 0.18 * safezoneH + safezoneY;
+            w = 0.34 * safezoneW;
+            h = 0.5 * safezoneH;
+            colorBackground[] = COLOR_GREY_10;
+        };
+
+        // Title Label - top left corner, aligned with the close button
+        class HistoryOverlayTitle: ZJ_RscBoxTitle
+        {
+            idc = 15902;
+            text = "Track History";
+            x = 0.34 * safezoneW + safezoneX;
+            y = 0.19 * safezoneH + safezoneY;
+            w = 0.2 * safezoneW;
+            h = 0.025 * safezoneH;
+        };
+
+        // Close Button (Red X)
+        class HistoryOverlayCloseButton: ZJ_RscButton
+        {
+            idc = 15903;
+            text = "X";
+            x = 0.635 * safezoneW + safezoneX;
+            y = 0.19 * safezoneH + safezoneY;
+            w = 0.025 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onTrackHistoryClose;";
+            colorBackground[] = COLOR_RED;
+            colorBackgroundActive[] = COLOR_RED_ACTIVE;
+        };
+
+        // White border around the overlay panel.
+        class HistoryOverlayBorder: ZJ_RscStatic
+        {
+            idc = 15904;
+            style = 64; // ST_FRAME
+            x = 0.33 * safezoneW + safezoneX;
+            y = 0.18 * safezoneH + safezoneY;
+            w = 0.34 * safezoneW;
+            h = 0.5 * safezoneH;
+        };
+
+        // List of previously played tracks, newest first
+        class HistoryList: ZJ_RscListbox
+        {
+            idc = 15905;
+            x = 0.34 * safezoneW + safezoneX;
+            y = 0.225 * safezoneH + safezoneY;
+            w = 0.32 * safezoneW;
+            h = 0.40 * safezoneH;
+        };
+
+        // Clear History Button
+        class HistoryClearBtn: ZJ_RscButton
+        {
+            idc = 15906;
+            text = "Clear History";
+            x = 0.34 * safezoneW + safezoneX;
+            y = 0.635 * safezoneH + safezoneY;
+            w = 0.12 * safezoneW;
+            h = 0.03 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onClearTrackHistoryBtn;";
+            colorBackground[] = COLOR_RED;
+            colorFocused[] = COLOR_RED;
             colorBackgroundActive[] = COLOR_RED_ACTIVE;
         };
     };

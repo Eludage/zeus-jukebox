@@ -21,6 +21,7 @@ params [["_forceRebuild", false]];
 // Color constants used in this function (runtime constants, mirror of dialog macros)
 private _COLOR_HEADER = [1, 0.8, 0, 1]; // gold/yellow for category headers
 private _COLOR_TRACK = [1, 1, 1, 1];     // white for track entries
+private _COLOR_TRACK_PLAYED = [0.6, 0.6, 0.6, 1]; // dim grey for already-played tracks
 
 // Prevent re-entry (can happen when lbClear triggers selection change)
 if (uiNamespace getVariable ["ZeusJukebox_isPopulating", false]) exitWith {};
@@ -180,6 +181,16 @@ private _hideNoDuration = uiNamespace getVariable ["ZeusJukebox_hideNoDuration",
 private _hideBlacklisted = uiNamespace getVariable ["ZeusJukebox_hideBlacklisted", false];
 private _blacklistedEntries = getArray (configFile >> "ZeusJukebox_Blacklist" >> "entries");
 
+// Build a lookup of already-played tracks for the played-indicator/tint below.
+// Keyed on className+soundFile (not className alone) so a classname collision
+// between unrelated tracks from different mods doesn't falsely mark both as played.
+private _history = missionNamespace getVariable ["ZeusJukebox_trackHistory", []];
+private _playedKeys = createHashMap;
+{
+    _x params ["_hClassName", "", "", "_hSoundFile"];
+    _playedKeys set [_hClassName + "|" + _hSoundFile, true];
+} forEach _history;
+
 // Get track sort preferences (set via the Music List Settings overlay)
 private _sortByTime = (uiNamespace getVariable ["ZeusJukebox_sortMode", "alphabetical"]) == "time";
 private _sortAscending = (uiNamespace getVariable ["ZeusJukebox_sortDirection", "ascending"]) == "ascending";
@@ -271,13 +282,17 @@ _groupNames sort true;
             private _isFav = (_favorites find _className) != -1;
             private _favIndicator = if (_isFav) then { " *" } else { "" };
 
-            // Create indented list entry with duration and favorite indicator
-            private _listEntry = format ["     ► %1 (%2)%3", _displayName, _durationStr, _favIndicator];
+            // Check if this track has already been played
+            private _isPlayed = _playedKeys getOrDefault [_className + "|" + _soundFile, false];
+            private _playedIndicator = if (_isPlayed) then { " [Played]" } else { "" };
+
+            // Create indented list entry with duration, favorite and played indicators
+            private _listEntry = format ["     ► %1 (%2)%3%4", _displayName, _durationStr, _favIndicator, _playedIndicator];
 
             private _lbIndex = _listBox lbAdd _listEntry;
             _listBox lbSetData [_lbIndex, _className + "|" + _soundFile];
             _listBox lbSetValue [_lbIndex, _duration];
-            _listBox lbSetColor [_lbIndex, _COLOR_TRACK];  // White color for tracks
+            _listBox lbSetColor [_lbIndex, if (_isPlayed) then { _COLOR_TRACK_PLAYED } else { _COLOR_TRACK }];
 
             // Store track data
             _trackData pushBack [_className, _displayName, _duration, _soundFile];
