@@ -95,6 +95,7 @@ This section lists the main dialog ID (IDD) and the control IDCs used in the Juk
     - 15503 → MusicList — the Available Music listbox (single-click selects/loads preview; double-click adds to queue)
     - 15504 → MusicGroupByLabel — label "Group by:"
     - 15505 → MusicGroupByAddonBtn — Toggles to grouping by Addon (visible when current mode is not Addon)
+    - 15514 → MusicShowFavoriteLabel — label "Show:" (precedes the Favorites filter buttons)
     - 15506 → MusicFavoriteOff — Favorites filter OFF button (visible when filter is inactive)
     - 15507 → MusicFavoriteOn — Favorites filter ON button (visible when filter is active)
     - 15508 → MusicMarkFavoriteBtn — "Mark Favorite" button (visible when the selected track is not a favorite)

@@ -321,7 +321,7 @@ class ZeusJukebox_Dialog
             text = "Available Music";
             x = 0.16 * safezoneW + safezoneX;
             y = 0.29 * safezoneH + safezoneY;
-            w = 0.1 * safezoneW;
+            w = 0.07 * safezoneW;
             h = 0.025 * safezoneH;
         };
         // Currently Playing Label
@@ -674,8 +674,8 @@ class ZeusJukebox_Dialog
         class MusicGroupByLabel: ZJ_RscTextLabel
         {
             idc = 15504;
-            text = "Group by";
-            x = 0.27 * safezoneW + safezoneX;
+            text = "Group by:";
+            x = 0.24 * safezoneW + safezoneX;
             y = 0.29 * safezoneH + safezoneY;
             w = 0.03 * safezoneW;
             h = 0.025 * safezoneH;
@@ -686,7 +686,7 @@ class ZeusJukebox_Dialog
         {
             idc = 15505;
             text = "Addon";
-            x = 0.3 * safezoneW + safezoneX;
+            x = 0.27 * safezoneW + safezoneX;
             y = 0.29 * safezoneH + safezoneY;
             w = 0.04 * safezoneW;
             h = 0.025 * safezoneH;
@@ -701,7 +701,7 @@ class ZeusJukebox_Dialog
         {
             idc = 15509;
             text = "Theme";
-            x = 0.3 * safezoneW + safezoneX;
+            x = 0.27 * safezoneW + safezoneX;
             y = 0.29 * safezoneH + safezoneY;
             w = 0.04 * safezoneW;
             h = 0.025 * safezoneH;
@@ -716,7 +716,7 @@ class ZeusJukebox_Dialog
         {
             idc = 15510;
             text = "Music Class";
-            x = 0.3 * safezoneW + safezoneX;
+            x = 0.27 * safezoneW + safezoneX;
             y = 0.29 * safezoneH + safezoneY;
             w = 0.04 * safezoneW;
             h = 0.025 * safezoneH;
@@ -725,6 +725,17 @@ class ZeusJukebox_Dialog
             colorBackground[] = COLOR_GREY_30;
             colorFocused[] = COLOR_GREY_30;
             colorBackgroundActive[] = COLOR_GREY_50;
+        };
+        // Show Favorite label
+        class MusicShowFavoriteLabel: ZJ_RscTextLabel
+        {
+            idc = 15514;
+            text = "Show:";
+            x = 0.325 * safezoneW + safezoneX;
+            y = 0.29 * safezoneH + safezoneY;
+            w = 0.025 * safezoneW;
+            h = 0.025 * safezoneH;
+            colorText[] = COLOR_GREY_70;
         };
         // Favorite filter button
         class MusicFavoriteOff: ZJ_RscButton
