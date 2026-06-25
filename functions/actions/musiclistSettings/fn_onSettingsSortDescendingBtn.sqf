@@ -24,4 +24,6 @@ private _btnDescending = _display displayCtrl 15815;
 if (!isNull _btnAscending) then { _btnAscending ctrlShow true; };
 if (!isNull _btnDescending) then { _btnDescending ctrlShow false; };
 
+[] call ZeusJukebox_fnc_updateUiMusicList;
+
 true

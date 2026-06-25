@@ -162,6 +162,10 @@ if (!isNull _searchCtrl) then {
 private _favoritesOnly = uiNamespace getVariable ["ZeusJukebox_filterFavoritesOnly", false];
 private _favorites = uiNamespace getVariable ["ZeusJukebox_favorites", []];
 
+// Get track sort preferences (set via the Music List Settings overlay)
+private _sortByTime = (uiNamespace getVariable ["ZeusJukebox_sortMode", "alphabetical"]) == "time";
+private _sortAscending = (uiNamespace getVariable ["ZeusJukebox_sortDirection", "ascending"]) == "ascending";
+
 // Store track data for later use
 private _trackData = [];
 
@@ -193,6 +197,16 @@ _groupNames sort true;
             (_favorites find _className) != -1
         };
     };
+
+    // Sort tracks within this category according to the stored sort preferences.
+    // Pair each track with its sort key so vanilla `sort` can order them - className
+    // is carried along as a deterministic tiebreak when keys are equal.
+    private _sortPairs = _filteredTracks apply {
+        _x params ["_className", "_displayName", "_duration"];
+        [(if (_sortByTime) then { _duration } else { toLower _displayName }), _x]
+    };
+    _sortPairs sort _sortAscending;
+    _filteredTracks = _sortPairs apply { _x select 1 };
 
     private _trackCount = count _filteredTracks;
 

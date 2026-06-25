@@ -24,4 +24,6 @@ private _btnByTime = _display displayCtrl 15813;
 if (!isNull _btnAlphabetical) then { _btnAlphabetical ctrlShow false; };
 if (!isNull _btnByTime) then { _btnByTime ctrlShow true; };
 
+[] call ZeusJukebox_fnc_updateUiMusicList;
+
 true
