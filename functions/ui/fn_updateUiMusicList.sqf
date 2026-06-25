@@ -84,6 +84,10 @@ if (count _groupedTracks == 0 || _forceRebuild) then {
         private _sound = getArray (_config >> "sound");
         private _soundFile = if (count _sound > 0) then { _sound select 0 } else { "" };
 
+        // Capture before the fallback below overwrites it, so the Hide-no-duration
+        // setting can still tell these apart from tracks with a real 180s duration
+        private _hasNoDuration = _duration == 0;
+
         if (_displayName == "") then { _displayName = _className; };
         if (_duration == 0) then { _duration = 180; };
 
@@ -126,7 +130,7 @@ if (count _groupedTracks == 0 || _forceRebuild) then {
             };
         };
 
-        private _trackInfo = [_className, _displayName, _duration, _soundFile];
+        private _trackInfo = [_className, _displayName, _duration, _soundFile, _hasNoDuration];
 
         if (_groupName in _groupedTracks) then {
             (_groupedTracks get _groupName) pushBack _trackInfo;
@@ -161,6 +165,9 @@ if (!isNull _searchCtrl) then {
 // Check if favorites-only filter is active
 private _favoritesOnly = uiNamespace getVariable ["ZeusJukebox_filterFavoritesOnly", false];
 private _favorites = uiNamespace getVariable ["ZeusJukebox_favorites", []];
+
+// Check if hiding tracks with no duration is active
+private _hideNoDuration = uiNamespace getVariable ["ZeusJukebox_hideNoDuration", false];
 
 // Get track sort preferences (set via the Music List Settings overlay)
 private _sortByTime = (uiNamespace getVariable ["ZeusJukebox_sortMode", "alphabetical"]) == "time";
@@ -198,6 +205,13 @@ _groupNames sort true;
         };
     };
 
+    // Further filter out tracks with no duration set in their config, if active
+    if (_hideNoDuration) then {
+        _filteredTracks = _filteredTracks select {
+            !(_x param [4, false])
+        };
+    };
+
     // Sort tracks within this category according to the stored sort preferences.
     // Pair each track with its sort key so vanilla `sort` can order them - className
     // is carried along as a deterministic tiebreak when keys are equal.
@@ -211,7 +225,7 @@ _groupNames sort true;
     private _trackCount = count _filteredTracks;
 
     // Skip categories with no matching tracks when searching or filtering favorites
-    if ((_searchText != "" || _favoritesOnly) && _trackCount == 0) then {
+    if ((_searchText != "" || _favoritesOnly || _hideNoDuration) && _trackCount == 0) then {
         continue;
     };
 
