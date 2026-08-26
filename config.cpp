@@ -35,6 +35,31 @@ class CfgFunctions
             class onThemeBtn {};                 // Group by Theme button
             class onMusicClassBtn {};            // Group by Music Class button
             class onMusicListSettings {};        // Music List Settings button
+            class onMusicListSettingsClose {};   // Music List Settings overlay close (X) button
+        };
+
+        // ===== UI Actions - Track History =====
+        class actions_history
+        {
+            file = "ZeusJukebox\functions\actions\history";
+            class onTrackHistoryOpen {};         // Track History button (open overlay)
+            class onTrackHistoryClose {};        // Track History overlay close (X) button
+            class onClearTrackHistoryBtn {};     // Clear History button
+            class onTrackHistoryDblClick {};     // Double-click a history entry to re-add it to the queue
+        };
+
+        // ===== UI Actions - Music List Settings =====
+        class actions_musiclistSettings
+        {
+            file = "ZeusJukebox\functions\actions\musiclistSettings";
+            class onSettingsSortAlphabeticalBtn {}; // Settings: switch sort to by Time
+            class onSettingsSortByTimeBtn {};       // Settings: switch sort to Alphabetical
+            class onSettingsSortAscendingBtn {};    // Settings: switch sort direction to Descending
+            class onSettingsSortDescendingBtn {};   // Settings: switch sort direction to Ascending
+            class onSettingsHideNoDurationYesBtn {}; // Settings: stop hiding music with no duration
+            class onSettingsHideNoDurationNoBtn {};  // Settings: start hiding music with no duration
+            class onSettingsHideBlacklistedYesBtn {}; // Settings: stop hiding blacklisted music
+            class onSettingsHideBlacklistedNoBtn {};  // Settings: start hiding blacklisted music
         };
 
         // ===== UI Actions - Options =====
@@ -86,7 +111,14 @@ class CfgFunctions
             class onQueuePreview {};             // Queue preview button
             class onQueueRemove {};              // Queue remove button
             class onQueueUp {};                  // Move up button
-            class onManageSongList {};           // Manage Song List button
+            class onManageSongList {};           // Manage Song List button (opens Manage Song Lists overlay)
+            class onManageSongListClose {};      // Manage Song Lists overlay close (X) button
+            class onPlaylistSaveNew {};          // Save current queue as a new playlist
+            class onPlaylistUpdateSelected {};   // Overwrite selected playlist with current queue
+            class onPlaylistLoad {};             // Load selected playlist into queue
+            class onPlaylistRename {};           // Rename selected playlist
+            class onPlaylistDelete {};           // Delete selected playlist
+            class onPlaylistEntrySelected {};    // Playlist entry selected
         };
 
         // ===== Core / Initialization =====
@@ -105,6 +137,8 @@ class CfgFunctions
         {
             file = "ZeusJukebox\functions\data";
             class loadFavorites {};              // Load favorites from profileNamespace
+            class loadPlaylists {};              // Load saved playlists from profileNamespace
+            class savePlaylists {};              // Persist saved playlists to profileNamespace
         };
 
         // ===== Remote Executions =====
@@ -117,6 +151,8 @@ class CfgFunctions
             class remoteRemoveSong {};                 // Remove song for all clients
             class remoteTriggerUpdateUiCurrentlyPlaying {}; // Trigger UI update for currently playing
             class remoteTriggerUpdateUiQueue {};       // Trigger UI update for queue
+            class remoteTriggerUpdateUiHistory {};     // Trigger UI update for track history + played highlight
+            class remoteAddClassNamesToQueue {};       // Validate class names and append them to the queue for all Zeuses
         };
 
         // ===== UI Updates & Management =====
@@ -125,6 +161,7 @@ class CfgFunctions
             file = "ZeusJukebox\functions\ui";
             class updateUiMusicList {};          // Updates music list UI
             class updateUiTrackInfo {};          // Updates Track Info section
+            class updateUiFavoriteMarkBtn {};    // Updates Mark/Unmark Favorite button to match selected track
             class clearPreviewArea {};           // Clear the preview area
             class handlePreviewMusicProgress {}; // Handle preview track progress
             class updateUiPreviewArea {};        // Updates preview UI
@@ -132,6 +169,8 @@ class CfgFunctions
             class handlePlayingMusicProgress {}; // Handle track progress and autoplay/loop
             class updateUiCurrentlyPlaying {};   // Updates currently playing UI
             class updateUiQueue {};              // Updates queue UI
+            class updateUiHistory {};            // Updates track history overlay UI
+            class updateUiManageSongLists {};    // Updates Manage Song Lists overlay UI
             class getNextInQueue {};             // Get and remove next track from queue
             class checkAutoplay {};              // Check if autoplay should trigger
             class changeFontSize {};             // Adjust UI font size
@@ -142,7 +181,10 @@ class CfgFunctions
         {
             file = "ZeusJukebox\functions\utilities";
             class formatDuration {};             // Format seconds to MM:SS
+            class formatTimeAgo {};              // Format elapsed serverTime into a relative "time ago" string
             class getTrackConfig {};             // Get track info from CfgMusic
+            class getModVersion {};              // Get current mod version string
+            class migrateProfileData {};         // Migrate profileNamespace data to latest version
         };
     };
 };
@@ -206,3 +248,6 @@ class CfgVehicles
 
 // Include dialog definitions from external file
 #include "dialogs.hpp"
+
+// Include blacklisted track classname+soundFile entries from external file
+#include "blacklist.hpp"

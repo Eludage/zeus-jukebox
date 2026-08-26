@@ -24,6 +24,7 @@ Zeus Jukebox is a client-side Arma 3 mod that allows Zeus players to manage and 
 Used for state that must be synchronized across all Zeus users:
 - **Currently Playing**: Track, active status, start time, paused position, duration, looping, fading
 - **Queue**: Array of queued tracks `[className, displayName, duration, soundFile]`
+- **Track History**: Array of previously played tracks `[className, displayName, duration, soundFile, playedAt]`, oldest first, capped at the 50 most recent entries
 - **Autoplay**: Whether next track should play automatically
 - **Zeus Registry**: List of Zeus players with dialog open
 
@@ -32,13 +33,17 @@ Used for state that is local to each Zeus:
 - **Preview**: Track, playing status, start time, paused position, duration
 - **Autoplay Preview**: Whether selecting a track immediately starts preview playback
 - **Music List**: Cached track data, search state, grouping mode, expanded categories
+- **Music List Settings**: Sort mode/direction, hide-no-duration toggle, hide-blacklisted toggle, settings-overlay-open flag
+- **Track History overlay**: history-overlay-open flag
+- **Manage Song Lists**: Cached playlists, selected playlist name, manage-overlay-open flag
 - **Favorites**: Marked favorite tracks (synced with `profileNamespace`)
 - **UI Preferences**: Font size, listen/mute state for Zeus
 - **Logs**: Local log entries
 
 #### `profileNamespace` (Persistent State)
 Used for state that persists across game sessions:
-- **Favorites**: Saved list of favorite tracks
+- **Favorites**: Saved list of favorite tracks (versioned and migrated via `ZeusJukebox_fnc_migrateProfileData`)
+- **Playlists**: Saved playlist records `[name, classNames]`, persisted via `ZeusJukebox_fnc_savePlaylists`/`loadPlaylists`
 
 ## Function Architecture
 
@@ -53,29 +58,29 @@ Used for state that persists across game sessions:
 - **UI Event Handlers**: Respond to button clicks and user interactions
 - **Delegate to Remote Execution**: Don't manipulate state directly
 - **Pattern**: Get user input → validate → call remote execution function
-- **5 subfolders**: musiclist (9 functions), options (4 functions), currentlyPlaying (8 functions), preview (7 functions), queue (8 functions)
-- **36 total functions** organized by UI section
+- **7 subfolders**: musiclist (11 functions), musiclistSettings (8 functions), options (4 functions), currentlyPlaying (8 functions), preview (7 functions), queue (16 functions, including Manage Song Lists playlist actions), history (4 functions)
+- **58 total functions** organized by UI section
 
 #### 3. UI Functions (`functions/ui/`)
 - **UI Updates**: Read state from namespace and update controls
 - **Progress Handlers**: Monitor playback progress for preview and currently playing
 - **Clear Functions**: Reset UI areas and state
 - **Business Logic**: Autoplay, queue management, font size
-- **11 functions**: updateUiMusicList, clearPreviewArea, handlePreviewMusicProgress, updateUiPreviewArea, clearCurrentlyPlaying, handlePlayingMusicProgress, updateUiCurrentlyPlaying, updateUiQueue, getNextInQueue, checkAutoplay, changeFontSize
+- **14 functions**: updateUiMusicList, updateUiTrackInfo, clearPreviewArea, handlePreviewMusicProgress, updateUiPreviewArea, clearCurrentlyPlaying, handlePlayingMusicProgress, updateUiCurrentlyPlaying, updateUiQueue, updateUiHistory, updateUiManageSongLists, getNextInQueue, checkAutoplay, changeFontSize
 
 #### 4. Remote Execution Functions (`functions/remote/`)
 - **Cross-Client Operations**: Execute code on all clients or specific Zeus clients
 - **State Management**: Update `missionNamespace` state
 - **Trigger Functions**: Broadcast UI updates to all registered Zeuses
-- **6 functions**: remoteFadeSong, remotePauseSong, remotePlaySong, remoteRemoveSong, remoteTriggerUpdateUiCurrentlyPlaying, remoteTriggerUpdateUiQueue
+- **8 functions**: remoteFadeSong, remotePauseSong, remotePlaySong, remoteRemoveSong, remoteAddClassNamesToQueue, remoteTriggerUpdateUiCurrentlyPlaying, remoteTriggerUpdateUiQueue, remoteTriggerUpdateUiHistory
 
 #### 5. Data Functions (`functions/data/`)
-- **Favorites**: Load and persist favorite tracks
-- **1 function**: loadFavorites
+- **Favorites and Playlists**: Load and persist favorite tracks and saved playlists
+- **3 functions**: loadFavorites, loadPlaylists, savePlaylists
 
 #### 6. Utility Functions (`functions/utilities/`)
-- **Helper Functions**: Formatting and configuration retrieval
-- **2 functions**: formatDuration, getTrackConfig
+- **Helper Functions**: Formatting, configuration retrieval, version/migration helpers
+- **5 functions**: formatDuration, formatTimeAgo, getTrackConfig, getModVersion, migrateProfileData
 
 ## Data Flow Patterns
 
@@ -238,6 +243,18 @@ When a fade is triggered:
 - **Fade code**: skips `fadeMusic` on any client where a preview is currently playing at the moment the fade code executes.
 - **Preview started after fade begins**: `fn_onPreviewPlay` calls `0 fadeMusic 1` locally before `playMusic` so the preview is not pulled through the fading volume ramp.
 - **Unmute locally during fade**: `fn_onPlayingLocallyMutedBtn` calls `0 fadeMusic 1` locally before resuming the currently playing track for the same reason.
+
+### 7. Overlay Pattern
+Music List Settings, Track History, and Manage Song Lists are each implemented as a modal overlay nested inside `ZeusJukebox_Dialog` rather than a separate dialog, and all three follow the same mechanism:
+- A purely decorative dim panel (`CT_STATIC`, never captures clicks) covers the dialog while the overlay is open.
+- Every real interactive control outside the overlay's own IDC range is disabled via `ctrlEnable false` when the overlay opens, and re-enabled when it closes.
+- A dedicated `uiNamespace` flag (`ZeusJukebox_settingsOverlayOpen`, `ZeusJukebox_historyOverlayOpen`, `ZeusJukebox_manageSongListsOverlayOpen`) is checked by `updateUiCurrentlyPlaying`/`updateUiQueue` so externally-triggered refreshes (the playback-progress loop, another Zeus's remote trigger) can't silently re-enable controls the overlay just disabled.
+- The only way to close an overlay is its own "X" button — clicking outside the panel does not dismiss it, and the three overlays mutually disable each other's open button so they can never stack.
+
+See `doc/DEVELOPMENT_HELP.md` for the full per-overlay IDC reference.
+
+### 8. Blacklist Filtering
+Tracks with known-bad upstream metadata (wrong name or duration, from mods whose authors won't fix it) are listed as static config data in `blacklist.hpp` (`ZeusJukebox_Blacklist >> entries[]`), not a namespace variable. Entries are `"className|soundFile"` strings — matched on both fields so a classname collision with an unrelated, correctly-tagged track isn't hidden by mistake. `fn_updateUiMusicList.sqf` reads this array and filters matching tracks out of the Available Music list whenever `ZeusJukebox_hideBlacklisted` (toggled in the Music List Settings overlay) is true.
 
 ## Error Handling
 

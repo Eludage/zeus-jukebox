@@ -321,7 +321,7 @@ class ZeusJukebox_Dialog
             text = "Available Music";
             x = 0.16 * safezoneW + safezoneX;
             y = 0.29 * safezoneH + safezoneY;
-            w = 0.1 * safezoneW;
+            w = 0.07 * safezoneW;
             h = 0.025 * safezoneH;
         };
         // Currently Playing Label
@@ -571,6 +571,7 @@ class ZeusJukebox_Dialog
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onAutoplayPreviewOnBtn;";
+            tooltip = "Click to enable preview autoplay";
             colorBackground[] = COLOR_DARK_RED;
             colorFocused[] = COLOR_DARK_RED;
             colorBackgroundActive[] = COLOR_DARK_RED_ACTIVE;
@@ -585,6 +586,7 @@ class ZeusJukebox_Dialog
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onAutoplayPreviewOffBtn;";
+            tooltip = "Click to disable preview autoplay";
             colorBackground[] = COLOR_GREEN;
             colorFocused[] = COLOR_GREEN;
             colorBackgroundActive[] = COLOR_GREEN_ACTIVE;
@@ -672,8 +674,8 @@ class ZeusJukebox_Dialog
         class MusicGroupByLabel: ZJ_RscTextLabel
         {
             idc = 15504;
-            text = "Group by";
-            x = 0.27 * safezoneW + safezoneX;
+            text = "Group by:";
+            x = 0.24 * safezoneW + safezoneX;
             y = 0.29 * safezoneH + safezoneY;
             w = 0.03 * safezoneW;
             h = 0.025 * safezoneH;
@@ -684,7 +686,7 @@ class ZeusJukebox_Dialog
         {
             idc = 15505;
             text = "Addon";
-            x = 0.3 * safezoneW + safezoneX;
+            x = 0.27 * safezoneW + safezoneX;
             y = 0.29 * safezoneH + safezoneY;
             w = 0.04 * safezoneW;
             h = 0.025 * safezoneH;
@@ -699,7 +701,7 @@ class ZeusJukebox_Dialog
         {
             idc = 15509;
             text = "Theme";
-            x = 0.3 * safezoneW + safezoneX;
+            x = 0.27 * safezoneW + safezoneX;
             y = 0.29 * safezoneH + safezoneY;
             w = 0.04 * safezoneW;
             h = 0.025 * safezoneH;
@@ -714,7 +716,7 @@ class ZeusJukebox_Dialog
         {
             idc = 15510;
             text = "Music Class";
-            x = 0.3 * safezoneW + safezoneX;
+            x = 0.27 * safezoneW + safezoneX;
             y = 0.29 * safezoneH + safezoneY;
             w = 0.04 * safezoneW;
             h = 0.025 * safezoneH;
@@ -724,17 +726,28 @@ class ZeusJukebox_Dialog
             colorFocused[] = COLOR_GREY_30;
             colorBackgroundActive[] = COLOR_GREY_50;
         };
+        // Show Favorite label
+        class MusicShowFavoriteLabel: ZJ_RscTextLabel
+        {
+            idc = 15514;
+            text = "Show:";
+            x = 0.325 * safezoneW + safezoneX;
+            y = 0.29 * safezoneH + safezoneY;
+            w = 0.025 * safezoneW;
+            h = 0.025 * safezoneH;
+            colorText[] = COLOR_GREY_70;
+        };
         // Favorite filter button
         class MusicFavoriteOff: ZJ_RscButton
         {
             idc = 15506;
-            text = "*";
+            text = "All";
             x = 0.35 * safezoneW + safezoneX;
             y = 0.29 * safezoneH + safezoneY;
             w = 0.025 * safezoneW;
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onFavoriteOffBtn;";
-            tooltip = "Show favorites only";
+            tooltip = "Click to show favorites only";
             colorBackground[] = COLOR_GREY_30;
             colorFocused[] = COLOR_GREY_30;
             colorBackgroundActive[] = COLOR_GREY_50;
@@ -743,13 +756,13 @@ class ZeusJukebox_Dialog
         class MusicFavoriteOn: ZJ_RscButton
         {
             idc = 15507;
-            text = "*";
+            text = "Fav";
             x = 0.35 * safezoneW + safezoneX;
             y = 0.29 * safezoneH + safezoneY;
             w = 0.025 * safezoneW;
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onFavoriteOnBtn;";
-            tooltip = "Showing favorites only (click to show all)";
+            tooltip = "Click to show all tracks";
             colorBackground[] = COLOR_GOLDEN_BROWN;
             colorFocused[] = COLOR_GOLDEN_BROWN;
             colorBackgroundActive[] = COLOR_GOLDEN_BROWN_ACTIVE;
@@ -804,20 +817,50 @@ class ZeusJukebox_Dialog
             onLBSelChanged = "[] call ZeusJukebox_fnc_onMusicListEntrySelected;";
             onLBDblClick = "[] call ZeusJukebox_fnc_onMusicListDblClick;";
         };
-        // Mark/Unmark Favorite button
+        // Mark Favorite button (visible when selected track is not a favorite)
         class MusicMarkFavoriteBtn: ZJ_RscButton
         {
             idc = 15508;
-            text = "Mark/Unmark Favorite";
+            text = "Mark Favorite";
             x = 0.16 * safezoneW + safezoneX;
             y = 0.83 * safezoneH + safezoneY;
             w = 0.08 * safezoneW;
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onFavoriteMarkBtn;";
-            tooltip = "Toggle favorite status for selected track";
+            tooltip = "Mark selected track as favorite";
             colorBackground[] = COLOR_GOLDEN_BROWN;
             colorFocused[] = COLOR_GOLDEN_BROWN;
             colorBackgroundActive[] = COLOR_GOLDEN_BROWN_ACTIVE;
+        };
+        // Unmark Favorite button (visible when selected track is already a favorite)
+        class MusicUnmarkFavoriteBtn: ZJ_RscButton
+        {
+            idc = 15513;
+            text = "Unmark Favorite";
+            x = 0.16 * safezoneW + safezoneX;
+            y = 0.83 * safezoneH + safezoneY;
+            w = 0.08 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onFavoriteMarkBtn;";
+            tooltip = "Unmark selected track as favorite";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_50;
+        };
+        // Track History button - opens the Track History overlay
+        class MusicHistoryBtn: ZJ_RscButton
+        {
+            idc = 15512;
+            text = "Played Music History";
+            x = 0.25 * safezoneW + safezoneX;
+            y = 0.83 * safezoneH + safezoneY;
+            w = 0.08 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onTrackHistoryOpen;";
+            tooltip = "View Track History";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_50;
         };
         // ============== CURRENTLY PLAYING CONTENT ==============
         // No song selected placeholder - covers entire currently playing box
@@ -940,6 +983,7 @@ class ZeusJukebox_Dialog
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onPlayingLocallyMutedBtn;";
+            tooltip = "Click to listen locally";
             colorBackground[] = COLOR_DARK_RED;
             colorFocused[] = COLOR_DARK_RED;
             colorBackgroundActive[] = COLOR_DARK_RED_ACTIVE;
@@ -953,6 +997,7 @@ class ZeusJukebox_Dialog
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onPlayingLocallyUnmutedBtn;";
+            tooltip = "Click to mute locally";
             colorBackground[] = COLOR_GREEN;
             colorFocused[] = COLOR_GREEN;
             colorBackgroundActive[] = COLOR_GREEN_ACTIVE;
@@ -967,9 +1012,10 @@ class ZeusJukebox_Dialog
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onPlayingLoopingOffBtn;";
-            colorBackground[] = COLOR_BLUE;
-            colorFocused[] = COLOR_BLUE;
-            colorBackgroundActive[] = COLOR_BLUE_ACTIVE;
+            tooltip = "Click to enable looping";
+            colorBackground[] = COLOR_DARK_RED;
+            colorFocused[] = COLOR_DARK_RED;
+            colorBackgroundActive[] = COLOR_DARK_RED_ACTIVE;
         };
         // New hidden "Looping on" button (same position/size as Looping off). Shown when looping is active.
         class CurrentlyPlayingLoopOn: ZJ_RscButton
@@ -981,9 +1027,10 @@ class ZeusJukebox_Dialog
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onPlayingLoopingOnBtn;";
-            colorBackground[] = COLOR_BLUE;
-            colorFocused[] = COLOR_BLUE;
-            colorBackgroundActive[] = COLOR_BLUE_ACTIVE;
+            tooltip = "Click to disable looping";
+            colorBackground[] = COLOR_GREEN;
+            colorFocused[] = COLOR_GREEN;
+            colorBackgroundActive[] = COLOR_GREEN_ACTIVE;
         };
 
         // ============== QUEUE SECTION ==============
@@ -1008,6 +1055,7 @@ class ZeusJukebox_Dialog
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onQueueAutoplayOnBtn;";
+            tooltip = "Click to enable autoplay";
             colorBackground[] = COLOR_DARK_RED;
             colorFocused[] = COLOR_DARK_RED;
             colorBackgroundActive[] = COLOR_DARK_RED_ACTIVE;
@@ -1022,6 +1070,7 @@ class ZeusJukebox_Dialog
             w = 0.05 * safezoneW;
             h = 0.025 * safezoneH;
             action = "[] call ZeusJukebox_fnc_onQueueAutoplayOffBtn;";
+            tooltip = "Click to disable autoplay";
             colorBackground[] = COLOR_GREEN;
             colorFocused[] = COLOR_GREEN;
             colorBackgroundActive[] = COLOR_GREEN_ACTIVE;
@@ -1136,6 +1185,504 @@ class ZeusJukebox_Dialog
             colorFocused[] = COLOR_GREY_30;
             colorBackgroundActive[] = COLOR_GREY_50;
             sizeEx = 0.05;
+        };
+
+        // ============== MUSIC LIST SETTINGS OVERLAY ==============
+        // All controls below are hidden at dialog init (fn_openJukeboxDialog.sqf)
+        // and toggled together by onMusicListSettings / onMusicListSettingsClose.
+        // Declared last so they paint on top of every other control in this dialog.
+
+        // Dim layer - purely decorative background dimming for the rest of the
+        // dialog while the overlay is open. This is a plain CT_STATIC panel (never
+        // captures clicks, so it cannot suffer from Arma's click-priority bug where
+        // earlier-declared controls win hit-testing over later-declared ones).
+        // Actual interaction blocking is done by disabling every other interactive
+        // control via ctrlEnable in onMusicListSettings.sqf / onMusicListSettingsClose.sqf.
+        class SettingsOverlayDim: ZJ_RscPanel
+        {
+            idc = 15800;
+            x = 0.15 * safezoneW + safezoneX;
+            y = 0.1 * safezoneH + safezoneY;
+            w = 0.7 * safezoneW;
+            h = 0.8 * safezoneH;
+            colorBackground[] = COLOR_BLACK_65;
+        };
+
+        class SettingsOverlayBackground: ZJ_RscPanel
+        {
+            idc = 15801;
+            x = 0.38 * safezoneW + safezoneX;
+            y = 0.28 * safezoneH + safezoneY;
+            w = 0.24 * safezoneW;
+            h = 0.15 * safezoneH;
+            colorBackground[] = COLOR_GREY_10;
+        };
+
+        // White border around the overlay panel.
+        // Using colorText (white, inherited from ZJ_RscStatic) with a transparent fill.
+        class SettingsOverlayBorder: ZJ_RscStatic
+        {
+            idc = 15804;
+            style = 64; // ST_FRAME
+            x = 0.38 * safezoneW + safezoneX;
+            y = 0.28 * safezoneH + safezoneY;
+            w = 0.24 * safezoneW;
+            h = 0.15 * safezoneH;
+        };
+
+        // Title Label - top left corner, aligned with the close button
+        class SettingsOverlayTitle: ZJ_RscBoxTitle
+        {
+            idc = 15802;
+            text = "Music List Settings";
+            x = 0.39 * safezoneW + safezoneX;
+            y = 0.29 * safezoneH + safezoneY;
+            w = 0.1 * safezoneW;
+            h = 0.025 * safezoneH;
+        };
+
+        // Currently Sorting By Label
+        class SettingsOverlaySortLabel: ZJ_RscTextLabel
+        {
+            idc = 15811;
+            text = "Currently Sorting:";
+            x = 0.39 * safezoneW + safezoneX;
+            y = 0.33 * safezoneH + safezoneY;
+            w = 0.1 * safezoneW;
+            h = 0.025 * safezoneH;
+        };
+
+        class SettingsSortAlphabeticalBtn: ZJ_RscButton
+        {
+            idc = 15812;
+            text = "Alphabetically";
+            x = 0.50 * safezoneW + safezoneX;
+            y = 0.33 * safezoneH + safezoneY;
+            w = 0.05 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onSettingsSortAlphabeticalBtn;";
+            tooltip = "Switch to sorting by time";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_50;
+        };
+        class SettingsSortByTimeBtn: ZJ_RscButton
+        {
+            idc = 15813;
+            text = "by Time";
+            x = 0.50 * safezoneW + safezoneX;
+            y = 0.33 * safezoneH + safezoneY;
+            w = 0.05 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onSettingsSortByTimeBtn;";
+            tooltip = "Switch to sorting alphabetically";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_50;
+        };
+
+        class SettingsSortAscendingBtn: ZJ_RscButton
+        {
+            idc = 15814;
+            text = "Ascending";
+            x = 0.56 * safezoneW + safezoneX;
+            y = 0.33 * safezoneH + safezoneY;
+            w = 0.05 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onSettingsSortAscendingBtn;";
+            tooltip = "Switch to descending order";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_50;
+        };
+        class SettingsSortDescendingBtn: ZJ_RscButton
+        {
+            idc = 15815;
+            text = "Descending";
+            x = 0.56 * safezoneW + safezoneX;
+            y = 0.33 * safezoneH + safezoneY;
+            w = 0.05 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onSettingsSortDescendingBtn;";
+            tooltip = "Switch to ascending order";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_50;
+        };
+
+        // Hiding Music With No Duration Label
+        class SettingsOverlayHideNoDurationLabel: ZJ_RscTextLabel
+        {
+            idc = 15821;
+            text = "Hiding Music with no duration:";
+            x = 0.39 * safezoneW + safezoneX;
+            y = 0.36 * safezoneH + safezoneY;
+            w = 0.1 * safezoneW;
+            h = 0.025 * safezoneH;
+        };
+
+        // Hide-no-duration toggle (split into two: Yes (15811) and No (15812))
+        class SettingsHideNoDurationYesBtn: ZJ_RscButton
+        {
+            idc = 15822;
+            text = "Yes";
+            x = 0.50 * safezoneW + safezoneX;
+            y = 0.36 * safezoneH + safezoneY;
+            w = 0.05 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onSettingsHideNoDurationYesBtn;";
+            tooltip = "Click to show music with no duration";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_50;
+        };
+        class SettingsHideNoDurationNoBtn: ZJ_RscButton
+        {
+            idc = 15823;
+            text = "No";
+            x = 0.50 * safezoneW + safezoneX;
+            y = 0.36 * safezoneH + safezoneY;
+            w = 0.05 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onSettingsHideNoDurationNoBtn;";
+            tooltip = "Click to hide music with no duration";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_50;
+        };
+
+        // Hiding Blacklisted Music Label
+        class SettingsOverlayHideBlacklistedLabel: ZJ_RscTextLabel
+        {
+            idc = 15831;
+            text = "Hiding blacklisted Music:";
+            x = 0.39 * safezoneW + safezoneX;
+            y = 0.39 * safezoneH + safezoneY;
+            w = 0.1 * safezoneW;
+            h = 0.025 * safezoneH;
+        };
+
+        // Hide-blacklisted toggle (split into two: Yes (15813) and No (15814))
+        class SettingsHideBlacklistedYesBtn: ZJ_RscButton
+        {
+            idc = 15832;
+            text = "Yes";
+            x = 0.50 * safezoneW + safezoneX;
+            y = 0.39 * safezoneH + safezoneY;
+            w = 0.05 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onSettingsHideBlacklistedYesBtn;";
+            tooltip = "Click to show blacklisted music";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_50;
+        };
+        class SettingsHideBlacklistedNoBtn: ZJ_RscButton
+        {
+            idc = 15833;
+            text = "No";
+            x = 0.50 * safezoneW + safezoneX;
+            y = 0.39 * safezoneH + safezoneY;
+            w = 0.05 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onSettingsHideBlacklistedNoBtn;";
+            tooltip = "Click to hide blacklisted music";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_50;
+        };
+
+        // Close Button (Red X)
+        class SettingsOverlayCloseButton: ZJ_RscButton
+        {
+            idc = 15803;
+            text = "X";
+            x = 0.585 * safezoneW + safezoneX;
+            y = 0.29 * safezoneH + safezoneY;
+            w = 0.025 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onMusicListSettingsClose;";
+            colorBackground[] = COLOR_RED;
+            colorBackgroundActive[] = COLOR_RED_ACTIVE;
+        };
+
+        // ============== TRACK HISTORY OVERLAY ==============
+        // All controls below are hidden at dialog init (fn_openJukeboxDialog.sqf)
+        // and toggled together by onTrackHistoryOpen / onTrackHistoryClose.
+        // Declared last so they paint on top of every other control in this dialog,
+        // including the Music List Settings overlay (the two are never shown at once).
+
+        // Dim layer - see SettingsOverlayDim above for why this is a plain CT_STATIC
+        // panel rather than a click-blocker; interaction blocking is done via ctrlEnable
+        // in onTrackHistoryOpen.sqf / onTrackHistoryClose.sqf.
+        class HistoryOverlayDim: ZJ_RscPanel
+        {
+            idc = 15900;
+            x = 0.15 * safezoneW + safezoneX;
+            y = 0.1 * safezoneH + safezoneY;
+            w = 0.7 * safezoneW;
+            h = 0.8 * safezoneH;
+            colorBackground[] = COLOR_BLACK_65;
+        };
+
+        class HistoryOverlayBackground: ZJ_RscPanel
+        {
+            idc = 15901;
+            x = 0.33 * safezoneW + safezoneX;
+            y = 0.18 * safezoneH + safezoneY;
+            w = 0.34 * safezoneW;
+            h = 0.5 * safezoneH;
+            colorBackground[] = COLOR_GREY_10;
+        };
+
+        // Title Label - top left corner, aligned with the close button
+        class HistoryOverlayTitle: ZJ_RscBoxTitle
+        {
+            idc = 15902;
+            text = "Track History";
+            x = 0.34 * safezoneW + safezoneX;
+            y = 0.19 * safezoneH + safezoneY;
+            w = 0.2 * safezoneW;
+            h = 0.025 * safezoneH;
+        };
+
+        // Close Button (Red X)
+        class HistoryOverlayCloseButton: ZJ_RscButton
+        {
+            idc = 15903;
+            text = "X";
+            x = 0.635 * safezoneW + safezoneX;
+            y = 0.19 * safezoneH + safezoneY;
+            w = 0.025 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onTrackHistoryClose;";
+            colorBackground[] = COLOR_RED;
+            colorBackgroundActive[] = COLOR_RED_ACTIVE;
+        };
+
+        // White border around the overlay panel.
+        class HistoryOverlayBorder: ZJ_RscStatic
+        {
+            idc = 15904;
+            style = 64; // ST_FRAME
+            x = 0.33 * safezoneW + safezoneX;
+            y = 0.18 * safezoneH + safezoneY;
+            w = 0.34 * safezoneW;
+            h = 0.5 * safezoneH;
+        };
+
+        // List of previously played tracks, newest first
+        class HistoryList: ZJ_RscListbox
+        {
+            idc = 15905;
+            x = 0.34 * safezoneW + safezoneX;
+            y = 0.225 * safezoneH + safezoneY;
+            w = 0.32 * safezoneW;
+            h = 0.40 * safezoneH;
+            onLBDblClick = "[] call ZeusJukebox_fnc_onTrackHistoryDblClick;";
+        };
+
+        // Clear History Button
+        class HistoryClearBtn: ZJ_RscButton
+        {
+            idc = 15906;
+            text = "Clear History";
+            x = 0.34 * safezoneW + safezoneX;
+            y = 0.635 * safezoneH + safezoneY;
+            w = 0.12 * safezoneW;
+            h = 0.03 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onClearTrackHistoryBtn;";
+            colorBackground[] = COLOR_RED;
+            colorFocused[] = COLOR_RED;
+            colorBackgroundActive[] = COLOR_RED_ACTIVE;
+        };
+
+        // ============== MANAGE SONG LISTS OVERLAY ==============
+        // All controls below are hidden at dialog init (fn_openJukeboxDialog.sqf)
+        // and toggled together by onManageSongList / onManageSongListClose.
+        // Declared last so they paint on top of every other control in this dialog,
+        // including the Music List Settings and Track History overlays (never shown at once).
+
+        // Dim layer - see SettingsOverlayDim above for why this is a plain CT_STATIC
+        // panel rather than a click-blocker; interaction blocking is done via ctrlEnable
+        // in onManageSongList.sqf / onManageSongListClose.sqf.
+        class ManageSongListsOverlayDim: ZJ_RscPanel
+        {
+            idc = 16000;
+            x = 0.15 * safezoneW + safezoneX;
+            y = 0.1 * safezoneH + safezoneY;
+            w = 0.7 * safezoneW;
+            h = 0.8 * safezoneH;
+            colorBackground[] = COLOR_BLACK_65;
+        };
+
+        class ManageSongListsOverlayBackground: ZJ_RscPanel
+        {
+            idc = 16001;
+            x = 0.33 * safezoneW + safezoneX;
+            y = 0.15 * safezoneH + safezoneY;
+            w = 0.34 * safezoneW;
+            h = 0.6 * safezoneH;
+            colorBackground[] = COLOR_GREY_10;
+        };
+
+        // Title Label - top left corner, aligned with the close button
+        class ManageSongListsOverlayTitle: ZJ_RscBoxTitle
+        {
+            idc = 16002;
+            text = "Manage Song Lists";
+            x = 0.34 * safezoneW + safezoneX;
+            y = 0.16 * safezoneH + safezoneY;
+            w = 0.2 * safezoneW;
+            h = 0.025 * safezoneH;
+        };
+
+        // Close Button (Red X)
+        class ManageSongListsOverlayCloseButton: ZJ_RscButton
+        {
+            idc = 16003;
+            text = "X";
+            x = 0.635 * safezoneW + safezoneX;
+            y = 0.16 * safezoneH + safezoneY;
+            w = 0.025 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onManageSongListClose;";
+            colorBackground[] = COLOR_RED;
+            colorBackgroundActive[] = COLOR_RED_ACTIVE;
+        };
+
+        // White border around the overlay panel.
+        class ManageSongListsOverlayBorder: ZJ_RscStatic
+        {
+            idc = 16004;
+            style = 64; // ST_FRAME
+            x = 0.33 * safezoneW + safezoneX;
+            y = 0.15 * safezoneH + safezoneY;
+            w = 0.34 * safezoneW;
+            h = 0.6 * safezoneH;
+        };
+
+        // Playlist Name Label
+        class PlaylistNameLabel: ZJ_RscTextLabel
+        {
+            idc = 16010;
+            text = "Playlist Name:";
+            x = 0.34 * safezoneW + safezoneX;
+            y = 0.195 * safezoneH + safezoneY;
+            w = 0.1 * safezoneW;
+            h = 0.025 * safezoneH;
+        };
+
+        // Playlist Name Field (used for both Save as New and Rename)
+        class PlaylistNameField: ZJ_RscEdit
+        {
+            idc = 16011;
+            x = 0.44 * safezoneW + safezoneX;
+            y = 0.195 * safezoneH + safezoneY;
+            w = 0.21 * safezoneW;
+            h = 0.025 * safezoneH;
+        };
+
+        // Save Current Queue as New Playlist Button
+        class SaveNewPlaylistBtn: ZJ_RscButton
+        {
+            idc = 16012;
+            text = "Save as New";
+            x = 0.34 * safezoneW + safezoneX;
+            y = 0.225 * safezoneH + safezoneY;
+            w = 0.155 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onPlaylistSaveNew;";
+            tooltip = "Save the current queue as a new playlist";
+            colorBackground[] = COLOR_GREEN;
+            colorFocused[] = COLOR_GREEN;
+            colorBackgroundActive[] = COLOR_GREEN_ACTIVE;
+        };
+
+        // Overwrite Selected Playlist Button
+        class UpdateSelectedPlaylistBtn: ZJ_RscButton
+        {
+            idc = 16013;
+            text = "Update Selected";
+            x = 0.5 * safezoneW + safezoneX;
+            y = 0.225 * safezoneH + safezoneY;
+            w = 0.155 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onPlaylistUpdateSelected;";
+            tooltip = "Overwrite the selected playlist with the current queue";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_40;
+        };
+
+        // Saved Playlists Label
+        class PlaylistsListLabel: ZJ_RscTextLabel
+        {
+            idc = 16020;
+            text = "Saved Playlists:";
+            x = 0.34 * safezoneW + safezoneX;
+            y = 0.26 * safezoneH + safezoneY;
+            w = 0.2 * safezoneW;
+            h = 0.025 * safezoneH;
+        };
+
+        // Saved Playlists Listbox
+        class PlaylistsList: ZJ_RscListbox
+        {
+            idc = 16021;
+            x = 0.34 * safezoneW + safezoneX;
+            y = 0.29 * safezoneH + safezoneY;
+            w = 0.31 * safezoneW;
+            h = 0.34 * safezoneH;
+            onLBSelChanged = "[] call ZeusJukebox_fnc_onPlaylistEntrySelected;";
+        };
+
+        // Load Selected Playlist Into Queue Button
+        class LoadPlaylistBtn: ZJ_RscButton
+        {
+            idc = 16022;
+            text = "Load to Queue";
+            x = 0.34 * safezoneW + safezoneX;
+            y = 0.64 * safezoneH + safezoneY;
+            w = 0.1 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onPlaylistLoad;";
+            tooltip = "Append the selected playlist's tracks to the current queue";
+            colorBackground[] = COLOR_BLUE;
+            colorFocused[] = COLOR_BLUE;
+            colorBackgroundActive[] = COLOR_BLUE_ACTIVE;
+        };
+
+        // Rename Selected Playlist Button
+        class RenamePlaylistBtn: ZJ_RscButton
+        {
+            idc = 16023;
+            text = "Rename Selected";
+            x = 0.445 * safezoneW + safezoneX;
+            y = 0.64 * safezoneH + safezoneY;
+            w = 0.1 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onPlaylistRename;";
+            tooltip = "Rename the selected playlist using the name field above";
+            colorBackground[] = COLOR_GREY_30;
+            colorFocused[] = COLOR_GREY_30;
+            colorBackgroundActive[] = COLOR_GREY_40;
+        };
+
+        // Delete Selected Playlist Button
+        class DeletePlaylistBtn: ZJ_RscButton
+        {
+            idc = 16024;
+            text = "Delete Selected";
+            x = 0.55 * safezoneW + safezoneX;
+            y = 0.64 * safezoneH + safezoneY;
+            w = 0.1 * safezoneW;
+            h = 0.025 * safezoneH;
+            action = "[] call ZeusJukebox_fnc_onPlaylistDelete;";
+            tooltip = "Delete the selected playlist";
+            colorBackground[] = COLOR_RED;
+            colorFocused[] = COLOR_RED;
+            colorBackgroundActive[] = COLOR_RED_ACTIVE;
         };
     };
 };

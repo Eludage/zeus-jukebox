@@ -79,29 +79,39 @@ private _btnDown = _display displayCtrl 15709;
 private _currentTrack = missionNamespace getVariable ["ZeusJukebox_currentlyPlayingTrack", ""];
 private _currentlyPlayingEmpty = (_currentTrack == "");
 
-// Update Play button - only enabled if selection exists AND Currently Playing is empty
-if (!isNull _btnPlay) then {
-    _btnPlay ctrlEnable (_hasSelection && _currentlyPlayingEmpty);
-};
+// While the Music List Settings or Manage Song Lists overlay is open, these
+// buttons are deliberately disabled by ZeusJukebox_fnc_onMusicListSettings /
+// ZeusJukebox_fnc_onManageSongList. This function can be re-invoked while an
+// overlay is still open (a remote trigger from another Zeus client adding/
+// removing a queue item) - skip re-enabling so those calls can't silently undo
+// the overlay's block.
+private _settingsOverlayOpen = (uiNamespace getVariable ["ZeusJukebox_settingsOverlayOpen", false]) ||
+	(uiNamespace getVariable ["ZeusJukebox_manageSongListsOverlayOpen", false]);
+if (!_settingsOverlayOpen) then {
+    // Update Play button - only enabled if selection exists AND Currently Playing is empty
+    if (!isNull _btnPlay) then {
+        _btnPlay ctrlEnable (_hasSelection && _currentlyPlayingEmpty);
+    };
 
-// Update Remove button - enabled if selection exists
-if (!isNull _btnRemove) then {
-    _btnRemove ctrlEnable _hasSelection;
-};
+    // Update Remove button - enabled if selection exists
+    if (!isNull _btnRemove) then {
+        _btnRemove ctrlEnable _hasSelection;
+    };
 
-// Update Preview button - enabled if selection exists
-if (!isNull _btnPreview) then {
-    _btnPreview ctrlEnable _hasSelection;
-};
+    // Update Preview button - enabled if selection exists
+    if (!isNull _btnPreview) then {
+        _btnPreview ctrlEnable _hasSelection;
+    };
 
-// Update Up button - enabled if selection exists and not at top
-if (!isNull _btnUp) then {
-    _btnUp ctrlEnable (_hasSelection && _newSelectedIdx > 0);
-};
+    // Update Up button - enabled if selection exists and not at top
+    if (!isNull _btnUp) then {
+        _btnUp ctrlEnable (_hasSelection && _newSelectedIdx > 0);
+    };
 
-// Update Down button - enabled if selection exists and not at bottom
-if (!isNull _btnDown) then {
-    _btnDown ctrlEnable (_hasSelection && _newSelectedIdx < (_queueCount - 1));
+    // Update Down button - enabled if selection exists and not at bottom
+    if (!isNull _btnDown) then {
+        _btnDown ctrlEnable (_hasSelection && _newSelectedIdx < (_queueCount - 1));
+    };
 };
 
 true

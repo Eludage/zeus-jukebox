@@ -69,7 +69,7 @@ if ((_data select [0, 7]) == "HEADER:") then {
         };
 
         // Load the new song into preview
-        uiNamespace setVariable ["ZeusJukebox_selectedMusicListTrack", _className];
+        uiNamespace setVariable ["ZeusJukebox_selectedMusicListTrack", _className + "|" + _soundFile];
         uiNamespace setVariable ["ZeusJukebox_previewTrack", _className];
         uiNamespace setVariable ["ZeusJukebox_previewSoundFile", _soundFile];
         uiNamespace setVariable ["ZeusJukebox_previewPlaying", false];
@@ -88,4 +88,7 @@ if ((_data select [0, 7]) == "HEADER:") then {
 
     // Always update Track Info section
     [_className, _soundFile] call ZeusJukebox_fnc_updateUiTrackInfo;
+
+    // Update Mark/Unmark Favorite button to reflect the selected track
+    [] call ZeusJukebox_fnc_updateUiFavoriteMarkBtn;
 };

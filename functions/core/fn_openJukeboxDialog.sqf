@@ -43,9 +43,16 @@ if (_created) then {
             };
         };
 
+        // Migrate profile data to current version
+        [] call ZeusJukebox_fnc_migrateProfileData;
+
         // Load favorites from profileNamespace
         private _favorites = [] call ZeusJukebox_fnc_loadFavorites;
         uiNamespace setVariable ["ZeusJukebox_favorites", _favorites];
+
+        // Load saved playlists from profileNamespace
+        private _playlists = [] call ZeusJukebox_fnc_loadPlaylists;
+        uiNamespace setVariable ["ZeusJukebox_playlists", _playlists];
         
         // Initialize favorites filter state (default off)
         uiNamespace setVariable ["ZeusJukebox_filterFavoritesOnly", false];
@@ -95,6 +102,11 @@ if (_created) then {
             missionNamespace setVariable ["ZeusJukebox_queue", [], true];
         };
 
+        // Initialize Track History from missionNamespace
+        if (isNil {missionNamespace getVariable "ZeusJukebox_trackHistory"}) then {
+            missionNamespace setVariable ["ZeusJukebox_trackHistory", [], true];
+        };
+
         // Initialize Autoplay from missionNamespace
         if (isNil {missionNamespace getVariable "ZeusJukebox_autoplay"}) then {
             missionNamespace setVariable ["ZeusJukebox_autoplay", false, true];
@@ -105,6 +117,15 @@ if (_created) then {
             uiNamespace setVariable ["ZeusJukebox_isListeningLocally", true];
         };
 
+        // Music List Settings overlay starts closed
+        uiNamespace setVariable ["ZeusJukebox_settingsOverlayOpen", false];
+
+        // Track History overlay starts closed
+        uiNamespace setVariable ["ZeusJukebox_historyOverlayOpen", false];
+
+        // Manage Song Lists overlay starts closed
+        uiNamespace setVariable ["ZeusJukebox_manageSongListsOverlayOpen", false];
+
         // Detect display aspect ratio and set maximum font size level
         if (isNil {uiNamespace getVariable "ZeusJukebox_maxFontSizeLevel"}) then {
             private _resolution = getResolution;
@@ -114,6 +135,35 @@ if (_created) then {
             private _maxLevel = if (_aspectRatio >= 2.0) then { 4 } else { 2 };
             uiNamespace setVariable ["ZeusJukebox_maxFontSizeLevel", _maxLevel];
         };
+
+        // Music List Settings overlay starts hidden
+        {
+            private _ctrl = _display displayCtrl _x;
+            if (!isNull _ctrl) then { _ctrl ctrlShow false; };
+        } forEach [
+            15800, 15801, 15802, 15803, 15804,
+            15811, 15812, 15813, 15814, 15815,
+            15821, 15822, 15823,
+            15831, 15832, 15833
+        ];
+
+        // Track History overlay starts hidden
+        {
+            private _ctrl = _display displayCtrl _x;
+            if (!isNull _ctrl) then { _ctrl ctrlShow false; };
+        } forEach [
+            15900, 15901, 15902, 15903, 15904, 15905, 15906
+        ];
+
+        // Manage Song Lists overlay starts hidden
+        {
+            private _ctrl = _display displayCtrl _x;
+            if (!isNull _ctrl) then { _ctrl ctrlShow false; };
+        } forEach [
+            16000, 16001, 16002, 16003, 16004,
+            16010, 16011, 16012, 16013,
+            16020, 16021, 16022, 16023, 16024
+        ];
 
         // Update Favorites Filter button state
         private _isFavoritesFilter = uiNamespace getVariable ["ZeusJukebox_filterFavoritesOnly", false];
@@ -174,6 +224,9 @@ if (_created) then {
         // Populate the music list (force rebuild if mission changed)
         [_forceRebuild] call ZeusJukebox_fnc_updateUiMusicList;
 
+        // Initialize Mark/Unmark Favorite button visibility for the current selection (or lack thereof)
+        [] call ZeusJukebox_fnc_updateUiFavoriteMarkBtn;
+
         // Restore preview track selection in music list if exists
         if (_hasExistingPreview) then {
             private _listBox = _display displayCtrl 15503;
@@ -198,6 +251,9 @@ if (_created) then {
 
         // Refresh queue display
         [] call ZeusJukebox_fnc_updateUiQueue;
+
+        // Refresh track history display (overlay starts hidden but should have fresh data)
+        [] call ZeusJukebox_fnc_updateUiHistory;
     };
 } else {
     diag_log "[ZeusJukebox] Error: Failed to create dialog";

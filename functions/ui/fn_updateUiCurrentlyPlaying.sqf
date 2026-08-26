@@ -27,6 +27,15 @@ private _isFading = missionNamespace getVariable ["ZeusJukebox_isFading", false]
 // Get uiNamespace variable for local listening state
 private _isListening = uiNamespace getVariable ["ZeusJukebox_isListeningLocally", true];
 
+// While the Music List Settings or Manage Song Lists overlay is open, these
+// buttons are deliberately disabled by ZeusJukebox_fnc_onMusicListSettings /
+// ZeusJukebox_fnc_onManageSongList. This function can be re-invoked while an
+// overlay is still open (the playback-progress loop in fn_openJukeboxDialog.sqf,
+// or a remote trigger from another Zeus client) - skip re-enabling so those
+// calls can't silently undo the overlay's block.
+private _settingsOverlayOpen = (uiNamespace getVariable ["ZeusJukebox_settingsOverlayOpen", false]) ||
+	(uiNamespace getVariable ["ZeusJukebox_manageSongListsOverlayOpen", false]);
+
 // Get controls
 private _noSongOverlay = _display displayCtrl 15613;
 private _titleCtrl = _display displayCtrl 15601;
@@ -122,11 +131,11 @@ if (!isNull _timeCtrl) then {
 // Update Play/Stop button based on active state
 if (!isNull _btnPlay) then {
 	_btnPlay ctrlShow !_isActive;
-	_btnPlay ctrlEnable true;
+	if (!_settingsOverlayOpen) then { _btnPlay ctrlEnable true; };
 };
 if (!isNull _btnStop) then {
 	_btnStop ctrlShow _isActive;
-	_btnStop ctrlEnable true;
+	if (!_settingsOverlayOpen) then { _btnStop ctrlEnable true; };
 };
 
 // Update other buttons
@@ -140,7 +149,7 @@ if (!isNull _btnFade) then {
 		(missionNamespace getVariable ["ace_hearing_enableNoiseDucking", false])
 	};
 	private _canFade = _isActive && !_isFading && !_aceDisablesFade;
-	_btnFade ctrlEnable _canFade;
+	if (!_settingsOverlayOpen) then { _btnFade ctrlEnable _canFade; };
 	if (_isFading) then {
 		private _fadeStart = missionNamespace getVariable ["ZeusJukebox_fadeStartTime", serverTime];
 		private _fadeRemaining = 5 - (serverTime - _fadeStart);
@@ -158,7 +167,7 @@ if (!isNull _btnFade) then {
 };
 if (!isNull _btnRemove) then {
 	_btnRemove ctrlShow true;
-	_btnRemove ctrlEnable true;
+	if (!_settingsOverlayOpen) then { _btnRemove ctrlEnable true; };
 };
 
 // Update Listen buttons based on local state
